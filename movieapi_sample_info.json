@@ -1,0 +1,491 @@
+{
+  "status": 200,
+  "success": true,
+  "creator": "DaraTech",
+  "results": {
+    "subjectId": "1076625875212323512",
+    "subjectType": 2,
+    "title": "Banshee",
+    "description": "An ex-con assumes the identity of a murdered sheriff in the small town of Banshee, Pennsylvania, where he has some unfinished business.",
+    "releaseDate": "2013-01-11",
+    "duration": "",
+    "genre": "Action, Crime, Drama",
+    "cover": {
+      "url": "https://pbcdn.aoneroom.com/image/2026/01/27/5922f579bf092d76be70362f6926f709.jpg",
+      "width": 338,
+      "height": 500,
+      "size": 29586,
+      "format": "jpg",
+      "thumbnail": "eLE28vJBJU$zkV}@WCbbsVX79}xDxFRnR+5qxDo0WEn+o{W:ahs.jY",
+      "gif": null,
+      "averageHueLight": "#6c5230",
+      "averageHueDark": "#664f32"
+    },
+    "preVideoCover": null,
+    "preVideoAddress": [],
+    "countryName": "United States",
+    "language": "English",
+    "imdbRatingValue": "8.4",
+    "staffList": [
+      {
+        "staffId": "9144204418127123344",
+        "staffType": 2,
+        "name": "Ole Christian Madsen",
+        "character": "Director",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2026/06/30/3f06a4595d7245d30acf77ad78f93815.jpg"
+      },
+      {
+        "staffId": "160370060354373288",
+        "staffType": 2,
+        "name": "Greg Yaitanes",
+        "character": "Director",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2026/06/29/875628366cf6e5cfa660b989e613d108.jpg"
+      },
+      {
+        "staffId": "6118041654743521552",
+        "staffType": 2,
+        "name": "Loni Peristere",
+        "character": "Director",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2026/06/29/3a2b20a82c0547c60131831e5bcd0372.jpg"
+      },
+      {
+        "staffId": "4386998310641488784",
+        "staffType": 2,
+        "name": "S.J. Clarkson",
+        "character": "Director",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2026/06/29/1945b4e2cc74ae362e005d04528cc64a.jpg"
+      },
+      {
+        "staffId": "170538343888054368",
+        "staffType": 2,
+        "name": "Miguel Sapochnik",
+        "character": "Director",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2026/06/29/d439451c7a64458183ad28505cb77c94.jpg"
+      },
+      {
+        "staffId": "9079125974146498872",
+        "staffType": 2,
+        "name": "Babak Najafi",
+        "character": "Director",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2026/06/30/57d3e69f68c424f80f45fff3abefc72d.jpg"
+      },
+      {
+        "staffId": "4941358604348801912",
+        "staffType": 2,
+        "name": "Magnus Martens",
+        "character": "Director",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2026/06/30/3940b3f8f0b34524d67171d28339b172.jpg"
+      },
+      {
+        "staffId": "2700035487208824152",
+        "staffType": 2,
+        "name": "Everardo Gout",
+        "character": "Director",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2026/07/01/ed1de8d2fdbd832c0cb2c0d4f8584e4d.jpg"
+      },
+      {
+        "staffId": "7001337894330067328",
+        "staffType": 2,
+        "name": "Dean White",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "7954848396710663568",
+        "staffType": 2,
+        "name": "Jonathan Tropper",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "309468547049213744",
+        "staffType": 1,
+        "name": "Antony Starr",
+        "character": "Lucas Hood",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/dfd36b7fcf554e10c0ed670677e3e9e0.jpg"
+      },
+      {
+        "staffId": "7787977203274633000",
+        "staffType": 1,
+        "name": "Ivana Milicevic",
+        "character": "Carrie Hopewell",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/f0407e9bff3bbabd5147b611cbe7ec50.jpg"
+      },
+      {
+        "staffId": "7787977203274633000",
+        "staffType": 1,
+        "name": "Ivana Milicevic",
+        "character": "Anastasia",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/f0407e9bff3bbabd5147b611cbe7ec50.jpg"
+      },
+      {
+        "staffId": "4814880169582808760",
+        "staffType": 1,
+        "name": "Ulrich Thomsen",
+        "character": "Kai Proctor",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/58e44525ba752178945daba7d52994d6.jpg"
+      },
+      {
+        "staffId": "7360874110490398392",
+        "staffType": 1,
+        "name": "Frankie Faison",
+        "character": "Sugar Bates",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/892129a306fa42296e1600b167e0183b.jpg"
+      },
+      {
+        "staffId": "4675280813200658216",
+        "staffType": 1,
+        "name": "Hoon Lee",
+        "character": "Job",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/1910443c646cb3d96e55a2c1b5325954.jpg"
+      },
+      {
+        "staffId": "7512272463587069736",
+        "staffType": 1,
+        "name": "Matt Servitto",
+        "character": "Deputy Brock Lotus",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/4cbe37cda28a8be94aea2bce90f72a54.jpg"
+      },
+      {
+        "staffId": "7512272463587069736",
+        "staffType": 1,
+        "name": "Matt Servitto",
+        "character": "Sheriff Brock Lotus",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/4cbe37cda28a8be94aea2bce90f72a54.jpg"
+      },
+      {
+        "staffId": "6112007475337512816",
+        "staffType": 1,
+        "name": "Ryann Shane",
+        "character": "Deva Hopewell",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2023/03/29/81ee35427594dd104d82c3c4f6707b65.jpg"
+      },
+      {
+        "staffId": "5720407142713152280",
+        "staffType": 1,
+        "name": "Lili Simmons",
+        "character": "Rebecca Bowman",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/11/03/2ab656207f275a57ef6fcddd6abf42c8.jpg"
+      },
+      {
+        "staffId": "616411649032998696",
+        "staffType": 1,
+        "name": "Trieste Kelly Dunn",
+        "character": "Deputy Siobhan Kelly",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/86c541b64f23335d251515f2e68d9413-s.jpg"
+      },
+      {
+        "staffId": "1958023505179463472",
+        "staffType": 1,
+        "name": "Matthew Rauch",
+        "character": "Clay Burton",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/ec9fd8d629f7bda4877f8f2072f4a3f0.jpg"
+      },
+      {
+        "staffId": "310946290677993256",
+        "staffType": 1,
+        "name": "Rus Blackwell",
+        "character": "Gordon Hopewell",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/691fa90c7471e6ab2f325337fa0fa62d.jpg"
+      },
+      {
+        "staffId": "4761556965191470680",
+        "staffType": 1,
+        "name": "Demetrius Grosse",
+        "character": "Deputy Emmett Yawners",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/10/14/f0e30514fc6f6ac34f202e8af243b53e.jpg"
+      },
+      {
+        "staffId": "3733400532503383848",
+        "staffType": 1,
+        "name": "Ben Cross",
+        "character": "Mr. Rabbit",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/e5fd8455011b2c75a5b9ee35ed4719c9.jpg"
+      },
+      {
+        "staffId": "1721452583346655024",
+        "staffType": 1,
+        "name": "Anthony Ruivivar",
+        "character": "Alex Longshadow",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/4bd8e12b9275af8e99c6b79f387e6eaa.jpg"
+      },
+      {
+        "staffId": "5552788794082480920",
+        "staffType": 1,
+        "name": "Geno Segers",
+        "character": "Chayton Littlestone",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/11/03/20d43267c72b576b63927b366dc055a9.jpg"
+      },
+      {
+        "staffId": "5552788794082480920",
+        "staffType": 1,
+        "name": "Geno Segers",
+        "character": "Chayton",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/11/03/20d43267c72b576b63927b366dc055a9.jpg"
+      },
+      {
+        "staffId": "2809392933571547928",
+        "staffType": 1,
+        "name": "Tom Pelphrey",
+        "character": "Kurt Bunker",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/11/03/0ebd03440797d645cbb0655f76ff8f11-s.jpg"
+      },
+      {
+        "staffId": "245025266454650520",
+        "staffType": 1,
+        "name": "Gabriel Suttle",
+        "character": "Max Hopewell",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2023/04/27/a8318cb0859feed1c071befdd4bbbd9c.jpg"
+      },
+      {
+        "staffId": "7714647611722845992",
+        "staffType": 1,
+        "name": "Afton Williamson",
+        "character": "Alison Medding",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/ccd0a78a4cb27af005e10820341f2a23.jpg"
+      },
+      {
+        "staffId": "2442848172599825296",
+        "staffType": 3,
+        "name": "David Schickler",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "7954848396710663568",
+        "staffType": 3,
+        "name": "Jonathan Tropper",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "7926204469539651896",
+        "staffType": 3,
+        "name": "Adam Targum",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "4702289347821849832",
+        "staffType": 3,
+        "name": "Evan Dunsky",
+        "character": "Writer",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2023/11/19/162bf3753a7aa3c61b9fb01375955234.jpg"
+      },
+      {
+        "staffId": "4101563658088629264",
+        "staffType": 3,
+        "name": "Doug Jung",
+        "character": "Writer",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2023/03/29/082e1b9faf6a884b9c5dda95b1948ea9.jpg"
+      },
+      {
+        "staffId": "3213016485438318976",
+        "staffType": 3,
+        "name": "John Romano",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "3421328034291403800",
+        "staffType": 3,
+        "name": "Jennifer Ames",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "6464916682585821504",
+        "staffType": 3,
+        "name": "Justin Britt-Gibson",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "6052707024553525560",
+        "staffType": 3,
+        "name": "Chris Kelley",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "2268406529684556824",
+        "staffType": 3,
+        "name": "Steve Turner",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "7895357922614872568",
+        "staffType": 3,
+        "name": "Liz Sagal",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "365801378907834224",
+        "staffType": 3,
+        "name": "Chad Feehan",
+        "character": "Writer",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2023/03/29/924ea18ea2ec987545d3da1637dd66ff.jpg"
+      },
+      {
+        "staffId": "3452104129794950776",
+        "staffType": 3,
+        "name": "Halley Wegryn Gross",
+        "character": "Writer",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2023/03/29/dbacfe8e869d17a10f67a5baed6fb67e.jpg"
+      }
+    ],
+    "wantToSeeCount": 0,
+    "haveSeenCount": 0,
+    "seenStatus": 0,
+    "mySeeTime": "0",
+    "myScoreValue": 0,
+    "myScorePostId": "0",
+    "myScoreTime": "0",
+    "opt": "",
+    "hasResource": true,
+    "resourceDetectors": [
+      {
+        "type": 1,
+        "totalEpisode": 38,
+        "totalSize": "5373431680",
+        "uploadTime": "1693473901",
+        "uploadBy": "Moji Shortbabaa etc.",
+        "resourceLink": "https://ailok.pe/info/Banshee-480P season-1/episode-1-480P/season-1/episode-1-r360P",
+        "downloadUrl": "",
+        "source": "ailok.pe etc.",
+        "firstSize": "177151437",
+        "resourceId": "7726273314024735792",
+        "postId": "5539505696112264952",
+        "extCaptions": [],
+        "resolutionList": [],
+        "subjectId": "1076625875212323512",
+        "codecName": ""
+      }
+    ],
+    "ops": "",
+    "durationSeconds": 0,
+    "stills": null,
+    "trailer": {
+      "VideoAddress": {
+        "videoId": "6048599863829349936",
+        "definition": "sd",
+        "url": "https://macdn.aoneroom.com/media/vone/2023/08/11/c4017b6511aac03c45f14cff27580ec1-sd.mp4",
+        "duration": 30,
+        "width": 848,
+        "height": 476,
+        "size": 1269605,
+        "fps": 25,
+        "bitrate": 338,
+        "type": 1
+      },
+      "cover": {
+        "url": "https://pbcdn.aoneroom.com/image/2023/08/15/47827c9a34a86173eb808cb24a4c03f3.webp",
+        "width": 854,
+        "height": 480,
+        "size": 19070,
+        "format": "webp",
+        "thumbnail": "eLAKU3_N.8tRWU_3?u%gxua}.8-;%MofWB.8%Mxua}Rj%Mx[ofWBRj",
+        "gif": null,
+        "averageHueLight": "#43514d",
+        "averageHueDark": "#43514d"
+      }
+    },
+    "contentRating": "TV-MA",
+    "postTitle": "Trailer-Banshee",
+    "aka": "",
+    "explains": [],
+    "seNum": 4,
+    "viewers": 2671,
+    "category": "",
+    "subtitles": "English,Español,Filipino,Français,Indonesian,Kiswahili,Malay,Português,Türkçe,tiếng Việt,Русский,اَلْعَرَبِيَّةُ,اُردُو,فارسی,هَرْشٜن هَوْس,বাংলা,ਪੰਜਾਬੀ,ภาษาไทย,中文",
+    "dubs": [
+      {
+        "subjectId": "1076625875212323512",
+        "lanName": "Original Audio",
+        "lanCode": "en",
+        "original": true,
+        "type": 0
+      },
+      {
+        "subjectId": "4523687269408163280",
+        "lanName": "esla dub",
+        "lanCode": "esla",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "4984113033464136776",
+        "lanName": "ptbr dub",
+        "lanCode": "ptbr",
+        "original": false,
+        "type": 0
+      }
+    ],
+    "relatedApp": null,
+    "restrictLevel": "",
+    "corner": "",
+    "likeStatus": 0,
+    "style": {
+      "colNum": 3,
+      "shape": "Vertical"
+    },
+    "detailUrl": "https://moviebox.ph/detail/banshee-gQe7HhoXwh1",
+    "playUrl": {
+      "playUrl": "",
+      "urlType": "PLAY_URL_WEB"
+    },
+    "restrictKid": 0,
+    "season": 0,
+    "isCam": false,
+    "thumbnail": "https://pbcdn.aoneroom.com/image/2026/01/27/5922f579bf092d76be70362f6926f709.jpg",
+    "rating": 8.4,
+    "year": 2013,
+    "type": "series",
+    "seasons": 4,
+    "country": "United States",
+    "audioTracks": [
+      {
+        "subjectId": "1076625875212323512",
+        "lanName": "Original Audio",
+        "lanCode": "en",
+        "original": true,
+        "type": 0
+      },
+      {
+        "subjectId": "4523687269408163280",
+        "lanName": "esla dub",
+        "lanCode": "esla",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "4984113033464136776",
+        "lanName": "ptbr dub",
+        "lanCode": "ptbr",
+        "original": false,
+        "type": 0
+      }
+    ],
+    "seasonDetails": [
+      {
+        "season": 1,
+        "totalEpisodes": 10
+      },
+      {
+        "season": 2,
+        "totalEpisodes": 10
+      },
+      {
+        "season": 3,
+        "totalEpisodes": 10
+      },
+      {
+        "season": 4,
+        "totalEpisodes": 8
+      }
+    ],
+    "totalEpisodes": 38
+  }
+}

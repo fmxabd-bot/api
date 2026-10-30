@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request a DaraTech MovieAPI Key</title>
+    <meta name="description" content="Request a personal MovieAPI key from DaraTech. Existing key limit increases, renewals, and other upgrades are handled on WhatsApp.">
+    <meta name="robots" content="noindex,follow">
+    <meta name="theme-color" content="#050508">
+    <link rel="canonical" href="https://movieapi.runflix.name.ng/request-key">
+    <link rel="icon" type="image/x-icon" href="https://runflix.name.ng/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --void: #050508; --panel: #0d0e14; --edge: rgba(255,255,255,0.07); --text: #cbd5e1; --muted: #475569; }
+        body { font-family: 'Inter','Segoe UI',system-ui,sans-serif; background: var(--void); color: var(--text); min-height: 100vh; }
+
+        header { position: sticky; top: 0; z-index: 50; background: rgba(5,5,8,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--edge); padding: 0 1.5rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { display: flex; align-items: center; gap: 0.6rem; }
+        .logo-icon { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg,#8b5cf6,#6366f1); display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; }
+        .logo-text { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.04em; }
+        .back-link { display: flex; align-items: center; gap: 0.4rem; font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.15s; }
+        .back-link:hover { color: #fff; }
+
+        .hero { padding: 4rem 1.5rem 2rem; text-align: center; max-width: 560px; margin: 0 auto; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.25); border-radius: 20px; padding: 0.35rem 0.9rem; font-size: 11px; color: #a78bfa; font-weight: 600; margin-bottom: 1.25rem; letter-spacing: 0.05em; text-transform: uppercase; }
+        .hero h1 { font-size: clamp(26px,5vw,38px); font-weight: 900; color: #fff; line-height: 1.2; margin-bottom: 0.9rem; }
+        .hero h1 span { background: linear-gradient(135deg,#a78bfa,#6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 0.5rem; }
+
+        .form-wrap { max-width: 540px; margin: 0 auto 4rem; padding: 0 1.5rem; }
+        .form-card { background: var(--panel); border: 1px solid var(--edge); border-radius: 18px; padding: 2rem; }
+        .field { margin-bottom: 1.1rem; }
+        .field-label { font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 0.35rem; letter-spacing: 0.06em; text-transform: uppercase; }
+        .field-label .req { color: #a78bfa; }
+        input[type="text"], input[type="email"], input[type="tel"], textarea {
+            width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 9px; padding: 0.65rem 0.9rem; color: #fff; font-size: 13px;
+            font-family: inherit; outline: none; transition: border-color 0.15s; resize: vertical;
+        }
+        textarea { min-height: 100px; }
+        input::placeholder, textarea::placeholder { color: var(--muted); }
+        input:focus, textarea:focus { border-color: rgba(139,92,246,0.5); }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; width: 100%; margin-top: 0.5rem; text-decoration: none; }
+        .btn-violet { background: linear-gradient(135deg,#8b5cf6,#6366f1); color: #fff; }
+        .btn-violet:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-violet:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-whatsapp { background: linear-gradient(135deg,#25d366,#128c7e); color: #fff; font-size: 15px; padding: 0.9rem; }
+        .btn-whatsapp:hover { opacity: 0.95; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(37,211,102,0.3); }
+        .btn-docs { background: linear-gradient(135deg,#06b6d4,#0891b2); color: #fff; font-size: 14px; padding: 0.75rem; }
+        .btn-docs:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .success-state { text-align: center; padding: 0.5rem 0 1rem; display: none; }
+        .success-icon { width: 64px; height: 64px; border-radius: 50%; background: rgba(139,92,246,0.12); border: 2px solid rgba(139,92,246,0.35); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 26px; color: #a78bfa; }
+        .success-title { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 0.5rem; }
+        .success-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+        .wa-note { font-size: 11px; color: var(--muted); margin-top: 0.75rem; opacity: 0.7; }
+
+        .features { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; max-width: 560px; margin: 0 auto 3rem; padding: 0 1.5rem; }
+        @media(max-width:560px) { .features { grid-template-columns: 1fr; } }
+        .feature { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; padding: 1.1rem; }
+        .feature i { font-size: 20px; color: #a78bfa; margin-bottom: 0.5rem; display: block; }
+        .feature h3 { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 0.25rem; }
+        .feature p { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+        .hint-line { font-size: 11px; color: var(--muted); margin-top: 0.35rem; }
+        .ref-box { font-family: monospace; font-size: 12px; color: #a78bfa; background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2); border-radius: 8px; padding: 0.5rem 0.8rem; margin-bottom: 0.5rem; word-break: break-all; }
+        .field-label { display: block; }
+        input:focus-visible, textarea:focus-visible, .btn:focus-visible { outline: 2px solid rgba(139,92,246,0.7); outline-offset: 2px; }
+        .error-msg { font-size: 12px; color: #fca5a5; margin-top: 0.75rem; text-align: center; min-height: 18px; }
+        .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-film"></i></div>
+            <span class="logo-text">RUNFLIX</span>
+        </div>
+        <a href="/docs" class="back-link"><i class="fas fa-book-open" style="font-size:10px;"></i> <span>View Docs</span></a>
+    </header>
+
+    <div class="hero">
+        <div class="hero-badge"><i class="fas fa-key"></i> API Access</div>
+        <h1>Get your <span>RUNFLIX API</span> key</h1>
+        <p>Tell us who you are and what you are building. Requests are queued for manual review, and the key is sent to you personally by email or WhatsApp once approved.</p>
+    </div>
+
+    <div class="features">
+        <div class="feature">
+            <i class="fas fa-bolt"></i>
+            <h3>Fast Responses</h3>
+            <p>Real-time movie &amp; TV data with low latency.</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-layer-group"></i>
+            <h3>Rich Data</h3>
+            <p>Streaming sources, captions, metadata &amp; more.</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-gauge-high"></i>
+            <h3>Clear Limits</h3>
+            <p>Per-key quotas with live usage in the key checker.</p>
+        </div>
+    </div>
+
+    <div class="form-wrap">
+        <div class="form-card">
+            <form id="formState" novalidate>
+                <div class="field">
+                    <label class="field-label" for="fName">Your Name <span class="req">*</span></label>
+                    <input type="text" id="fName" maxlength="120" placeholder="e.g. Chidinma Okafor" autocomplete="name">
+                </div>
+                <div class="field">
+                    <label class="field-label" for="fEmail">Email</label>
+                    <input type="email" id="fEmail" maxlength="160" placeholder="you@example.com" autocomplete="email">
+                </div>
+                <div class="field">
+                    <label class="field-label" for="fPhone">Phone / WhatsApp</label>
+                    <input type="tel" id="fPhone" maxlength="40" placeholder="+234 800 000 0000" autocomplete="tel">
+                    <div class="hint-line">Provide at least one of email or phone so we can deliver your key.</div>
+                </div>
+                <div class="field">
+                    <label class="field-label" for="fWebsite">Website or App URL <span style="text-transform:none;letter-spacing:0;">(optional)</span></label>
+                    <input type="text" id="fWebsite" maxlength="200" placeholder="https://myapp.com" autocomplete="url">
+                </div>
+                <div class="field">
+                    <label class="field-label" for="fUseCase">How will you use it? <span class="req">*</span></label>
+                    <textarea id="fUseCase" maxlength="2000" placeholder="e.g. Building a movie discovery app. I need search, info, sources and captions endpoints."></textarea>
+                </div>
+                <button type="submit" class="btn btn-violet" id="submitBtn">
+                    <i class="fas fa-paper-plane"></i> Submit Request
+                </button>
+                <div class="error-msg" id="errMsg" role="alert"></div>
+            </form>
+
+            <p class="wa-note">Submitting saves your request and opens WhatsApp with your details prepared. Tap Send in WhatsApp to finish.</p>
+            <div class="success-state" id="successState" role="status">
+                <div class="success-icon"><i class="fas fa-check"></i></div>
+                <div class="success-title">Request received</div>
+                <div class="success-desc" id="successDesc">Your request is saved. Continue to WhatsApp and send the prepared message to complete your request.</div>
+                <div class="ref-box" id="refBox" style="display:none;">Reference <span id="refId"></span></div>
+                <a id="whatsappContinue" class="btn btn-whatsapp" href="https://wa.me/2348100785677" target="_blank" rel="noopener" style="margin-top:0.75rem;"><i class="fab fa-whatsapp"></i> Continue to WhatsApp</a>
+                <a href="/docs" class="btn btn-docs" style="margin-top:0.75rem;">
+                    <i class="fas fa-book-open"></i> Explore the Documentation
+                </a>
+                <a href="/try" class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.09);color:var(--muted);margin-top:0.5rem;">
+                    <i class="fas fa-flask"></i> Try Live Search with the Public Key
+                </a>
+                <p class="wa-note">WhatsApp opens after your request is saved. You still need to tap Send there. Limit increases, renewals and all key upgrades are handled on WhatsApp.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        const $ = id => document.getElementById(id);
+        const btnHtml = '<i class="fas fa-paper-plane"></i> Submit Request';
+        const err = (m, id) => { $('errMsg').textContent = m; if (id) $(id).focus(); };
+        $('formState').addEventListener('submit', async e => {
+            e.preventDefault();
+            const name = $('fName').value.trim(), email = $('fEmail').value.trim(), phone = $('fPhone').value.trim();
+            const website = $('fWebsite').value.trim(), useCase = $('fUseCase').value.trim();
+            err('');
+            if (!name) return err('Please enter your name.', 'fName');
+            if (!email && !phone) return err('Please provide an email address or a phone number.', 'fEmail');
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return err('That email address does not look right.', 'fEmail');
+            if (phone && !/^\+?[\d\s()-]{6,24}$/.test(phone)) return err('Phone numbers can contain digits, spaces, + ( ) and - only.', 'fPhone');
+            if (!useCase) return err('Please describe your use case.', 'fUseCase');
+            const btn = $('submitBtn'); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Submitting...';
+            let handoff;
+            try {handoff=window.open('about:blank','_blank');if(handoff)handoff.opener=null;}catch{}
+            try {
+                const r = await fetch('/api/request-key', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, phone, website, useCase }) });
+                const d = await r.json().catch(() => ({}));
+                if (!r.ok || d.success === false) {
+                    let m = d.message || d.error || ('Request failed (' + r.status + ').');
+                    if (d.retryAfter) m += ' Try again in ' + d.retryAfter + 's.';
+                    if(handoff&&!handoff.closed)handoff.close();err(m); return;
+                }
+                if (d.message) $('successDesc').textContent = d.message;
+                if (d.requestId) { $('refId').textContent = d.requestId; $('refBox').style.display = 'block'; }
+                $('formState').style.display = 'none'; $('successState').style.display = 'block';
+                if(d.whatsappUrl) {
+                    $('whatsappContinue').href=d.whatsappUrl;
+                    if(handoff&&!handoff.closed)handoff.location.replace(d.whatsappUrl);
+                    else window.location.assign(d.whatsappUrl);
+                } else if(handoff&&!handoff.closed)handoff.close();
+            } catch {if(handoff&&!handoff.closed)handoff.close();err('Network error. Your details are still in the form; please try again.');}
+            finally { btn.disabled = false; btn.innerHTML = btnHtml; }
+        });
+    })();
+    </script>
+</body>
+</html>

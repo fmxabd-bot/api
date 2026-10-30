@@ -1,0 +1,77 @@
+{
+  "status": 200,
+  "success": true,
+  "creator": "DaraTech",
+  "results": [
+    {
+      "id": "7672090197051719992",
+      "quality": "1080p",
+      "url": "https://bcdn.hakunaymatata.com/resource/542553353d51150fa7de94a35e45ed6a.mp4?sign=9672459f6f41291d927af633e18fba96&t=1783959727",
+      "download_url": "https://movieapi.runflix.name.ng/api/v3/download?url=https%3A%2F%2Fbcdn.hakunaymatata.com%2Fresource%2F542553353d51150fa7de94a35e45ed6a.mp4%3Fsign%3D9672459f6f41291d927af633e18fba96%26t%3D1783959727&quality=1080p&season=1&episode=1",
+      "stream_url": "https://movieapi.runflix.name.ng/api/v3/stream?url=https%3A%2F%2Fbcdn.hakunaymatata.com%2Fresource%2F542553353d51150fa7de94a35e45ed6a.mp4%3Fsign%3D9672459f6f41291d927af633e18fba96%26t%3D1783959727",
+      "size": "182652297",
+      "codec": "h264",
+      "duration": 1389,
+      "format": "mp4",
+      "browserCompatible": true,
+      "requireMemberType": 0
+    }
+  ],
+  "subtitles": [],
+  "audioTracks": [
+    {
+      "language": "Original Audio",
+      "languageCode": "ja",
+      "isOriginal": true,
+      "subjectId": "5728465289486950408"
+    },
+    {
+      "language": "Bengali dub",
+      "languageCode": "bn",
+      "isOriginal": false,
+      "subjectId": "470178593793016408"
+    },
+    {
+      "language": "English sub",
+      "languageCode": "en",
+      "isOriginal": false,
+      "subjectId": "5934003849076921960"
+    },
+    {
+      "language": "English dub",
+      "languageCode": "en",
+      "isOriginal": false,
+      "subjectId": "6732266150736413040"
+    },
+    {
+      "language": "Hindi dub",
+      "languageCode": "hi",
+      "isOriginal": false,
+      "subjectId": "4681337201345660416"
+    },
+    {
+      "language": "Malayalam dub",
+      "languageCode": "ml",
+      "isOriginal": false,
+      "subjectId": "2638954770333072624"
+    },
+    {
+      "language": "Tamil dub",
+      "languageCode": "ta",
+      "isOriginal": false,
+      "subjectId": "7214611991741496512"
+    },
+    {
+      "language": "Telugu dub",
+      "languageCode": "te",
+      "isOriginal": false,
+      "subjectId": "7784024388642786352"
+    },
+    {
+      "language": "esla dub",
+      "languageCode": "esla",
+      "isOriginal": false,
+      "subjectId": "875117138481137944"
+    }
+  ]
+}

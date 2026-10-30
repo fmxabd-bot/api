@@ -1,0 +1,41 @@
+{
+  "status": 200,
+  "success": true,
+  "creator": "DaraTech",
+  "results": [
+    {
+      "id": "2259789194811820392",
+      "quality": "360p",
+      "url": "https://bcdn.hakunaymatata.com/bt/f202c711777cb88cde55fffc4a1da94e.mp4?sign=35a1c12e2c93069b3aeff0c059c76831&t=1783959779",
+      "download_url": "https://movieapi.runflix.name.ng/api/v3/download?url=https%3A%2F%2Fbcdn.hakunaymatata.com%2Fbt%2Ff202c711777cb88cde55fffc4a1da94e.mp4%3Fsign%3D35a1c12e2c93069b3aeff0c059c76831%26t%3D1783959779&quality=360p&season=1&episode=1",
+      "stream_url": "https://movieapi.runflix.name.ng/api/v3/stream?url=https%3A%2F%2Fbcdn.hakunaymatata.com%2Fbt%2Ff202c711777cb88cde55fffc4a1da94e.mp4%3Fsign%3D35a1c12e2c93069b3aeff0c059c76831%26t%3D1783959779",
+      "size": "171103802",
+      "codec": "h264",
+      "duration": 3403,
+      "format": "mp4",
+      "browserCompatible": true,
+      "requireMemberType": 0
+    }
+  ],
+  "subtitles": [],
+  "audioTracks": [
+    {
+      "language": "Original Audio",
+      "languageCode": "en",
+      "isOriginal": true,
+      "subjectId": "1076625875212323512"
+    },
+    {
+      "language": "esla dub",
+      "languageCode": "esla",
+      "isOriginal": false,
+      "subjectId": "4523687269408163280"
+    },
+    {
+      "language": "ptbr dub",
+      "languageCode": "ptbr",
+      "isOriginal": false,
+      "subjectId": "4984113033464136776"
+    }
+  ]
+}

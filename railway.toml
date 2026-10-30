@@ -1,0 +1,6 @@
+[deploy]
+startCommand = "python -c 'import os,base64,zlib;exec(zlib.decompress(base64.b64decode(os.environ[\"MOVIEAPI_SOURCE_BUNDLE\"])))'"
+healthcheckPath = "/health"
+healthcheckTimeout = 120
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 5

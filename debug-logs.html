@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RUNFLIX — Request Logs</title>
+    <link rel="icon" type="image/x-icon" href="https://runflix.name.ng/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #02040a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .mesh { position: fixed; inset: 0; z-index: -2; background: radial-gradient(ellipse 60% 50% at 10% 20%, rgba(34,211,238,0.05) 0%, transparent 50%), radial-gradient(ellipse 50% 60% at 90% 70%, rgba(139,92,246,0.04) 0%, transparent 50%); }
+        .dots { position: fixed; inset: 0; z-index: -1; background-image: radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 28px 28px; }
+        .card { background: #111827; border: 1px solid #1a2035; border-radius: 12px; }
+        .pill { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 9999px; font-weight: 600; }
+        .pill-2xx  { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+        .pill-3xx  { background: rgba(96,165,250,0.12); color: #60a5fa; border: 1px solid rgba(96,165,250,0.25); }
+        .pill-4xx  { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
+        .pill-5xx  { background: rgba(248,113,113,0.12); color: #f87171; border: 1px solid rgba(248,113,113,0.25); }
+        .row-2xx { border-left: 2px solid rgba(52,211,153,0.35); }
+        .row-3xx { border-left: 2px solid rgba(96,165,250,0.35); }
+        .row-4xx { border-left: 2px solid rgba(251,191,36,0.4); }
+        .row-5xx { border-left: 2px solid rgba(248,113,113,0.5); }
+        .row-base { transition: background 0.1s; }
+        .row-base:hover { background: rgba(255,255,255,0.02); }
+        .fade-in { animation: fadeIn 0.25s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+        .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: #34d399; animation: pulse 1.8s infinite; }
+        .pulse-dot.paused { background: #64748b; animation: none; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+        .method-get { color: #34d399; }
+        .method-post { color: #60a5fa; }
+        .fast  { color: #34d399; }
+        .med   { color: #fbbf24; }
+        .slow  { color: #f87171; }
+        .filter-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 12px; border-radius: 9999px; border: 1px solid #1a2035; background: #0a0f1e; color: #64748b; cursor: pointer; transition: all 0.15s; }
+        .filter-btn:hover { color: #cbd5e1; border-color: #25304a; }
+        .filter-btn.active { background: rgba(34,211,238,0.1); border-color: rgba(34,211,238,0.3); color: #22d3ee; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0f1e; }
+        ::-webkit-scrollbar-thumb { background: #1a2035; border-radius: 3px; }
+    </style>
+</head>
+<body>
+<div class="mesh"></div>
+<div class="dots"></div>
+
+<div class="min-h-screen p-4 sm:p-8 max-w-7xl mx-auto">
+
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <div class="flex items-center gap-3">
+            <a href="/docs" class="text-slate-500 hover:text-cyan-400 transition-colors text-sm">
+                <i class="fas fa-arrow-left mr-1"></i>Docs
+            </a>
+            <span class="text-slate-700">/</span>
+            <h1 class="text-white font-bold text-lg">Request Logs</h1>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 text-xs text-slate-500 mono">
+                <div class="pulse-dot" id="pulseDot"></div>
+                <span id="refreshLabel">auto-refresh 3s</span>
+            </div>
+            <button id="pauseBtn" onclick="togglePause()" class="filter-btn flex items-center gap-1.5">
+                <i class="fas fa-pause text-[10px]" id="pauseIcon"></i>
+                <span id="pauseText">Pause</span>
+            </button>
+            <button onclick="clearDisplay()" class="filter-btn flex items-center gap-1.5 text-red-400 border-red-900/40 hover:border-red-700/60 hover:text-red-300">
+                <i class="fas fa-trash-alt text-[10px]"></i>
+                <span>Clear</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <div class="card p-4">
+            <div class="mono text-[10px] text-slate-500 uppercase tracking-wider mb-1">Total logged</div>
+            <div class="text-white font-bold text-xl mono" id="statTotal">—</div>
+        </div>
+        <div class="card p-4">
+            <div class="mono text-[10px] text-slate-500 uppercase tracking-wider mb-1">Success (2xx)</div>
+            <div class="text-emerald-400 font-bold text-xl mono" id="statSuccess">—</div>
+        </div>
+        <div class="card p-4">
+            <div class="mono text-[10px] text-slate-500 uppercase tracking-wider mb-1">Errors (4xx/5xx)</div>
+            <div class="text-red-400 font-bold text-xl mono" id="statErrors">—</div>
+        </div>
+        <div class="card p-4">
+            <div class="mono text-[10px] text-slate-500 uppercase tracking-wider mb-1">Avg response</div>
+            <div class="text-cyan-400 font-bold text-xl mono" id="statAvg">—</div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="flex flex-wrap items-center gap-2 mb-4">
+        <span class="mono text-[10px] text-slate-500 uppercase tracking-wider mr-1">Filter</span>
+        <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+        <button class="filter-btn" onclick="setFilter('2xx', this)">2xx</button>
+        <button class="filter-btn" onclick="setFilter('4xx', this)">4xx</button>
+        <button class="filter-btn" onclick="setFilter('5xx', this)">5xx</button>
+        <div class="ml-auto flex items-center gap-2">
+            <span class="mono text-[10px] text-slate-500">Limit</span>
+            <select id="limitSelect" onchange="fetchLogs()" class="filter-btn bg-transparent cursor-pointer">
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Log table -->
+    <div class="card overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-[#1a2035]">
+                        <th class="text-left mono text-[10px] text-slate-500 uppercase tracking-wider px-4 py-3 font-medium">#</th>
+                        <th class="text-left mono text-[10px] text-slate-500 uppercase tracking-wider px-4 py-3 font-medium">Time</th>
+                        <th class="text-left mono text-[10px] text-slate-500 uppercase tracking-wider px-4 py-3 font-medium">Method</th>
+                        <th class="text-left mono text-[10px] text-slate-500 uppercase tracking-wider px-4 py-3 font-medium">Path</th>
+                        <th class="text-left mono text-[10px] text-slate-500 uppercase tracking-wider px-4 py-3 font-medium">Status</th>
+                        <th class="text-left mono text-[10px] text-slate-500 uppercase tracking-wider px-4 py-3 font-medium">Time (ms)</th>
+                    </tr>
+                </thead>
+                <tbody id="logBody">
+                    <tr>
+                        <td colspan="6" class="px-4 py-12 text-center text-slate-600 mono text-xs">
+                            <i class="fas fa-satellite-dish mb-3 text-2xl block"></i>
+                            Waiting for requests…
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer note -->
+    <p class="mt-4 text-center mono text-[10px] text-slate-600">
+        <i class="fas fa-info-circle mr-1"></i>
+        Local server only — buffer holds last 200 API calls and resets on server restart.
+        Worker version is isolate-scoped (resets on cold start).
+    </p>
+</div>
+
+<script>
+    let paused = false;
+    let activeFilter = 'all';
+    let allLogs = [];
+    let intervalId = null;
+    let countdown = 3;
+    let countdownId = null;
+
+    function statusClass(status) {
+        if (status >= 500) return '5xx';
+        if (status >= 400) return '4xx';
+        if (status >= 300) return '3xx';
+        return '2xx';
+    }
+
+    function statusPillClass(status) {
+        if (status >= 500) return 'pill-5xx';
+        if (status >= 400) return 'pill-4xx';
+        if (status >= 300) return 'pill-3xx';
+        return 'pill-2xx';
+    }
+
+    function speedClass(ms) {
+        if (ms < 300) return 'fast';
+        if (ms < 900) return 'med';
+        return 'slow';
+    }
+
+    function formatTime(ts) {
+        const d = new Date(ts);
+        return d.toLocaleTimeString('en-GB', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    function setFilter(f, btn) {
+        activeFilter = f;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderLogs();
+    }
+
+    function renderLogs() {
+        const body = document.getElementById('logBody');
+        const filtered = activeFilter === 'all'
+            ? allLogs
+            : allLogs.filter(l => statusClass(l.status) === activeFilter);
+
+        if (filtered.length === 0) {
+            body.innerHTML = `<tr><td colspan="6" class="px-4 py-12 text-center text-slate-600 mono text-xs">
+                <i class="fas fa-satellite-dish mb-3 text-2xl block"></i>
+                ${allLogs.length === 0 ? 'Waiting for requests…' : 'No entries match this filter.'}
+            </td></tr>`;
+            return;
+        }
+
+        body.innerHTML = filtered.map((log, i) => {
+            const sc = statusClass(log.status);
+            return `<tr class="row-base row-${sc} border-b border-[#0f1728] fade-in">
+                <td class="px-4 py-2.5 mono text-[11px] text-slate-600">${i + 1}</td>
+                <td class="px-4 py-2.5 mono text-[11px] text-slate-500">${formatTime(log.ts)}</td>
+                <td class="px-4 py-2.5 mono text-[11px] method-${(log.method || 'GET').toLowerCase()}">${log.method || 'GET'}</td>
+                <td class="px-4 py-2.5 mono text-[11px] text-slate-300 max-w-xs truncate" title="${log.path}">${log.path}</td>
+                <td class="px-4 py-2.5"><span class="pill ${statusPillClass(log.status)}">${log.status}</span></td>
+                <td class="px-4 py-2.5 mono text-[11px] ${speedClass(log.ms)}">${log.ms}ms</td>
+            </tr>`;
+        }).join('');
+    }
+
+    function updateStats() {
+        document.getElementById('statTotal').textContent = allLogs.length;
+        const successes = allLogs.filter(l => l.status < 400).length;
+        const errors = allLogs.filter(l => l.status >= 400).length;
+        const avg = allLogs.length ? Math.round(allLogs.reduce((s, l) => s + l.ms, 0) / allLogs.length) : 0;
+        document.getElementById('statSuccess').textContent = successes;
+        document.getElementById('statErrors').textContent = errors;
+        document.getElementById('statAvg').textContent = allLogs.length ? avg + 'ms' : '—';
+    }
+
+    async function fetchLogs() {
+        const limit = document.getElementById('limitSelect').value;
+        try {
+            const res = await fetch(`/debug/logs?limit=${limit}`);
+            if (!res.ok) return;
+            const data = await res.json();
+            allLogs = data.logs || [];
+            renderLogs();
+            updateStats();
+        } catch (e) {
+            // server not reachable — leave display as-is
+        }
+    }
+
+    function clearDisplay() {
+        allLogs = [];
+        renderLogs();
+        updateStats();
+    }
+
+    function startCountdown() {
+        clearInterval(countdownId);
+        countdown = 3;
+        document.getElementById('refreshLabel').textContent = `auto-refresh ${countdown}s`;
+        countdownId = setInterval(() => {
+            countdown--;
+            if (countdown <= 0) {
+                countdown = 3;
+                if (!paused) fetchLogs();
+            }
+            document.getElementById('refreshLabel').textContent = `auto-refresh ${countdown}s`;
+        }, 1000);
+    }
+
+    function togglePause() {
+        paused = !paused;
+        const dot = document.getElementById('pulseDot');
+        const icon = document.getElementById('pauseIcon');
+        const text = document.getElementById('pauseText');
+        if (paused) {
+            dot.classList.add('paused');
+            icon.className = 'fas fa-play text-[10px]';
+            text.textContent = 'Resume';
+            document.getElementById('refreshLabel').textContent = 'paused';
+        } else {
+            dot.classList.remove('paused');
+            icon.className = 'fas fa-pause text-[10px]';
+            text.textContent = 'Pause';
+            fetchLogs();
+            startCountdown();
+        }
+    }
+
+    // Boot
+    fetchLogs();
+    startCountdown();
+</script>
+</body>
+</html>

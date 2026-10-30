@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RUNFLIX MovieAPI · Key Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta name="robots" content="noindex">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --void: #050508; --panel: #0d0e14; --edge: rgba(255,255,255,0.07); --text: #cbd5e1; --muted: #475569; }
+        body { font-family: 'Inter','Segoe UI',system-ui,sans-serif; background: var(--void); color: var(--text); min-height: 100vh; }
+        a { text-decoration: none; color: inherit; }
+
+        /* Header */
+        header { position: sticky; top: 0; z-index: 50; background: rgba(5,5,8,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--edge); padding: 0 1.5rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { display: flex; align-items: center; gap: 0.6rem; }
+        .logo-icon { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg,#8b5cf6,#6366f1); display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; }
+        .logo-text { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.04em; }
+        .logo-sub { font-size: 10px; color: var(--muted); font-family: monospace; margin-left: 4px; }
+        .back-link { display: flex; align-items: center; gap: 0.4rem; font-size: 12px; color: var(--muted); transition: color 0.15s; }
+        .back-link:hover { color: #fff; }
+
+        /* Login gate */
+        #loginGate { position: fixed; inset: 0; z-index: 100; background: var(--void); display: flex; align-items: center; justify-content: center; }
+        .login-box { background: var(--panel); border: 1px solid var(--edge); border-radius: 18px; padding: 2.5rem 2rem; width: 360px; max-width: 90vw; text-align: center; }
+        .login-icon { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg,#8b5cf6,#6366f1); display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; margin: 0 auto 1.25rem; }
+        .login-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 0.4rem; }
+        .login-desc { font-size: 12px; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.5; }
+        .login-error { font-size: 11px; color: #f87171; margin-top: 0.75rem; min-height: 16px; }
+
+        /* Main */
+        main { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+        .page-title { font-size: 22px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.35rem; }
+        .page-desc { font-size: 13px; color: var(--muted); max-width: 520px; line-height: 1.5; margin-bottom: 2rem; }
+
+        .stats-bar { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .stat-pill { display: flex; align-items: center; gap: 0.5rem; background: var(--panel); border: 1px solid var(--edge); border-radius: 10px; padding: 0.6rem 1rem; font-size: 12px; }
+        .stat-num { font-size: 18px; font-weight: 700; color: #fff; margin-right: 2px; }
+        .stat-label { color: var(--muted); }
+
+        .section-label { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+        .section-label span { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-family: monospace; background: rgba(255,255,255,0.04); border: 1px solid var(--edge); padding: 2px 8px; border-radius: 4px; }
+        .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right,var(--edge),transparent); }
+
+        .card { background: var(--panel); border: 1px solid var(--edge); border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 2rem; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+        .field-label { font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 0.35rem; letter-spacing: 0.05em; text-transform: uppercase; }
+        .field-row { display: flex; gap: 0.5rem; }
+        input[type="text"], input[type="password"] {
+            flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 8px; padding: 0.55rem 0.8rem; color: #fff; font-size: 12px;
+            font-family: monospace; outline: none; transition: border-color 0.15s; width: 100%;
+        }
+        input::placeholder { color: var(--muted); }
+        input:focus { border-color: rgba(139,92,246,0.5); }
+
+        .btn { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.55rem 1rem; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; white-space: nowrap; }
+        .btn-ghost { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--edge); }
+        .btn-ghost:hover { background: rgba(255,255,255,0.09); color: #fff; }
+        .btn-violet { background: rgba(139,92,246,0.18); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
+        .btn-violet:hover { background: rgba(139,92,246,0.28); }
+        .btn-danger { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+        .btn-danger:hover { background: rgba(239,68,68,0.2); }
+        .btn-full { width: 100%; justify-content: center; padding: 0.7rem; }
+        .form-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem; }
+
+        .keys-list { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2.5rem; }
+        .key-card { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; padding: 1rem 1.25rem; }
+        .key-value-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .key-string { font-family: monospace; font-size: 12px; color: #94a3b8; background: rgba(255,255,255,0.03); border: 1px solid var(--edge); border-radius: 6px; padding: 0.35rem 0.7rem; word-break: break-all; flex: 1; min-width: 0; }
+        .key-string.revealed { color: #a78bfa; }
+        .key-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+        .icon-btn { width: 28px; height: 28px; border-radius: 7px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px; transition: all 0.15s; }
+        .icon-btn.eye { background: rgba(255,255,255,0.05); color: var(--muted); }
+        .icon-btn.eye:hover { color: #fff; background: rgba(255,255,255,0.1); }
+        .icon-btn.copy { background: rgba(34,211,238,0.07); color: #67e8f9; }
+        .icon-btn.copy:hover { background: rgba(34,211,238,0.15); }
+        .icon-btn.del { background: rgba(239,68,68,0.07); color: #fca5a5; }
+        .icon-btn.del:hover { background: rgba(239,68,68,0.18); }
+        .key-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.5rem; }
+        .owner-tag { font-size: 11px; font-weight: 600; color: #a78bfa; background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); padding: 2px 8px; border-radius: 5px; }
+        .domain-pill { font-size: 10px; color: #64748b; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 2px 7px; border-radius: 4px; font-family: monospace; }
+        .created-ts { font-size: 10px; color: var(--muted); margin-left: auto; white-space: nowrap; }
+
+        .empty-state { text-align: center; padding: 3rem 1rem; background: var(--panel); border: 1px dashed rgba(255,255,255,0.08); border-radius: 12px; color: var(--muted); }
+        .empty-state i { font-size: 32px; margin-bottom: 0.75rem; display: block; opacity: 0.3; }
+        .empty-state p { font-size: 13px; }
+
+        #toast { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: #34d399; padding: 0.6rem 1rem; border-radius: 8px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; opacity: 0; transform: translateY(8px); transition: all 0.2s; pointer-events: none; max-width: 300px; }
+        #toast.show { opacity: 1; transform: translateY(0); }
+        #toast.error { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.3); color: #fca5a5; }
+
+        .confirm-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; }
+        .confirm-overlay.open { display: flex; }
+        .confirm-box { background: #0d0e14; border: 1px solid var(--edge); border-radius: 14px; padding: 1.5rem; max-width: 360px; width: 90%; text-align: center; }
+        .confirm-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+        .confirm-desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 1.25rem; }
+        .confirm-key-preview { font-family: monospace; font-size: 11px; color: #fca5a5; word-break: break-all; margin-bottom: 1.25rem; }
+        .confirm-actions { display: flex; gap: 0.5rem; justify-content: center; }
+
+        .notice-box { background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.2); border-radius: 10px; padding: 0.75rem 1rem; font-size: 11.5px; color: #94a3b8; line-height: 1.6; margin-bottom: 1.5rem; }
+        .notice-box code { color: #a78bfa; font-size: 10.5px; }
+
+        /* Changelog */
+        select { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 8px; padding: 0.55rem 0.8rem; color: #fff; font-size: 12px; font-family: inherit; outline: none; transition: border-color 0.15s; width: 100%; appearance: none; }
+        select:focus { border-color: rgba(139,92,246,0.5); }
+        textarea { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 8px; padding: 0.55rem 0.8rem; color: #fff; font-size: 12px; font-family: inherit; outline: none; transition: border-color 0.15s; width: 100%; resize: vertical; min-height: 70px; }
+        textarea:focus { border-color: rgba(139,92,246,0.5); }
+        textarea::placeholder { color: var(--muted); }
+        .cl-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .cl-card { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; padding: 1rem 1.25rem; }
+        .cl-card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
+        .cl-version { font-size: 11px; font-family: monospace; font-weight: 700; color: #a78bfa; background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); padding: 2px 7px; border-radius: 4px; }
+        .cl-type { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+        .cl-type.feature     { background: rgba(99,102,241,0.12); color: #818cf8; border: 1px solid rgba(99,102,241,0.25); }
+        .cl-type.fix         { background: rgba(16,185,129,0.1); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
+        .cl-type.breaking    { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+        .cl-type.improvement { background: rgba(245,158,11,0.1); color: #fbbf24; border: 1px solid rgba(245,158,11,0.2); }
+        .cl-date { font-size: 10px; color: var(--muted); margin-left: auto; }
+        .cl-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 0.2rem; }
+        .cl-desc { font-size: 11px; color: #64748b; margin-bottom: 0.5rem; line-height: 1.5; }
+        .cl-changes { font-size: 11px; color: var(--text); line-height: 1.6; }
+        .cl-changes li { list-style: none; display: flex; gap: 0.4rem; }
+        .cl-changes li::before { content: '→'; color: #6366f1; flex-shrink: 0; }
+        .cl-card-actions { display: flex; gap: 0.4rem; margin-top: 0.75rem; justify-content: flex-end; }
+        .btn-green { background: rgba(16,185,129,0.1); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
+        .btn-green:hover { background: rgba(16,185,129,0.2); }
+
+        /* Edit modal */
+        .modal-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; padding: 1rem; }
+        .modal-overlay.open { display: flex; }
+        .modal-box { background: #0d0e14; border: 1px solid var(--edge); border-radius: 16px; padding: 1.75rem; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; }
+        .modal-title { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+        .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+        @media (max-width: 500px) { .modal-grid { grid-template-columns: 1fr; } }
+        .modal-full { grid-column: 1 / -1; }
+
+        /* Restored layout, extended for limits / usage / edit */
+        body { overflow-x: hidden; overflow-wrap: anywhere; }
+        header { padding: 0 1rem; gap: 0.75rem; }
+        header nav { display: flex; align-items: center; gap: 1rem; }
+        main { padding: 2rem 1rem 4rem; }
+        input[type="number"], input[type="datetime-local"], input[type="search"] { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 8px; padding: 0.55rem 0.8rem; color: #fff; font-size: 12px; font-family: monospace; outline: none; transition: border-color 0.15s; width: 100%; min-width: 0; color-scheme: dark; }
+        input:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid rgba(139,92,246,0.7); outline-offset: 2px; }
+        input.bad { border-color: rgba(239,68,68,0.6) !important; }
+        .field-err { font-size: 11px; color: #f87171; margin-top: 0.3rem; min-height: 0; }
+        .hint { font-size: 10.5px; color: #475569; margin-top: 0.3rem; }
+        .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+        .btn-sm { padding: 0.35rem 0.65rem; font-size: 11px; border-radius: 7px; }
+        .stat-pill { flex: 1 1 140px; }
+        .key-card.inactive { opacity: 0.7; }
+        .state-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+        .state-tag.on { background: rgba(16,185,129,0.1); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
+        .state-tag.off { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+        .state-tag.exp { background: rgba(245,158,11,0.1); color: #fbbf24; border: 1px solid rgba(245,158,11,0.2); }
+        .state-tag.pub { background: rgba(34,211,238,0.08); color: #67e8f9; border: 1px solid rgba(34,211,238,0.2); }
+        .usage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.75rem; }
+        .usage-cell { background: rgba(255,255,255,0.025); border: 1px solid var(--edge); border-radius: 8px; padding: 0.5rem 0.7rem; min-width: 0; }
+        .usage-cell .u-label { font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-family: monospace; }
+        .usage-cell .u-val { font-size: 12px; font-family: monospace; color: #e2e8f0; margin-top: 2px; }
+        .u-bar { height: 3px; background: rgba(255,255,255,0.06); border-radius: 3px; margin-top: 5px; overflow: hidden; }
+        .u-bar i { display: block; height: 100%; background: linear-gradient(90deg,#8b5cf6,#6366f1); transform-origin: left; }
+        .u-bar i.hot { background: #f87171; }
+        .key-meta-line { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; margin-top: 0.6rem; font-size: 10.5px; color: var(--muted); }
+        .key-meta-line b { color: #94a3b8; font-weight: 500; font-family: monospace; }
+        .card-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-left: auto; }
+        .limit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+        .toggle-row { display: flex; align-items: center; gap: 0.6rem; font-size: 12px; color: var(--text); cursor: pointer; }
+        .toggle-row input { width: 16px; height: 16px; accent-color: #8b5cf6; }
+        .skel { height: 132px; border-radius: 12px; background: linear-gradient(90deg,var(--panel) 0,#151722 50%,var(--panel) 100%); background-size: 200% 100%; animation: sk 1.3s infinite linear; border: 1px solid var(--edge); }
+        @keyframes sk { to { background-position: -200% 0; } }
+        .toolbar { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .toolbar input { flex: 1 1 200px; }
+        @media (max-width: 600px) {
+            .usage-grid, .limit-grid { grid-template-columns: 1fr; }
+            .card-actions { margin-left: 0; width: 100%; }
+            .card-actions .btn { flex: 1; justify-content: center; }
+            .logo-sub { display: none; }
+            header nav { gap: 0.75rem; }
+            .back-link span { display: none; }
+            .login-box { padding: 2rem 1.25rem; }
+            .modal-box { padding: 1.25rem; }
+        }
+        .req-card { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; padding: 1rem 1.25rem; }
+        .req-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+        .req-name { font-size: 13px; font-weight: 700; color: #fff; }
+        .req-body { font-size: 12px; color: #94a3b8; line-height: 1.6; margin-top: 0.5rem; white-space: pre-wrap; }
+        .req-contacts { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; margin-top: 0.5rem; font-size: 11px; color: var(--muted); }
+        .req-contacts b { color: #cbd5e1; font-weight: 500; font-family: monospace; }
+        .state-tag.pend { background: rgba(139,92,246,0.1); color: #a78bfa; border: 1px solid rgba(139,92,246,0.25); }
+        .seg { display: inline-flex; background: rgba(255,255,255,0.03); border: 1px solid var(--edge); border-radius: 8px; padding: 2px; flex-wrap: wrap; }
+        .seg button { background: none; border: none; color: var(--muted); font-size: 11px; font-weight: 600; padding: 0.4rem 0.7rem; border-radius: 6px; cursor: pointer; }
+        .seg button.on { background: rgba(139,92,246,0.18); color: #c4b5fd; }
+        .issued-box { background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.25); border-radius: 10px; padding: 0.9rem 1rem; margin-top: 0.75rem; }
+        .issued-box .key-string { color: #34d399; }
+        .req-summary { background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.2); border-radius: 10px; padding: 0.75rem 1rem; font-size: 11.5px; color: #94a3b8; line-height: 1.6; }
+        .req-summary b { color: #e2e8f0; }
+        .load-err { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); color: #fca5a5; border-radius: 10px; padding: 0.6rem 0.9rem; font-size: 12px; margin-bottom: 0.75rem; }
+        input[type="email"], input[type="tel"] { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 8px; padding: 0.55rem 0.8rem; color: #fff; font-size: 12px; font-family: monospace; outline: none; width: 100%; min-width: 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-key"></i></div>
+            <span class="logo-text">RUNFLIX</span>
+            <span class="logo-sub">KEY MANAGER</span>
+        </div>
+        <nav aria-label="Admin">
+            <a href="/docs" class="back-link"><i class="fas fa-book-open" style="font-size:10px;"></i> <span>Docs</span></a>
+            <a href="/" class="back-link"><i class="fas fa-home" style="font-size:10px;"></i> <span>Home</span></a>
+            <button type="button" class="btn btn-ghost btn-sm" id="lockBtn" style="display:none;"><i class="fas fa-lock" style="font-size:10px;"></i> Lock</button>
+        </nav>
+    </header>
+
+    <div id="loginGate">
+        <form class="login-box" id="loginForm">
+            <div class="login-icon"><i class="fas fa-key"></i></div>
+            <div class="login-title">Admin Access</div>
+            <div class="login-desc">Enter your admin secret to manage API keys and access requests.<br>It is kept only for this browser tab session.</div>
+            <div class="field-row" style="margin-bottom:0.5rem;">
+                <label for="pwdInput" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Admin secret</label>
+                <input type="password" id="pwdInput" placeholder="ADMIN_SECRET" autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn btn-violet btn-full" id="loginBtn"><i class="fas fa-unlock" style="font-size:11px;"></i> Unlock</button>
+            <div class="login-error" id="loginError" role="alert"></div>
+        </form>
+    </div>
+
+    <main id="mainContent" style="display:none;">
+        <div class="page-title"><i class="fas fa-key" style="color:#a78bfa;font-size:18px;"></i> API Key Manager</div>
+        <p class="page-desc">Review access requests, issue, rotate, edit and revoke MovieAPI keys, including the public <code style="color:#a78bfa;font-size:11.5px;">daratechapi</code> key used by the docs and Try page. Changes apply to the live API immediately.</p>
+
+        <div class="stats-bar" id="statsBar"></div>
+
+        <div class="notice-box">
+            <i class="fas fa-info-circle" style="color:#6366f1;margin-right:6px;"></i>
+            Limits: leave blank for <strong style="color:#e2e8f0;">unlimited</strong>, set <strong style="color:#e2e8f0;">0</strong> to block that window. Rotating a key changes its string but keeps usage. Issued keys are not sent automatically: copy them and deliver by email or WhatsApp yourself.
+        </div>
+
+        <div class="section-label"><span>Access Requests</span></div>
+        <div class="toolbar">
+            <div class="seg" id="reqSeg" role="tablist" aria-label="Request status">
+                <button type="button" data-s="pending" class="on">Pending</button>
+                <button type="button" data-s="approved">Approved</button>
+                <button type="button" data-s="rejected">Rejected</button>
+                <button type="button" data-s="all">All</button>
+            </div>
+            <button type="button" class="btn btn-ghost" id="reqRefresh" style="margin-left:auto;"><i class="fas fa-sync-alt" style="font-size:10px;"></i> Refresh</button>
+        </div>
+        <div id="reqErr"></div>
+        <div class="keys-list" id="reqList" aria-live="polite"></div>
+
+        <div class="section-label"><span>Keys</span></div>
+        <div class="toolbar">
+            <input type="search" id="filterInput" placeholder="Filter by owner, email, phone, plan, key or domain" aria-label="Filter keys">
+            <button type="button" class="btn btn-ghost" id="refreshBtn"><i class="fas fa-sync-alt" style="font-size:10px;"></i> Refresh</button>
+            <button type="button" class="btn btn-violet" id="newBtn"><i class="fas fa-plus" style="font-size:10px;"></i> Issue Key</button>
+        </div>
+        <div id="keysErr"></div>
+        <div class="keys-list" id="keysList" aria-live="polite"></div>
+    </main>
+
+    <div class="modal-overlay" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+        <form class="modal-box" id="editForm" novalidate>
+            <div class="modal-title"><i class="fas fa-key" style="color:#a78bfa;font-size:14px;"></i> <span id="editTitle">Issue New Key</span></div>
+            <div id="reqSummary" class="req-summary" style="display:none;margin-bottom:0.9rem;"></div>
+            <div id="formFields" class="modal-grid">
+                <div class="modal-full">
+                    <label class="field-label" for="fKey" id="fKeyLabel">Key String</label>
+                    <div class="field-row">
+                        <input type="text" id="fKey" placeholder="Leave blank to generate on save" autocomplete="off" spellcheck="false">
+                        <button type="button" class="btn btn-ghost" id="genBtn" title="Generate random key" aria-label="Generate random key"><i class="fas fa-dice"></i></button>
+                    </div>
+                    <div class="hint" id="keyHint">4-128 characters: letters, numbers, _ - .</div>
+                    <div class="field-err" id="eKey"></div>
+                </div>
+                <div>
+                    <label class="field-label" for="fOwner">Owner / Client Name</label>
+                    <input type="text" id="fOwner" maxlength="120" placeholder="Client or app name">
+                    <div class="field-err" id="eOwner"></div>
+                </div>
+                <div>
+                    <label class="field-label" for="fPlan">Plan</label>
+                    <input type="text" id="fPlan" maxlength="60" placeholder="e.g. free, starter, partner">
+                </div>
+                <div>
+                    <label class="field-label" for="fEmail">Email</label>
+                    <input type="email" id="fEmail" maxlength="160" placeholder="client@example.com">
+                    <div class="field-err" id="eEmail"></div>
+                </div>
+                <div>
+                    <label class="field-label" for="fPhone">Phone / WhatsApp</label>
+                    <input type="tel" id="fPhone" maxlength="40" placeholder="+234 810 078 5677">
+                    <div class="field-err" id="ePhone"></div>
+                </div>
+                <div>
+                    <label class="field-label" for="fExp">Expires</label>
+                    <input type="datetime-local" id="fExp">
+                    <div class="hint">Blank = never expires</div>
+                    <div class="field-err" id="eExp"></div>
+                </div>
+                <div>
+                    <label class="field-label" for="fDom">Authorized Domains</label>
+                    <input type="text" id="fDom" placeholder="app.client.com, movies.client.co.ke" spellcheck="false">
+                    <div class="hint">Comma separated. Blank = all origins.</div>
+                    <div class="field-err" id="eDom"></div>
+                </div>
+                <div class="modal-full">
+                    <div class="field-label">Request Limits</div>
+                    <div class="limit-grid">
+                        <div><label class="hint" for="fD" style="display:block;margin:0 0 0.3rem;">Daily</label><input type="number" min="0" step="1" id="fD" placeholder="Unlimited"></div>
+                        <div><label class="hint" for="fM" style="display:block;margin:0 0 0.3rem;">Monthly</label><input type="number" min="0" step="1" id="fM" placeholder="Unlimited"></div>
+                        <div><label class="hint" for="fA" style="display:block;margin:0 0 0.3rem;">All time</label><input type="number" min="0" step="1" id="fA" placeholder="Unlimited"></div>
+                    </div>
+                    <div class="hint">Blank = unlimited. 0 = blocked. Whole numbers only.</div>
+                    <div class="field-err" id="eLim"></div>
+                </div>
+                <div class="modal-full">
+                    <label class="field-label" for="fNote">Internal Note</label>
+                    <textarea id="fNote" maxlength="1000" placeholder="Visible to admins only"></textarea>
+                </div>
+                <label class="toggle-row modal-full"><input type="checkbox" id="fOn" checked> Key enabled</label>
+                <div class="field-err modal-full" id="eForm" role="alert"></div>
+            </div>
+            <div id="issuedPanel" style="display:none;"></div>
+            <div class="form-actions" style="margin-top:1.25rem;" id="formActions">
+                <button type="button" class="btn btn-ghost" id="cancelEdit">Cancel</button>
+                <button type="submit" class="btn btn-violet" id="saveBtn"><i class="fas fa-save" style="font-size:10px;"></i> <span id="saveLabel">Save Key</span></button>
+            </div>
+        </form>
+    </div>
+
+    <div class="confirm-overlay" id="confirmOverlay" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
+        <div class="confirm-box">
+            <div class="confirm-title" id="confirmTitle">Revoke API Key?</div>
+            <div class="confirm-desc" id="confirmBody"></div>
+            <div class="confirm-key-preview" id="confirmKeyPreview"></div>
+            <div id="reasonWrap" style="display:none;margin-bottom:1rem;text-align:left;">
+                <label class="field-label" for="reasonInput">Reason (shown in request record)</label>
+                <textarea id="reasonInput" maxlength="500" placeholder="e.g. Use case not supported"></textarea>
+            </div>
+            <div class="field-err" id="confirmErr" style="margin-bottom:0.75rem;"></div>
+            <div class="confirm-actions">
+                <button type="button" class="btn btn-ghost" id="confirmNo">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmYes"><i class="fas fa-trash-alt" style="font-size:10px;"></i> <span id="confirmYesLabel">Revoke</span></button>
+            </div>
+        </div>
+    </div>
+    <div id="toast" role="status"></div>
+
+    <script>
+    (function () {
+        'use strict';
+        const SS = 'movieapi_admin_secret', PUBLIC = 'daratechapi';
+        const $ = id => document.getElementById(id);
+        let secret = '', keys = [], reqs = [], reqFilter = 'pending', editing = null, approving = null, confirmFn = null, keysLoaded = false, reqsLoaded = false;
+
+        function el(t, a, ...k) {
+            const n = document.createElement(t);
+            if (a) for (const x in a) { const v = a[x]; if (v == null || v === false) continue;
+                if (x === 'class') n.className = v; else if (x === 'text') n.textContent = v;
+                else if (x.startsWith('on')) n.addEventListener(x.slice(2), v); else n.setAttribute(x, v === true ? '' : v); }
+            k.flat().forEach(c => { if (c != null) n.append(c instanceof Node ? c : String(c)); });
+            return n;
+        }
+        const fa = c => el('i', { class: c, 'aria-hidden': 'true' });
+        let tt;
+        function toast(msg, isErr) {
+            const t = $('toast'); t.textContent = ''; t.append(fa('fas fa-' + (isErr ? 'exclamation-circle' : 'check-circle')), ' ', msg);
+            t.className = 'show' + (isErr ? ' error' : ''); clearTimeout(tt); tt = setTimeout(() => { t.className = ''; }, 3200);
+        }
+        const copyText = (v, m) => navigator.clipboard.writeText(v).then(() => toast(m || 'Copied'), () => toast('Copy failed: select and copy manually', true));
+
+        async function api(path, opt = {}) {
+            let r;
+            try { r = await fetch(path, { ...opt, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + secret } }); }
+            catch { throw new Error('Network error: the server could not be reached'); }
+            const d = await r.json().catch(() => ({}));
+            if (r.status === 401) { lock('Session rejected. Enter the secret again.'); throw new Error('auth'); }
+            if (!r.ok || d.success === false) {
+                const e = new Error((d.message || d.error || ('Request failed (' + r.status + ')')) + (d.hint ? ' ' + d.hint : ''));
+                e.code = d.code; e.status = r.status; throw e;
+            }
+            return d;
+        }
+        function lock(msg) {
+            secret = ''; try { sessionStorage.removeItem(SS); } catch {}
+            $('mainContent').style.display = 'none'; $('lockBtn').style.display = 'none'; $('loginGate').style.display = 'flex';
+            $('loginError').textContent = msg || ''; $('pwdInput').value = ''; $('pwdInput').focus();
+        }
+        function unlock() { $('loginGate').style.display = 'none'; $('mainContent').style.display = 'block'; $('lockBtn').style.display = 'inline-flex'; }
+
+        $('loginForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const p = $('pwdInput').value.trim(); if (!p) return;
+            const b = $('loginBtn'); b.disabled = true; $('loginError').textContent = '';
+            try {
+                const r = await fetch('/admin/api/keys', { headers: { Authorization: 'Bearer ' + p } });
+                if (r.status === 401 || r.status === 403) { $('loginError').textContent = 'Incorrect secret.'; return; }
+                const d = await r.json().catch(() => ({}));
+                if (!r.ok || !d.success) throw 0;
+                secret = p; try { sessionStorage.setItem(SS, p); } catch {}
+                unlock(); keys = d.keys || []; keysLoaded = true; render(); loadReqs();
+            } catch { $('loginError').textContent = 'Connection error. Try again.'; }
+            finally { b.disabled = false; }
+        });
+        $('lockBtn').onclick = () => lock('Locked.');
+
+        function errBar(box, msg, retry) {
+            box.textContent = '';
+            if (msg) box.append(el('div', { class: 'load-err', role: 'alert' }, fa('fas fa-plug'), el('span', { text: msg }),
+                el('button', { class: 'btn btn-ghost btn-sm', type: 'button', style: 'margin-left:auto;', onclick: retry, text: 'Retry' })));
+        }
+        function skel(L) { L.textContent = ''; for (let i = 0; i < 2; i++) L.append(el('div', { class: 'skel' })); }
+
+        /* Keys */
+        async function load() {
+            const b = $('refreshBtn'); b.disabled = true;
+            if (!keysLoaded) skel($('keysList'));
+            try { const d = await api('/admin/api/keys'); keys = d.keys || []; keysLoaded = true; errBar($('keysErr')); render(); }
+            catch (e) {
+                if (e.message === 'auth') return;
+                errBar($('keysErr'), (keysLoaded ? 'Refresh failed, showing last loaded data: ' : 'Could not load keys: ') + e.message, load);
+                if (!keysLoaded) $('keysList').textContent = '';
+            } finally { b.disabled = false; }
+        }
+        $('refreshBtn').onclick = load;
+
+        const n = v => v == null ? 'Unlimited' : Number(v).toLocaleString();
+        const dt = v => { if (!v) return null; const d = new Date(v); return isNaN(d) ? String(v) : d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }); };
+        const isExp = k => k.expiresAt && new Date(k.expiresAt) < new Date();
+        const mask = k => k.length <= 8 ? '\u25CF'.repeat(k.length) : k.slice(0, 8) + '\u25CF'.repeat(Math.min(12, k.length - 8));
+        function usage(label, u, l) {
+            const c = el('div', { class: 'usage-cell' }, el('div', { class: 'u-label', text: label }),
+                el('div', { class: 'u-val', text: l === 0 ? 'Blocked' : n(u || 0) + ' / ' + n(l) }));
+            if (l) { const p = Math.min(1, (u || 0) / l); const i = el('i', { class: p >= 0.9 ? 'hot' : '' }); i.style.transform = 'scaleX(' + p + ')'; c.append(el('div', { class: 'u-bar' }, i)); }
+            return c;
+        }
+        function stats() {
+            const S = $('statsBar'); S.textContent = '';
+            const active = keys.filter(k => k.enabled !== false && !isExp(k)).length;
+            const today = keys.reduce((a, k) => a + ((k.usage && k.usage.daily) || 0), 0);
+            const pend = reqs.filter(r => r.status === 'pending').length;
+            [[keys.length, 'Total Keys'], [active, 'Active'], [today, 'Requests Today'], [reqsLoaded ? pend : '-', 'Pending Requests']].forEach(([v, l]) =>
+                S.append(el('div', { class: 'stat-pill' }, el('span', { class: 'stat-num', text: typeof v === 'number' ? v.toLocaleString() : v }), el('span', { class: 'stat-label', text: l }))));
+        }
+        function render() {
+            stats();
+            const q = $('filterInput').value.trim().toLowerCase();
+            const L = $('keysList'); L.textContent = '';
+            if (!keys.length) {
+                L.append(el('div', { class: 'empty-state' }, fa('fas fa-key'), el('p', { text: 'No keys yet. Issue one to get started, including the public daratechapi key.' }),
+                    el('button', { class: 'btn btn-violet', type: 'button', style: 'margin-top:0.75rem;', onclick: () => openEdit(null) }, fa('fas fa-plus'), ' Issue Key')));
+                return;
+            }
+            const list = keys.filter(k => !q || [k.key, k.owner, k.email, k.phone, k.plan, k.note, ...(k.domains || [])].join(' ').toLowerCase().includes(q))
+                .sort((a, b) => (a.key === PUBLIC ? -1 : b.key === PUBLIC ? 1 : 0) || String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+            if (!list.length) { L.append(el('div', { class: 'empty-state' }, fa('fas fa-search'), el('p', { text: 'No keys match that filter.' }))); return; }
+            list.forEach(k => {
+                const off = k.enabled === false, exp = isExp(k), U = k.usage || {}, Lm = k.limits || {};
+                const ks = el('div', { class: 'key-string', text: mask(k.key) }); let shown = false;
+                const eye = el('button', { class: 'icon-btn eye', type: 'button', title: 'Reveal', 'aria-label': 'Reveal key' }, fa('fas fa-eye'));
+                eye.onclick = () => { shown = !shown; ks.textContent = shown ? k.key : mask(k.key); ks.classList.toggle('revealed', shown); eye.firstChild.className = 'fas fa-' + (shown ? 'eye-slash' : 'eye'); };
+                L.append(el('div', { class: 'key-card' + (off || exp ? ' inactive' : '') },
+                    el('div', { class: 'key-value-row' }, ks, el('div', { class: 'key-actions' }, eye,
+                        el('button', { class: 'icon-btn copy', type: 'button', title: 'Copy key', 'aria-label': 'Copy key', onclick: () => copyText(k.key, 'Key copied to clipboard') }, fa('fas fa-copy')),
+                        el('button', { class: 'icon-btn del', type: 'button', title: 'Revoke', 'aria-label': 'Revoke key', onclick: () => askDel(k) }, fa('fas fa-trash-alt')))),
+                    el('div', { class: 'key-meta' },
+                        el('span', { class: 'owner-tag', text: k.owner || 'Unnamed' }),
+                        k.plan ? el('span', { class: 'domain-pill', text: 'plan: ' + k.plan }) : null,
+                        k.key === PUBLIC ? el('span', { class: 'state-tag pub', text: 'Public' }) : null,
+                        el('span', { class: 'state-tag ' + (off ? 'off' : 'on'), text: off ? 'Disabled' : 'Enabled' }),
+                        exp ? el('span', { class: 'state-tag exp', text: 'Expired' }) : null,
+                        (k.domains || []).length ? k.domains.map(d => el('span', { class: 'domain-pill', text: d })) : el('span', { class: 'domain-pill', style: 'font-style:italic;color:#334155;', text: 'all origins' }),
+                        el('div', { class: 'card-actions' },
+                            el('button', { class: 'btn btn-ghost btn-sm', type: 'button', onclick: e => toggle(k, e.currentTarget) }, fa('fas fa-power-off'), off ? ' Enable' : ' Disable'),
+                            el('button', { class: 'btn btn-violet btn-sm', type: 'button', onclick: () => openEdit(k) }, fa('fas fa-pen'), ' Edit'))),
+                    el('div', { class: 'usage-grid' }, usage('Today', U.daily, Lm.daily), usage('This month', U.monthly, Lm.monthly), usage('All time', U.allTime, Lm.allTime)),
+                    el('div', { class: 'key-meta-line' },
+                        k.email ? el('span', null, 'Email ', el('b', { text: k.email })) : null,
+                        k.phone ? el('span', null, 'Phone ', el('b', { text: k.phone })) : null,
+                        el('span', null, 'Expires ', el('b', { text: dt(k.expiresAt) || 'never' })),
+                        el('span', null, 'Last used ', el('b', { text: dt(U.lastUsed) || 'never' })),
+                        el('span', null, 'Created ', el('b', { text: dt(k.createdAt) || 'unknown' }))),
+                    k.note ? el('div', { class: 'hint', style: 'margin-top:0.5rem;white-space:pre-wrap;', text: 'Note: ' + k.note }) : null));
+            });
+        }
+        $('filterInput').oninput = render;
+
+        function payload(k, over) {
+            const l = k.limits || {};
+            return Object.assign({ owner: k.owner || '', email: k.email || '', phone: k.phone || '', plan: k.plan || '', note: k.note || '',
+                domains: k.domains || [], enabled: k.enabled !== false, expiresAt: k.expiresAt || null,
+                limits: { daily: l.daily ?? null, monthly: l.monthly ?? null, allTime: l.allTime ?? null } }, over);
+        }
+        async function toggle(k, btn) {
+            btn.disabled = true; const next = k.enabled === false;
+            try { const d = await api('/admin/api/keys/' + encodeURIComponent(k.key), { method: 'PUT', body: JSON.stringify(payload(k, { enabled: next })) });
+                Object.assign(k, d.key || { enabled: next }); render(); toast(next ? 'Key enabled' : 'Key disabled'); }
+            catch (e) { if (e.message !== 'auth') toast(e.message, true); btn.disabled = false; }
+        }
+
+        /* Requests */
+        async function loadReqs() {
+            const b = $('reqRefresh'); b.disabled = true;
+            if (!reqsLoaded) skel($('reqList'));
+            try { const d = await api('/admin/api/requests'); reqs = d.requests || []; reqsLoaded = true; errBar($('reqErr')); renderReqs(); stats(); }
+            catch (e) {
+                if (e.message === 'auth') return;
+                errBar($('reqErr'), (reqsLoaded ? 'Refresh failed, showing last loaded data: ' : 'Could not load requests: ') + e.message, loadReqs);
+                if (!reqsLoaded) $('reqList').textContent = '';
+            } finally { b.disabled = false; }
+        }
+        $('reqRefresh').onclick = loadReqs;
+        $('reqSeg').addEventListener('click', e => {
+            const b = e.target.closest('button[data-s]'); if (!b) return;
+            reqFilter = b.dataset.s; [...$('reqSeg').children].forEach(x => x.classList.toggle('on', x === b)); renderReqs();
+        });
+        function renderReqs() {
+            const L = $('reqList'); L.textContent = '';
+            if (!reqsLoaded) return;
+            const list = reqs.filter(r => reqFilter === 'all' || (r.status || 'pending') === reqFilter)
+                .sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+            if (!list.length) { L.append(el('div', { class: 'empty-state' }, fa('fas fa-inbox'), el('p', { text: reqFilter === 'pending' ? 'No pending requests. New submissions from /request-key land here.' : 'No ' + (reqFilter === 'all' ? '' : reqFilter + ' ') + 'requests.' }))); return; }
+            list.forEach(r => {
+                const st = r.status || 'pending';
+                const tag = st === 'approved' ? 'on' : st === 'rejected' ? 'off' : 'pend';
+                const card = el('div', { class: 'req-card' },
+                    el('div', { class: 'req-head' },
+                        el('span', { class: 'req-name', text: r.name || 'Unnamed' }),
+                        el('span', { class: 'state-tag ' + tag, text: st }),
+                        el('span', { class: 'created-ts', text: dt(r.createdAt) || '' })),
+                    el('div', { class: 'req-contacts' },
+                        el('span', null, 'Email ', el('b', { text: r.email || 'not given' })),
+                        el('span', null, 'Phone ', el('b', { text: r.phone || 'not given' })),
+                        r.website ? el('span', null, 'Website ', el('b', { text: r.website })) : null,
+                        r.reviewedAt ? el('span', null, 'Reviewed ', el('b', { text: dt(r.reviewedAt) })) : null),
+                    el('div', { class: 'req-body', text: r.useCase || '' }),
+                    r.reason ? el('div', { class: 'hint', style: 'color:#f87171;', text: 'Reason: ' + r.reason }) : null);
+                if (r.issuedKey) card.append(el('div', { class: 'key-value-row', style: 'margin-top:0.6rem;margin-bottom:0;' },
+                    el('div', { class: 'key-string revealed', text: r.issuedKey }),
+                    el('button', { class: 'icon-btn copy', type: 'button', title: 'Copy issued key', 'aria-label': 'Copy issued key', onclick: () => copyText(r.issuedKey, 'Issued key copied') }, fa('fas fa-copy'))));
+                const acts = el('div', { class: 'card-actions', style: 'margin-top:0.75rem;justify-content:flex-end;' });
+                if (st === 'pending') {
+                    acts.append(el('button', { class: 'btn btn-green btn-sm', type: 'button', onclick: () => openEdit(null, r) }, fa('fas fa-check'), ' Approve'),
+                        el('button', { class: 'btn btn-ghost btn-sm', type: 'button', onclick: () => askReject(r) }, fa('fas fa-ban'), ' Reject'));
+                }
+                acts.append(el('button', { class: 'btn btn-danger btn-sm', type: 'button', onclick: () => askDelReq(r) }, fa('fas fa-trash-alt'), ' Delete'));
+                card.append(acts);
+                L.append(card);
+            });
+        }
+
+        /* Create / edit / approve */
+        const errIds = ['eKey', 'eOwner', 'eEmail', 'ePhone', 'eExp', 'eDom', 'eLim', 'eForm'];
+        function clearErrs() { errIds.forEach(i => $(i).textContent = ''); document.querySelectorAll('#editForm input').forEach(f => f.classList.remove('bad')); }
+        function toLocal(iso) { if (!iso) return ''; const d = new Date(iso); if (isNaN(d)) return ''; const p = x => String(x).padStart(2, '0');
+            return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + 'T' + p(d.getHours()) + ':' + p(d.getMinutes()); }
+        function setMode(done) {
+            $('formFields').style.display = done ? 'none' : ''; $('reqSummary').style.display = (approving && !done) ? 'block' : 'none';
+            $('issuedPanel').style.display = done ? 'block' : 'none'; $('saveBtn').style.display = done ? 'none' : '';
+            $('cancelEdit').textContent = done ? 'Done' : 'Cancel';
+        }
+        function openEdit(k, req) {
+            editing = k; approving = req || null; clearErrs(); setMode(false);
+            const l = (k && k.limits) || {};
+            $('editTitle').textContent = req ? 'Approve Request' : k ? 'Edit Key' : 'Issue New Key';
+            $('saveLabel').textContent = req ? 'Approve and Issue Key' : k ? 'Save Changes' : 'Save Key';
+            $('fKeyLabel').textContent = k ? 'Key String (change to rotate)' : 'Key String';
+            $('keyHint').textContent = k ? 'Changing this rotates the key: the old string stops working, usage history is kept.' : '4-128 characters: letters, numbers, _ - . Blank = generated by the server.';
+            $('fKey').value = k ? k.key : ''; $('fKey').placeholder = k ? '' : 'Leave blank to generate on save';
+            $('fOwner').value = k ? (k.owner || '') : req ? (req.name || '') : '';
+            $('fEmail').value = k ? (k.email || '') : req ? (req.email || '') : '';
+            $('fPhone').value = k ? (k.phone || '') : req ? (req.phone || '') : '';
+            $('fPlan').value = k ? (k.plan || '') : '';
+            $('fNote').value = k ? (k.note || '') : req ? ('Request ' + req.id + (req.useCase ? ': ' + req.useCase : '')).slice(0, 1000) : '';
+            let host = '';
+            if (req && req.website) { try { host = new URL(/^https?:\/\//i.test(req.website) ? req.website : 'https://' + req.website).hostname; } catch {} }
+            $('fDom').value = k ? (k.domains || []).join(', ') : host;
+            $('fExp').value = k ? toLocal(k.expiresAt) : '';
+            $('fD').value = l.daily ?? ''; $('fM').value = l.monthly ?? ''; $('fA').value = l.allTime ?? '';
+            $('fOn').checked = k ? k.enabled !== false : true;
+            if (req) {
+                const s = $('reqSummary'); s.textContent = '';
+                s.append(el('b', { text: req.name || 'Unnamed' }), ' requested access on ' + (dt(req.createdAt) || 'unknown date') + '. ',
+                    'Configure the key below; the request is marked approved only after the key is created.');
+            }
+            $('editModal').classList.add('open'); setTimeout(() => (req || !k ? $('fOwner') : $('fKey')).focus(), 50);
+        }
+        function closeEdit() { $('editModal').classList.remove('open'); editing = null; approving = null; }
+        $('newBtn').onclick = () => openEdit(null);
+        $('cancelEdit').onclick = closeEdit;
+        $('editModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeEdit(); });
+        $('genBtn').onclick = () => {
+            const a = new Uint8Array(18); crypto.getRandomValues(a);
+            $('fKey').value = 'rfx_' + Array.from(a, b => b.toString(16).padStart(2, '0')).join('');
+        };
+        function lim(id) { const v = $(id).value.trim(); if (v === '') return null; if (!/^\d+$/.test(v)) return NaN; return Number(v); }
+        function showIssued(key, title) {
+            const P = $('issuedPanel'); P.textContent = '';
+            $('editTitle').textContent = title;
+            P.append(el('div', { class: 'issued-box' },
+                el('div', { class: 'field-label', style: 'color:#34d399;', text: 'Issued key' }),
+                el('div', { class: 'key-value-row', style: 'margin:0.4rem 0 0.6rem;' },
+                    el('div', { class: 'key-string', text: key.key }),
+                    el('button', { class: 'icon-btn copy', type: 'button', title: 'Copy', 'aria-label': 'Copy issued key', onclick: () => copyText(key.key, 'Issued key copied') }, fa('fas fa-copy'))),
+                el('div', { class: 'hint', style: 'color:#94a3b8;line-height:1.6;' },
+                    'Nothing has been sent to the client. Deliver this key yourself' +
+                    (key.email ? ' by email to ' + key.email : '') + (key.email && key.phone ? ' or' : '') + (key.phone ? ' by WhatsApp to ' + key.phone : '') + '.')));
+        }
+        $('editForm').addEventListener('submit', async e => {
+            e.preventDefault(); clearErrs(); let ok = true;
+            const bad = (id, eid, m) => { ok = false; if (id) $(id).classList.add('bad'); $(eid).textContent = m; };
+            const key = $('fKey').value.trim(), owner = $('fOwner').value.trim();
+            const email = $('fEmail').value.trim(), phone = $('fPhone').value.trim();
+            const rotating = editing && key !== editing.key;
+            if (editing && !key) bad('fKey', 'eKey', 'Key string cannot be empty');
+            if (key && (!editing || rotating) && !/^[A-Za-z0-9_\-.]{4,128}$/.test(key)) bad('fKey', 'eKey', '4-128 characters: letters, numbers, _ - . only');
+            if (key && (!editing || rotating) && keys.some(k => k.key === key)) bad('fKey', 'eKey', 'A key with this value already exists');
+            if (!owner) bad('fOwner', 'eOwner', 'Owner is required');
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) bad('fEmail', 'eEmail', 'Enter a valid email address');
+            if (phone && !/^\+?[\d\s()-]{6,24}$/.test(phone)) bad('fPhone', 'ePhone', 'Digits, spaces, + ( ) - only');
+            const domains = $('fDom').value.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+            if (domains.some(d => !/^(\*\.)?[a-z0-9.-]+(:\d+)?$/.test(d))) bad('fDom', 'eDom', 'Use bare hostnames like app.example.com (no https://)');
+            let expiresAt = null; const ev = $('fExp').value;
+            if (ev) { const d = new Date(ev); if (isNaN(d)) bad('fExp', 'eExp', 'Invalid date'); else expiresAt = d.toISOString(); }
+            const limits = { daily: lim('fD'), monthly: lim('fM'), allTime: lim('fA') };
+            if (Object.values(limits).some(Number.isNaN)) bad(null, 'eLim', 'Limits must be whole numbers, or blank for unlimited');
+            if (!ok) return;
+            const body = { owner, email, phone, plan: $('fPlan').value.trim(), note: $('fNote').value.trim(), domains, enabled: $('fOn').checked, expiresAt, limits };
+            if (!editing && key) body.key = key;
+            if (rotating) body.newKey = key;
+            if (rotating && editing.key === PUBLIC && !confirm('Rotating daratechapi breaks the docs and Try page until clients use the new string. Continue?')) return;
+            const sb = $('saveBtn'); sb.disabled = true;
+            try {
+                if (approving) {
+                    const d = await api('/admin/api/requests/' + encodeURIComponent(approving.id) + '/approve', { method: 'POST', body: JSON.stringify(body) });
+                    if (d.key) keys.push(d.key);
+                    const i = reqs.findIndex(r => r.id === approving.id);
+                    if (d.request && i > -1) reqs[i] = d.request; else if (i > -1) Object.assign(reqs[i], { status: 'approved', issuedKey: d.key && d.key.key });
+                    render(); renderReqs(); stats(); toast('Request approved');
+                    approving = null; setMode(true); showIssued(d.key || { key: '(see key list)', email, phone }, 'Key Issued');
+                } else if (editing) {
+                    const d = await api('/admin/api/keys/' + encodeURIComponent(editing.key), { method: 'PUT', body: JSON.stringify(body) });
+                    const { newKey, ...rest } = body; Object.assign(editing, d.key || { ...rest, key: rotating ? newKey : editing.key });
+                    render(); toast(rotating ? 'Key rotated, usage preserved' : 'Key updated');
+                    if (rotating) { const k = editing; editing = null; setMode(true); showIssued(k, 'Key Rotated'); } else closeEdit();
+                } else {
+                    const d = await api('/admin/api/keys', { method: 'POST', body: JSON.stringify(body) });
+                    if (d.key) keys.push(d.key); render(); toast('Key issued');
+                    setMode(true); showIssued(d.key || { key: key || '(see key list)', email, phone }, 'Key Issued');
+                }
+            } catch (er) { if (er.message !== 'auth') $('eForm').textContent = er.message + ' Your input has been kept.'; }
+            finally { sb.disabled = false; }
+        });
+
+        /* Generic confirm */
+        function ask({ title, body, preview, label, reason, fn }) {
+            confirmFn = fn; $('confirmTitle').textContent = title; $('confirmBody').textContent = body;
+            $('confirmKeyPreview').textContent = preview || ''; $('confirmYesLabel').textContent = label; $('confirmErr').textContent = '';
+            $('reasonWrap').style.display = reason ? 'block' : 'none'; $('reasonInput').value = '';
+            $('confirmOverlay').classList.add('open'); (reason ? $('reasonInput') : $('confirmNo')).focus();
+        }
+        function closeConfirm() { confirmFn = null; $('confirmOverlay').classList.remove('open'); }
+        $('confirmNo').onclick = closeConfirm;
+        $('confirmOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeConfirm(); });
+        $('confirmYes').onclick = async () => {
+            if (!confirmFn) return closeConfirm(); const b = $('confirmYes'); b.disabled = true; $('confirmErr').textContent = '';
+            try { await confirmFn(); closeConfirm(); }
+            catch (e) { if (e.message !== 'auth') $('confirmErr').textContent = e.message; } finally { b.disabled = false; }
+        };
+        const short = k => k.length > 40 ? k.slice(0, 24) + '...' + k.slice(-8) : k;
+        function askDel(k) {
+            ask({ title: 'Revoke API Key?', preview: short(k.key), label: 'Revoke',
+                body: k.key === PUBLIC ? 'This is the public docs key. Deleting it breaks Run buttons and the Try page for visitors without their own key.' : 'Requests using this key will be rejected immediately. This cannot be undone.',
+                fn: async () => { await api('/admin/api/keys/' + encodeURIComponent(k.key), { method: 'DELETE' }); keys = keys.filter(x => x !== k); render(); toast('Key revoked'); } });
+        }
+        function askReject(r) {
+            ask({ title: 'Reject Request?', preview: r.name || '', label: 'Reject', reason: true,
+                body: 'The request is marked rejected. No message is sent to the requester automatically.',
+                fn: async () => {
+                    const d = await api('/admin/api/requests/' + encodeURIComponent(r.id) + '/reject', { method: 'POST', body: JSON.stringify({ reason: $('reasonInput').value.trim() }) });
+                    Object.assign(r, d.request || { status: 'rejected', reason: $('reasonInput').value.trim(), reviewedAt: new Date().toISOString() }); renderReqs(); stats(); toast('Request rejected');
+                } });
+        }
+        function askDelReq(r) {
+            ask({ title: 'Delete Request?', preview: r.name || '', label: 'Delete',
+                body: 'The request record is removed permanently.' + (r.issuedKey ? ' The issued key stays active; revoke it separately if needed.' : ''),
+                fn: async () => { await api('/admin/api/requests/' + encodeURIComponent(r.id), { method: 'DELETE' }); reqs = reqs.filter(x => x !== r); renderReqs(); stats(); toast('Request deleted'); } });
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') { if ($('confirmOverlay').classList.contains('open')) closeConfirm(); else if ($('editModal').classList.contains('open')) closeEdit(); } });
+
+        try { secret = sessionStorage.getItem(SS) || ''; } catch {}
+        if (secret) { unlock(); load(); loadReqs(); } else $('pwdInput').focus();
+    })();
+    </script>
+</body>
+</html>

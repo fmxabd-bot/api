@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaraTech MovieAPI Try It | Live API Playground</title>
+    <meta name="description" content="Test the real DaraTech MovieAPI instantly. Search MovieBox movies and series, inspect API results, and check your daily and monthly API-key limits.">
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta name="theme-color" content="#050508">
+    <link rel="canonical" href="https://movieapi.runflix.name.ng/try">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DaraTech MovieAPI">
+    <meta property="og:title" content="Try DaraTech MovieAPI | Live Search Playground">
+    <meta property="og:description" content="Try the live MovieBox search endpoint with the free key or your own API key.">
+    <meta property="og:url" content="https://movieapi.runflix.name.ng/try">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Try DaraTech MovieAPI">
+    <meta name="twitter:description" content="Run a real MovieBox API search online.">
+    <link rel="icon" type="image/x-icon" href="https://runflix.name.ng/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#02040a', surface: '#0a0f1e', panel: '#111827', edge: '#1a2035',
+                        'edge-light': '#25304a',
+                        cyan: { 400: '#22d3ee', 500: '#06b6d4' },
+                        violet: { 400: '#a78bfa', 500: '#8b5cf6' },
+                        slate: { 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b' }
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #02040a; color: #e2e8f0; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .mesh-bg { position: fixed; inset: 0; z-index: -2; background: radial-gradient(ellipse 80% 50% at 20% 40%, rgba(34,211,238,0.07) 0%, transparent 50%), radial-gradient(ellipse 60% 60% at 80% 80%, rgba(139,92,246,0.05) 0%, transparent 50%); }
+        .dot-grid { position: fixed; inset: 0; z-index: -1; background-image: radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px); background-size: 32px 32px; mask-image: linear-gradient(to bottom, black 30%, transparent 100%); }
+        .panel { background: #111827; border: 1px solid #1a2035; }
+        .glow-search:focus { box-shadow: 0 0 0 2px rgba(34,211,238,0.2), 0 0 30px rgba(34,211,238,0.06); }
+        .movie-card { background: #111827; border: 1px solid #1a2035; transition: all 0.2s ease; }
+        .movie-card:hover { border-color: #25304a; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+        .tag-cyan { background: rgba(34,211,238,0.08); border: 1px solid rgba(34,211,238,0.2); color: #22d3ee; }
+        .tag-violet { background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2); color: #a78bfa; }
+        .mono-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; }
+        .btn-primary { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); box-shadow: 0 0 20px rgba(6,182,212,0.25); transition: all 0.2s ease; }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(6,182,212,0.4); }
+        .btn-violet { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); box-shadow: 0 0 20px rgba(139,92,246,0.25); transition: all 0.2s ease; }
+        .btn-violet:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(139,92,246,0.4); }
+        .nav-link { padding: 0.5rem 0.75rem; font-size: 0.8125rem; font-weight: 500; color: #64748b; border-radius: 0.5rem; transition: all 0.15s ease; }
+        .nav-link:hover { color: #e2e8f0; background: rgba(255,255,255,0.03); }
+        .quota-bar-fill { background: linear-gradient(90deg, #22d3ee, #a78bfa); border-radius: 4px; height: 100%; transition: width 0.4s ease; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .skeleton { background: linear-gradient(90deg, #1a2035 25%, #25304a 50%, #1a2035 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(34,211,238,0.3); border-top-color: #22d3ee; border-radius: 50%; animation: spin 0.7s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .result-item-type { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; }
+        .type-movie { background: rgba(34,211,238,0.08); color: #22d3ee; border: 1px solid rgba(34,211,238,0.15); }
+        .type-series { background: rgba(139,92,246,0.08); color: #a78bfa; border: 1px solid rgba(139,92,246,0.15); }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="mesh-bg"></div>
+    <div class="dot-grid"></div>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-void/90 backdrop-blur-xl border-b border-edge">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3 group shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-violet-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <i class="fas fa-play text-white text-xs"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-sm tracking-tight text-white">RUNFLIX</span>
+                    <span class="text-slate-500 text-xs ml-1 font-mono">API</span>
+                </div>
+            </a>
+            <nav class="hidden md:flex items-center gap-1">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/docs" class="nav-link">Documentation</a>
+                <a href="/try" class="nav-link text-cyan-400 bg-cyan-500/5 border border-cyan-500/10">Try API</a>
+                <a href="/request-key" class="nav-link">Request Key</a>
+            </nav>
+            <div class="flex items-center gap-3">
+                <a href="/request-key" class="btn-violet px-4 py-2 rounded-lg font-semibold text-xs text-white inline-flex items-center gap-2">
+                    <i class="fas fa-key text-xs"></i>
+                    <span class="hidden sm:inline">Request Key</span>
+                </a>
+                <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Live</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24 pb-16 px-4 sm:px-6 max-w-6xl mx-auto">
+
+        <!-- Hero -->
+        <section class="mb-8 max-w-3xl">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="mono-label tag-cyan px-3 py-1.5 rounded-full">Live API</span>
+                <span class="mono-label text-slate-500">Search Playground</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-black text-white leading-tight mb-4">
+                Try the API<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400">with a real request</span>
+            </h1>
+            <p class="text-slate-400 text-base max-w-xl leading-relaxed">
+                Every search here calls the real <code class="font-mono text-cyan-400 text-sm">GET /api/v3/search/:query</code> endpoint with the shared public key <code class="font-mono text-cyan-400 text-sm">daratechapi</code>, or your own key if you add one. Limits below are read live from the server.
+                <a href="/docs#endpoints" class="text-cyan-400 hover:text-cyan-300 underline underline-offset-2">Run every other endpoint in the docs</a>.
+            </p>
+        </section>
+
+        <!-- Key panel -->
+        <section class="mb-6 panel rounded-xl p-4">
+            <label for="keyInput" class="mono-label text-cyan-400">Your API key <span class="text-slate-500">(optional)</span></label>
+            <p class="text-xs text-slate-500 mb-3"><a id="keyContactLink" href="/request-key" class="text-emerald-400">Request your own key</a>.</p>
+            <div class="flex flex-col sm:flex-row gap-2 mt-2">
+                <input id="keyInput" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your own key, or leave blank for daratechapi" class="flex-1 min-w-0 bg-surface border border-edge rounded-lg px-3 py-2.5 text-sm text-white font-mono placeholder-slate-500 outline-none focus:border-cyan-500/40">
+                <div class="grid grid-cols-2 gap-2 sm:flex">
+                    <button type="button" id="saveKey" class="btn-primary px-4 py-2.5 rounded-lg font-semibold text-sm text-white inline-flex items-center justify-center gap-2"><i class="fas fa-save text-xs"></i>Save</button>
+                    <button type="button" id="clearKey" class="px-4 py-2.5 rounded-lg font-semibold text-sm text-slate-300 border border-edge hover:border-cyan-500/30 hover:text-cyan-400 transition-all inline-flex items-center justify-center gap-2"><i class="fas fa-undo text-xs"></i>Use public</button>
+                </div>
+            </div>
+            <div class="mt-2 text-[11px] text-slate-500 font-mono flex items-center gap-2" id="activeKey" aria-live="polite"></div>
+            <p class="mt-2 text-[11px] text-slate-500">Saved only in this browser and shared with the docs runner. Sent as an Authorization header, never in the URL.</p>
+        </section>
+
+        <!-- Quota indicator (live from /api/key/check) -->
+        <div id="quotaBar" class="mb-8 panel rounded-xl p-4" aria-live="polite">
+            <div class="flex items-center gap-4">
+                <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
+                    <i class="fas fa-gauge-high text-sm"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
+                        <span class="text-xs font-semibold text-white" id="quotaTitle">Key usage</span>
+                        <span class="mono-label text-slate-500" id="quotaText">Checking...</span>
+                    </div>
+                    <div class="h-1.5 bg-edge rounded-full overflow-hidden">
+                        <div class="quota-bar-fill" id="quotaFill" style="width:0%"></div>
+                    </div>
+                </div>
+                <button type="button" id="recheck" class="text-xs font-semibold text-slate-400 hover:text-cyan-400 transition-colors shrink-0 inline-flex items-center gap-1.5" aria-label="Refresh usage"><i class="fas fa-sync-alt text-xs"></i><span class="hidden sm:inline">Refresh</span></button>
+            </div>
+            <div id="quotaCells" class="grid grid-cols-3 gap-2 mt-3 text-[11px] font-mono"></div>
+        </div>
+
+        <!-- Search box -->
+        <section class="mb-10">
+            <div class="relative">
+                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
+                    <i class="fas fa-search"></i>
+                </div>
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search movies and series by title"
+                    class="w-full bg-panel border border-edge rounded-xl pl-11 pr-36 py-4 text-white placeholder-slate-500 text-base outline-none glow-search transition-all"
+                    autocomplete="off"
+                >
+                <button
+                    id="searchBtn"
+                    onclick="doSearch()"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 btn-primary px-5 py-2.5 rounded-lg font-semibold text-sm text-white inline-flex items-center gap-2"
+                >
+                    <span id="searchBtnText">Search</span>
+                    <span id="searchSpinner" class="spinner hidden"></span>
+                </button>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-2" id="suggestions">
+                <button onclick="quickSearch('Avatar')" class="text-xs px-3 py-1.5 rounded-full border border-edge text-slate-500 hover:border-cyan-500/30 hover:text-cyan-400 transition-all">Avatar</button>
+                <button onclick="quickSearch('Breaking Bad')" class="text-xs px-3 py-1.5 rounded-full border border-edge text-slate-500 hover:border-cyan-500/30 hover:text-cyan-400 transition-all">Breaking Bad</button>
+                <button onclick="quickSearch('Squid Game')" class="text-xs px-3 py-1.5 rounded-full border border-edge text-slate-500 hover:border-cyan-500/30 hover:text-cyan-400 transition-all">Squid Game</button>
+                <button onclick="quickSearch('Inception')" class="text-xs px-3 py-1.5 rounded-full border border-edge text-slate-500 hover:border-cyan-500/30 hover:text-cyan-400 transition-all">Inception</button>
+                <button onclick="quickSearch('Wednesday')" class="text-xs px-3 py-1.5 rounded-full border border-edge text-slate-500 hover:border-cyan-500/30 hover:text-cyan-400 transition-all">Wednesday</button>
+                <button onclick="quickSearch('Naruto')" class="text-xs px-3 py-1.5 rounded-full border border-edge text-slate-500 hover:border-cyan-500/30 hover:text-cyan-400 transition-all">Naruto</button>
+            </div>
+        </section>
+
+        <!-- Results area -->
+        <section id="resultsSection" class="mb-16 hidden">
+            <div class="flex items-center justify-between mb-5">
+                <h2 class="text-sm font-bold text-white" id="resultsTitle">Results</h2>
+                <span class="mono-label text-slate-500" id="resultsCount"></span>
+            </div>
+            <div id="resultsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+            <div id="moreHint" class="mt-6 hidden text-center">
+                <button type="button" id="moreBtn" class="px-5 py-2.5 rounded-lg font-semibold text-sm text-slate-300 border border-edge hover:border-cyan-500/30 hover:text-cyan-400 transition-all inline-flex items-center gap-2"><i class="fas fa-plus text-xs"></i>Load next page</button>
+            </div>
+        </section>
+
+        <!-- Empty state -->
+        <section id="emptyState" class="mb-16">
+            <div class="panel rounded-2xl p-12 text-center border border-edge">
+                <div class="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mx-auto mb-5">
+                    <i class="fas fa-search text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Search the catalog</h3>
+                <p class="text-slate-500 text-sm max-w-sm mx-auto">Type a title above and press Search to see live results from the RUNFLIX API. Each search counts as one request against the active key.</p>
+            </div>
+        </section>
+
+        <!-- Error state -->
+        <section id="errorState" class="mb-16 hidden">
+            <div class="panel rounded-xl p-6 text-center max-w-md mx-auto">
+                <div class="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 mx-auto mb-3">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 class="text-base font-bold text-white mb-1" id="errorTitle">Search failed</h3>
+                <p class="text-sm text-slate-500" id="errorMsg">Something went wrong. Please try again.</p>
+                <p class="text-[11px] text-slate-500 font-mono mt-2" id="errorCode"></p>
+                <button type="button" onclick="doSearch()" class="mt-4 px-4 py-2 rounded-lg text-xs font-semibold text-slate-300 border border-edge hover:border-cyan-500/30 hover:text-cyan-400 transition-all">Retry</button>
+            </div>
+        </section>
+
+        <!-- Quota exhausted state -->
+        <section id="quotaState" class="mb-16 hidden">
+            <div class="panel rounded-xl p-8 text-center max-w-lg mx-auto border border-violet-500/20">
+                <div class="w-14 h-14 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 mx-auto mb-4">
+                    <i class="fas fa-lock text-xl"></i>
+                </div>
+                <h3 class="text-xl font-black text-white mb-2" id="quotaStateTitle">Limit reached</h3>
+                <p class="text-sm text-slate-400 mb-6 leading-relaxed" id="quotaStateMsg">The active key has used its quota for this window. The shared public key is used by everyone; request your own key for dedicated limits.</p>
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <a id="quotaAction" href="/request-key" class="btn-violet px-6 py-3 rounded-lg font-semibold text-sm text-white inline-flex items-center gap-2">
+                        <i class="fas fa-key text-xs"></i>
+                        <span id="quotaActionText">Request your own key</span>
+                    </a>
+                    <a href="/docs" class="px-6 py-3 rounded-lg font-semibold text-sm text-slate-300 border border-edge hover:border-cyan-500/30 hover:text-cyan-400 transition-all inline-flex items-center gap-2">
+                        <i class="fas fa-book text-xs"></i>
+                        View Docs
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA banner -->
+        <section class="mb-8">
+            <div class="panel rounded-2xl p-6 sm:p-8 relative overflow-hidden border border-edge">
+                <div class="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-cyan-500/10 to-violet-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+                    <div>
+                        <div class="mono-label tag-violet px-2 py-1 rounded mb-3 inline-block">Full Access</div>
+                        <h2 class="text-xl font-black text-white mb-1">Get your own key</h2>
+                        <p class="text-slate-400 text-sm max-w-sm">Movies, series, anime, sources and captions with limits assigned to you, instead of sharing the public key. See the docs for the current endpoint list.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-3 shrink-0">
+                        <a href="/request-key" class="btn-primary px-6 py-3 rounded-lg font-semibold text-sm text-white inline-flex items-center gap-2">
+                            <i class="fas fa-key text-xs"></i>
+                            Request Key
+                        </a>
+                        <a href="/docs" class="px-5 py-3 rounded-lg font-semibold text-sm text-slate-300 border border-edge hover:border-cyan-500/30 hover:text-cyan-400 transition-all inline-flex items-center gap-2">
+                            <i class="fas fa-book text-xs"></i>
+                            Docs
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const PUBLIC_KEY = 'daratechapi', LS = 'runflix_movieapi_key', PER_PAGE = 20;
+        let lastQuery = '', page = 1, busy = false;
+        const $id = id => document.getElementById(id);
+        const userKey = () => { try { return localStorage.getItem(LS) || ''; } catch { return ''; } };
+        const activeKey = () => userKey() || PUBLIC_KEY;
+        const fmtN = n => n == null ? 'Unlimited' : Number(n).toLocaleString();
+
+        function escHtml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+        function safeUrl(u) { return /^https?:\/\//i.test(u || '') ? u : ''; }
+
+        function renderMovieCard(item) {
+            const thumb = safeUrl(item.thumbnail || item.cover?.url || item.stills?.url || '');
+            const title = item.title || 'Unknown';
+            const year = item.year || (item.releaseDate ? String(item.releaseDate).slice(0, 4) : '');
+            const type = item.subjectType === 2 ? 'series' : 'movie';
+            const r = parseFloat(item.rating || item.imdbRatingValue);
+            const rating = r > 0 ? r.toFixed(1) : '';
+            const genres = Array.isArray(item.genres) ? item.genres.slice(0, 2).join(', ') : '';
+            const id = item.subjectId || item.id || '';
+            return `
+                <div class="movie-card rounded-xl overflow-hidden cursor-default" title="${escHtml(title)}">
+                    <div class="relative aspect-[2/3] bg-panel overflow-hidden">
+                        ${thumb ? `<img src="${escHtml(thumb)}" alt="${escHtml(title)}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'">` : ''}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                        ${rating ? `<div class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm rounded-md px-1.5 py-0.5 text-xs font-bold text-yellow-400"><i class="fas fa-star text-[9px] mr-0.5"></i>${rating}</div>` : ''}
+                        <div class="absolute bottom-2 left-2">
+                            <span class="result-item-type type-${type}">${type === 'series' ? 'Series' : 'Movie'}</span>
+                        </div>
+                    </div>
+                    <div class="p-2.5">
+                        <div class="text-xs font-semibold text-white leading-tight truncate">${escHtml(title)}</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5 truncate">${escHtml([year, genres].filter(Boolean).join(' / '))}</div>
+                        ${id ? `<button type="button" class="copy-id mt-1.5 text-[10px] font-mono text-slate-500 hover:text-cyan-400 truncate max-w-full" data-id="${escHtml(id)}" title="Copy subjectId for /info, /sources">id ${escHtml(id)}</button>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function paintKey() {
+            const k = activeKey()===PUBLIC_KEY?'':userKey();
+            const personal=activeKey()!==PUBLIC_KEY;
+            const href=personal?'https://wa.me/2348100785677?text=Please%20help%20me%20upgrade%20my%20RUNFLIX%20MovieAPI%20key.':'/request-key';
+            const label=personal?'Upgrade on WhatsApp':'Request your own key';
+            for(const id of ['keyContactLink','quotaAction']) {
+                const a=$id(id);a.href=href;a.target=personal?'_blank':'_self';a.rel='noopener';
+            }
+            $id('keyContactLink').textContent=label;$id('quotaActionText').textContent=label;
+            $id('activeKey').innerHTML = `<span class="w-1.5 h-1.5 rounded-full ${k ? 'bg-emerald-500' : 'bg-amber-400'}"></span>` +
+                escHtml(k ? 'Using saved key ' + k.slice(0, 4) + '...' + k.slice(-3) : 'Using public key ' + PUBLIC_KEY);
+            $id('keyInput').value = '';
+        }
+        $id('saveKey').onclick = () => {
+            const v = $id('keyInput').value.trim();
+            if (!v || /\s/.test(v) || v.length > 200) { $id('keyInput').focus(); return; }
+            try { localStorage.setItem(LS, v); } catch {}
+            paintKey(); checkKey();
+        };
+        $id('clearKey').onclick = () => { try { localStorage.removeItem(LS); } catch {} paintKey(); checkKey(); };
+        $id('recheck').onclick = () => checkKey();
+
+        function cell(label, used, limit, rem) {
+            const v = limit === 0 ? 'Blocked' : fmtN(used || 0) + ' / ' + fmtN(limit);
+            const hot = limit === 0 || rem === 0;
+            return `<div class="bg-surface border border-edge rounded-lg px-2.5 py-2 min-w-0"><div class="mono-label text-slate-500">${label}</div><div class="${hot ? 'text-rose-400' : 'text-slate-200'} mt-0.5 truncate">${v}</div>${limit && rem != null ? `<div class="text-slate-500 text-[10px]">${fmtN(rem)} left</div>` : ''}</div>`;
+        }
+        async function checkKey() {
+            const txt = $id('quotaText'), fill = $id('quotaFill'), cells = $id('quotaCells');
+            txt.textContent = 'Checking...';
+            try {
+                const r = await fetch('/api/key/check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: activeKey() }) });
+                const d = await r.json().catch(() => ({}));
+                if (!d.valid || !d.key) {
+                    $id('quotaTitle').textContent = activeKey()!==PUBLIC_KEY ? 'Saved key' : 'Public key';
+                    txt.textContent = (d.message || 'Key not valid') + (d.code ? ' [' + d.code + ']' : '');
+                    txt.className = 'mono-label text-rose-400'; fill.style.width = '0%'; cells.innerHTML = ''; return;
+                }
+                const k = d.key, L = k.limits || {}, U = k.usage || {}, R = k.remaining || {};
+                $id('quotaTitle').textContent = (userKey() ? 'Your key' : 'Public key') + (k.owner ? ' / ' + k.owner : '');
+                const win = L.daily != null ? ['daily', 'today'] : L.monthly != null ? ['monthly', 'this month'] : L.allTime != null ? ['allTime', 'all time'] : null;
+                const exhausted = d.code === 'QUOTA_EXHAUSTED' || /exhaust/i.test(d.keyStatus || '') || d.quotaExhausted === true;
+                txt.className = 'mono-label ' + (exhausted ? 'text-rose-400' : 'text-slate-500');
+                if (win) {
+                    const lim = L[win[0]], rem = R[win[0]] != null ? R[win[0]] : Math.max(0, lim - (U[win[0]] || 0));
+                    txt.textContent = lim === 0 ? 'Blocked ' + win[1] : fmtN(rem) + ' / ' + fmtN(lim) + ' left ' + win[1];
+                    const pct = lim ? Math.max(0, Math.min(100, rem / lim * 100)) : 0;
+                    fill.style.width = pct + '%';
+                    fill.style.background = pct <= 30 ? 'linear-gradient(90deg, #f59e0b, #ef4444)' : '';
+                } else { txt.textContent = 'No limits set' + (exhausted ? '' : ''); fill.style.width = '100%'; fill.style.background = ''; }
+                if (exhausted) txt.textContent += ' / quota exhausted';
+                cells.innerHTML = cell('Today', U.daily, L.daily, R.daily) + cell('Month', U.monthly, L.monthly, R.monthly) + cell('All time', U.allTime, L.allTime, R.allTime);
+            } catch {
+                txt.textContent = 'Usage unavailable'; txt.className = 'mono-label text-slate-500'; cells.innerHTML = '';
+            }
+        }
+
+        function show(id) {
+            ['emptyState', 'resultsSection', 'errorState', 'quotaState'].forEach(s => $id(s).classList.toggle('hidden', s !== id));
+        }
+        function quickSearch(q) { $id('searchInput').value = q; doSearch(); }
+
+        async function doSearch(more) {
+            if (busy) return;
+            const q = more ? lastQuery : $id('searchInput').value.trim();
+            if (!q) { $id('searchInput').focus(); return; }
+            if (!more) { lastQuery = q; page = 1; } else page += 1;
+            busy = true;
+            const btn = $id('searchBtn'), btnText = $id('searchBtnText'), spinner = $id('searchSpinner'), moreBtn = $id('moreBtn');
+            btn.disabled = true; moreBtn.disabled = true; btnText.classList.add('hidden'); spinner.classList.remove('hidden');
+            const grid = $id('resultsGrid');
+            const skel = Array(5).fill(0).map(() => `<div class="sk-item"><div class="skeleton w-full aspect-[2/3] mb-2"></div><div class="skeleton h-3 w-3/4 mb-1.5"></div><div class="skeleton h-2.5 w-1/2"></div></div>`).join('');
+            if (!more) { grid.innerHTML = skel; $id('resultsCount').textContent = ''; $id('moreHint').classList.add('hidden'); }
+            else grid.insertAdjacentHTML('beforeend', skel);
+            show('resultsSection');
+            $id('resultsTitle').textContent = `Results for "${q}"`;
+            try {
+                const r = await fetch(`/api/v3/search/${encodeURIComponent(q)}?page=${page}&perPage=${PER_PAGE}`, { headers: { Authorization: 'Bearer ' + activeKey(), Accept: 'application/json' } });
+                const d = await r.json().catch(() => ({}));
+                grid.querySelectorAll('.sk-item').forEach(n => n.remove());
+                if (!r.ok || d.success === false) {
+                    if (more) page -= 1;
+                    if (r.status === 429) {
+                        $id('quotaStateTitle').textContent = 'Limit reached';
+                        $id('quotaStateMsg').textContent = (d.message || 'The active key has used its quota.') + (d.retryAfter ? ' Resets in about ' + Math.ceil(d.retryAfter / 60) + ' min.' : '') + (userKey() ? '' : ' The public key is shared by everyone; request your own key for dedicated limits.');
+                        show('quotaState'); return;
+                    }
+                    const e = new Error(d.message || d.error || 'Search failed (' + r.status + ')');
+                    e.code = [r.status, d.code].filter(Boolean).join(' '); e.hint = d.hint; throw e;
+                }
+                const items = d.results?.items || [];
+                const hasMore = d.results?.pager ? !!d.results.pager.hasMore : items.length >= PER_PAGE;
+                if (!items.length && !more) {
+                    grid.innerHTML = `<div class="col-span-full text-center py-10"><i class="fas fa-search text-slate-600 text-3xl mb-3 block"></i><p class="text-slate-500 text-sm">No results found for "<span class="text-white">${escHtml(q)}</span>"</p></div>`;
+                    $id('moreHint').classList.add('hidden'); return;
+                }
+                grid.insertAdjacentHTML('beforeend', items.map(renderMovieCard).join(''));
+                const total = grid.querySelectorAll('.movie-card').length;
+                $id('resultsCount').textContent = `${total} result${total !== 1 ? 's' : ''}`;
+                $id('moreHint').classList.toggle('hidden', !hasMore || !items.length);
+            } catch (e) {
+                if (more) { $id('moreHint').classList.remove('hidden'); }
+                else {
+                    show('errorState');
+                    $id('errorTitle').textContent = 'Search failed';
+                    $id('errorMsg').textContent = (e.message || 'Unexpected error. Please try again.') + (e.hint ? ' ' + e.hint : '');
+                    $id('errorCode').textContent = e.code || (e instanceof TypeError ? 'Network error' : '');
+                }
+            } finally {
+                busy = false; btn.disabled = false; moreBtn.disabled = false; btnText.classList.remove('hidden'); spinner.classList.add('hidden');
+                checkKey();
+            }
+        }
+
+        $id('moreBtn').onclick = () => doSearch(true);
+        $id('resultsGrid').addEventListener('click', e => {
+            const b = e.target.closest('.copy-id'); if (!b) return;
+            navigator.clipboard.writeText(b.dataset.id).then(() => { b.textContent = 'copied'; setTimeout(() => { b.textContent = 'id ' + b.dataset.id; }, 1200); }, () => {});
+        });
+        $id('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+        paintKey(); checkKey();
+    </script>
+</body>
+</html>
