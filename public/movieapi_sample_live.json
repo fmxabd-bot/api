@@ -1,0 +1,453 @@
+{
+  "status": 200,
+  "success": true,
+  "creator": "DaraTech",
+  "results": {
+    "total": 10333,
+    "page": 1,
+    "limit": 20,
+    "pages": 517,
+    "results": [
+      {
+        "id": "00sReplay.us",
+        "name": "00s Replay",
+        "altNames": [],
+        "logo": null,
+        "country": "US",
+        "languages": [],
+        "categories": [
+          "movies"
+        ],
+        "website": "https://pluto.tv/live-tv/00s-replay/details",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://jmp2.uk/plu-62ba60f059624e000781c436.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "1001Noites.br",
+        "name": "1001 Noites",
+        "altNames": [],
+        "logo": null,
+        "country": "BR",
+        "languages": [],
+        "categories": [
+          "shop"
+        ],
+        "website": "https://1001noites.com.br/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://cdn.jmvstream.com/w/LVW-8155/ngrp:LVW8155_41E1ciuCvO_all/playlist.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "100AutoMotoTV.bg",
+        "name": "100% Auto Moto TV",
+        "altNames": [
+          "100% Ауто Мото ТВ"
+        ],
+        "logo": null,
+        "country": "BG",
+        "languages": [],
+        "categories": [
+          "auto"
+        ],
+        "website": "http://100automoto.tv/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "http://100automoto.tv:1935/bgtv1/autotv/playlist.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "100NEWS.ua",
+        "name": "100% NEWS",
+        "altNames": [],
+        "logo": null,
+        "country": "UA",
+        "languages": [],
+        "categories": [
+          "news",
+          "business"
+        ],
+        "website": "https://www.100news.tv/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "http://85.238.112.40:8810/hls_sec/239.33.16.32-.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "101tvAxarquia.es",
+        "name": "101tv Axarquia",
+        "altNames": [
+          "101tv Axarquía"
+        ],
+        "logo": null,
+        "country": "ES",
+        "languages": [],
+        "categories": [
+          "general"
+        ],
+        "website": "https://www.101tv.es/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://www.streaming101tv.es:19360/axarquia/axarquia.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "101tvCadiz.es",
+        "name": "101tv Cadiz",
+        "altNames": [
+          "101tv Cádiz"
+        ],
+        "logo": null,
+        "country": "ES",
+        "languages": [],
+        "categories": [
+          "general"
+        ],
+        "website": "https://www.101tv.es/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://streaming101tv.es:19360/cadiz/cadiz.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "101tvMalaga.es",
+        "name": "101tv Malaga",
+        "altNames": [
+          "101tv Málaga"
+        ],
+        "logo": null,
+        "country": "ES",
+        "languages": [],
+        "categories": [
+          "news"
+        ],
+        "website": "https://www.101tv.es/endirecto101tv/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://liveingesta318.cdnmedia.tv/101weblive/smil:malaga.smil/playlist.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "101tvSevilla.es",
+        "name": "101tv Sevilla",
+        "altNames": [],
+        "logo": null,
+        "country": "ES",
+        "languages": [],
+        "categories": [
+          "general"
+        ],
+        "website": "https://www.101tv.es/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://liveingesta318.cdnmedia.tv/101weblive/smil:sevilla.smil/playlist.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "10Bold.au",
+        "name": "10 Bold",
+        "altNames": [
+          "10 Boss",
+          "One",
+          "One HD"
+        ],
+        "logo": null,
+        "country": "AU",
+        "languages": [],
+        "categories": [
+          "lifestyle",
+          "relax"
+        ],
+        "website": "http://tenplay.com.au/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://dce3793146fef017.mediapackage.us-west-2.amazonaws.com/out/v1/55cdf73af7894775ba6de8f57482b66a/CMAF_HLS/index.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "10TV.in",
+        "name": "10 TV",
+        "altNames": [],
+        "logo": null,
+        "country": "IN",
+        "languages": [],
+        "categories": [
+          "news"
+        ],
+        "website": "https://www.10tv.in/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://mumbai-edge.smartplaytv.in/10TV/index.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          },
+          {
+            "url": "https://cdn-1.pishow.tv/live/391/master.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "111TV.it",
+        "name": "111 TV",
+        "altNames": [
+          "Centoundici TV"
+        ],
+        "logo": null,
+        "country": "IT",
+        "languages": [],
+        "categories": [
+          "general"
+        ],
+        "website": "https://www.111tv.it/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://5db313b643fd8.streamlock.net/111/111/playlist.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "123tv.de",
+        "name": "1-2-3.tv",
+        "altNames": [],
+        "logo": null,
+        "country": "DE",
+        "languages": [],
+        "categories": [
+          "shop"
+        ],
+        "website": "https://www.1-2-3.tv/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://123tv-mx1.flex-cdn.net/index.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "12tv.es",
+        "name": "12tv",
+        "altNames": [],
+        "logo": null,
+        "country": "ES",
+        "languages": [],
+        "categories": [
+          "general"
+        ],
+        "website": "https://www.12tv.es/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://cloud.streamingconnect.tv/hls/12tv/12tv2.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          },
+          {
+            "url": "https://cloud.fastchannel.es/mic/manifiest/hls/12tv/12tv.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "12TVParma.it",
+        "name": "12 TV Parma",
+        "altNames": [],
+        "logo": null,
+        "country": "IT",
+        "languages": [],
+        "categories": [
+          "general"
+        ],
+        "website": "https://www.12tvparma.it/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://5929b138b139d.streamlock.net/12TVParma/livestream/playlist.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "13C.cl",
+        "name": "13C",
+        "altNames": [
+          "13C",
+          "Canal 13 Cable",
+          "13 Cable",
+          " 13 Cultura"
+        ],
+        "logo": null,
+        "country": "CL",
+        "languages": [],
+        "categories": [
+          "culture"
+        ],
+        "website": "https://www.13.cl/c",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://origin.dpsgo.com/ssai/event/GI-9cp_bT8KcerLpZwkuhw/master.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          },
+          {
+            "url": "http://45.4.1.201:8000/play/a132/index.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "13Festival.cl",
+        "name": "13 Festival",
+        "altNames": [],
+        "logo": null,
+        "country": "CL",
+        "languages": [],
+        "categories": [
+          "music"
+        ],
+        "website": "https://www.13go.cl/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://origin.dpsgo.com/ssai/event/Nftd0fM2SXasfDlRphvUsg/master.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "13Realities.cl",
+        "name": "13 Realities",
+        "altNames": [],
+        "logo": null,
+        "country": "CL",
+        "languages": [],
+        "categories": [
+          "entertainment"
+        ],
+        "website": "https://www.13go.cl/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://origin.dpsgo.com/ssai/event/g7_JOM0ORki9SR5RKHe-Kw/master.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "13Rec.cl",
+        "name": "13Rec",
+        "altNames": [],
+        "logo": null,
+        "country": "CL",
+        "languages": [],
+        "categories": [
+          "classic"
+        ],
+        "website": "https://www.13.cl/rec",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "http://45.4.1.201:8000/play/a11i/index.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "13SiamThai.th",
+        "name": "13 Siam Thai",
+        "altNames": [
+          "13 สยามไท"
+        ],
+        "logo": null,
+        "country": "TH",
+        "languages": [],
+        "categories": [
+          "news"
+        ],
+        "website": "https://www.13livetv.com/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://live.x2.co.th/live/13livetv-th.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      },
+      {
+        "id": "13T.cl",
+        "name": "13T",
+        "altNames": [
+          "13 Teleseries"
+        ],
+        "logo": null,
+        "country": "CL",
+        "languages": [],
+        "categories": [
+          "series"
+        ],
+        "website": "https://www.13go.cl/",
+        "broadcastArea": [],
+        "streams": [
+          {
+            "url": "https://origin.dpsgo.com/ssai/event/f4TrySe8SoiGF8Lu3EIq1g/master.m3u8",
+            "httpReferrer": null,
+            "userAgent": null
+          }
+        ]
+      }
+    ]
+  }
+}

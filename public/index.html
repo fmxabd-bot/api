@@ -1,0 +1,1137 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DaraTech MovieAPI | Simple MovieBox REST API | RUNFLIX</title>
+        <meta name="google-site-verification" content="7714T1IVCh7-PsY34SKjbdsigUktRVjDuVEHextHYvk" />
+        <meta name="description" content="Build movie and series apps with DaraTech MovieAPI, a simple REST API for MovieBox search, metadata, anime, football, captions and fast stream links. Try the free 50-request daily key in the live API playground.">
+        <meta name="robots" content="index,follow,max-image-preview:large">
+        <meta name="theme-color" content="#02040a">
+        <link rel="canonical" href="https://movieapi.runflix.name.ng/">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="DaraTech MovieAPI">
+        <meta property="og:title" content="DaraTech MovieAPI | Simple MovieBox REST API">
+        <meta property="og:description" content="A simple MovieBox REST API for movie and series search, details, anime, captions and stream links.">
+        <meta property="og:url" content="https://movieapi.runflix.name.ng/">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="DaraTech MovieAPI | RUNFLIX">
+        <meta name="twitter:description" content="A simple REST API for MovieBox movies, series and anime.">
+        <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"DaraTech MovieAPI","alternateName":"RUNFLIX Movie API","url":"https://movieapi.runflix.name.ng/","publisher":{"@type":"Organization","name":"DaraTech"},"description":"A simple MovieBox API for searching movies and series, getting details, and accessing stream links."}</script>
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="https://runflix.name.ng/favicon.png"
+        />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            void: "#02040a",
+                            surface: "#0a0f1e",
+                            panel: "#111827",
+                            edge: "#1a2035",
+                            "edge-light": "#25304a",
+                            cyan: {
+                                400: "#22d3ee",
+                                500: "#06b6d4",
+                                glow: "rgba(34,211,238,0.15)",
+                            },
+                            violet: {
+                                400: "#a78bfa",
+                                500: "#8b5cf6",
+                                glow: "rgba(139,92,246,0.15)",
+                            },
+                            slate: {
+                                300: "#cbd5e1",
+                                400: "#94a3b8",
+                                500: "#64748b",
+                            },
+                        },
+                        fontFamily: {
+                            sans: ["Inter", "system-ui", "sans-serif"],
+                            mono: ["JetBrains Mono", "monospace"],
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            body {
+                background-color: #02040a;
+                color: #e2e8f0;
+                font-family: "Inter", sans-serif;
+                overflow-x: hidden;
+            }
+
+            .mesh-bg {
+                position: fixed;
+                inset: 0;
+                z-index: -2;
+                background:
+                    radial-gradient(
+                        ellipse 80% 50% at 20% 40%,
+                        rgba(34, 211, 238, 0.08) 0%,
+                        transparent 50%
+                    ),
+                    radial-gradient(
+                        ellipse 60% 60% at 80% 80%,
+                        rgba(139, 92, 246, 0.06) 0%,
+                        transparent 50%
+                    ),
+                    radial-gradient(
+                        ellipse 50% 40% at 50% 0%,
+                        rgba(6, 182, 212, 0.05) 0%,
+                        transparent 50%
+                    );
+            }
+
+            .dot-grid {
+                position: fixed;
+                inset: 0;
+                z-index: -1;
+                background-image: radial-gradient(
+                    circle,
+                    rgba(255, 255, 255, 0.03) 1px,
+                    transparent 1px
+                );
+                background-size: 32px 32px;
+                mask-image: linear-gradient(
+                    to bottom,
+                    black 30%,
+                    transparent 100%
+                );
+            }
+
+            .diagonal-lines {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 400px;
+                height: 400px;
+                background: repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(34, 211, 238, 0.03) 10px,
+                    rgba(34, 211, 238, 0.03) 11px
+                );
+                pointer-events: none;
+            }
+
+            .panel {
+                background: #111827;
+                border: 1px solid #1a2035;
+                transition: all 0.25s ease;
+            }
+            .panel:hover {
+                border-color: #25304a;
+                box-shadow: 0 0 40px rgba(34, 211, 238, 0.04);
+            }
+
+            .btn-primary {
+                background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+                box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
+                transition: all 0.2s ease;
+            }
+            .btn-primary:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 0 30px rgba(6, 182, 212, 0.4);
+            }
+
+            .btn-ghost {
+                border: 1px solid #1a2035;
+                background: transparent;
+                transition: all 0.2s ease;
+            }
+            .btn-ghost:hover {
+                border-color: #22d3ee;
+                color: #22d3ee;
+                box-shadow: 0 0 20px rgba(34, 211, 238, 0.08);
+            }
+
+            .btn-whatsapp {
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+                transition: all 0.2s ease;
+            }
+            .btn-whatsapp:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 0 30px rgba(16, 185, 129, 0.35);
+            }
+
+            .tag-cyan {
+                background: rgba(34, 211, 238, 0.08);
+                border: 1px solid rgba(34, 211, 238, 0.2);
+                color: #22d3ee;
+            }
+            .tag-violet {
+                background: rgba(139, 92, 246, 0.08);
+                border: 1px solid rgba(139, 92, 246, 0.2);
+                color: #a78bfa;
+            }
+
+            .code-window {
+                background: #0d1117;
+                border: 1px solid #1a2035;
+                border-radius: 12px;
+                overflow: hidden;
+            }
+            .code-window-header {
+                background: #111827;
+                border-bottom: 1px solid #1a2035;
+                padding: 12px 16px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+            }
+            .dot-red {
+                background: #f87171;
+            }
+            .dot-yellow {
+                background: #fbbf24;
+            }
+            .dot-green {
+                background: #34d399;
+            }
+
+            .glow-text {
+                text-shadow:
+                    0 0 40px rgba(34, 211, 238, 0.3),
+                    0 0 80px rgba(139, 92, 246, 0.15);
+            }
+
+            .mono-label {
+                font-family: "JetBrains Mono", monospace;
+                font-size: 0.65rem;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+            }
+
+            .bento-card {
+                background: #111827;
+                border: 1px solid #1a2035;
+                position: relative;
+                overflow: hidden;
+            }
+            .bento-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(34, 211, 238, 0.3),
+                    transparent
+                );
+            }
+
+            /* Dropdown nav styles */
+            .nav-item {
+                position: relative;
+            }
+
+            .nav-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8125rem;
+                font-weight: 500;
+                color: #64748b;
+                border-radius: 0.5rem;
+                transition: all 0.15s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.375rem;
+            }
+            .nav-link:hover {
+                color: #e2e8f0;
+                background: rgba(255, 255, 255, 0.03);
+            }
+
+            .dropdown-menu {
+                position: absolute;
+                top: calc(100% + 0.5rem);
+                left: 0;
+                min-width: 220px;
+                background: #111827;
+                border: 1px solid #1a2035;
+                border-radius: 0.75rem;
+                padding: 0.5rem;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-8px);
+                transition: all 0.2s ease;
+                z-index: 50;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            }
+
+            .nav-item:hover .dropdown-menu,
+            .dropdown-menu.open {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .dropdown-item {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.625rem 0.875rem;
+                border-radius: 0.5rem;
+                font-size: 0.8125rem;
+                color: #94a3b8;
+                transition: all 0.15s ease;
+            }
+            .dropdown-item:hover {
+                background: rgba(34, 211, 238, 0.04);
+                color: #e2e8f0;
+            }
+
+            /* Mobile dropdown panel */
+            .mobile-panel {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #0a0f1e;
+                border-bottom: 1px solid #1a2035;
+                padding: 1rem 1.5rem;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-8px);
+                transition: all 0.25s ease;
+                z-index: 40;
+                max-height: 0;
+                overflow: hidden;
+            }
+            .mobile-panel.open {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                max-height: 500px;
+                overflow: visible;
+            }
+
+            .mobile-link {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.75rem 0;
+                font-size: 0.875rem;
+                font-weight: 500;
+                color: #94a3b8;
+                border-bottom: 1px solid #1a2035;
+                transition: color 0.15s;
+            }
+            .mobile-link:last-child {
+                border-bottom: none;
+            }
+            .mobile-link:hover,
+            .mobile-link.active {
+                color: #22d3ee;
+            }
+
+            .mobile-dropdown-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.75rem 0;
+                font-size: 0.875rem;
+                font-weight: 600;
+                color: #e2e8f0;
+                border-bottom: 1px solid #1a2035;
+                cursor: pointer;
+            }
+
+            .mobile-dropdown-items {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                padding-left: 1.5rem;
+            }
+            .mobile-dropdown-items.open {
+                max-height: 300px;
+            }
+
+            .mobile-dropdown-items .mobile-link {
+                font-size: 0.8125rem;
+                padding: 0.625rem 0;
+                border-bottom: none;
+            }
+        </style>
+    </head>
+    <body class="min-h-screen">
+        <div class="mesh-bg"></div>
+        <div class="dot-grid"></div>
+
+        <!-- Header with dropdown nav -->
+        <header
+            class="fixed top-0 left-0 right-0 z-50 bg-void/90 backdrop-blur-xl border-b border-edge"
+        >
+            <div
+                class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between"
+            >
+                <a href="/" class="flex items-center gap-3 group shrink-0">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-violet-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition-shadow"
+                    >
+                        <i class="fas fa-play text-white text-xs"></i>
+                    </div>
+                    <div>
+                        <span
+                            class="font-bold text-sm tracking-tight text-white"
+                            >RUNFLIX</span
+                        >
+                        <span class="text-slate-500 text-xs ml-1 font-mono"
+                            >API</span
+                        >
+                    </div>
+                </a>
+
+                <!-- Desktop dropdown nav -->
+                <nav class="hidden md:flex items-center gap-1">
+                    <a
+                        href="/"
+                        class="nav-link active text-white bg-white/[0.03]"
+                    >
+                        <span>Home</span>
+                    </a>
+
+                    <div class="nav-item">
+                        <a href="/docs" class="nav-link">
+                            <span>Documentation</span>
+                            <i
+                                class="fas fa-chevron-down text-[10px] opacity-60"
+                            ></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="/docs#overview" class="dropdown-item">
+                                <i
+                                    class="fas fa-list-alt text-cyan-400 w-4 text-center text-xs"
+                                ></i>
+                                <span>API Overview</span>
+                            </a>
+                            <a href="/docs#homepage" class="dropdown-item">
+                                <i
+                                    class="fas fa-star text-cyan-400 w-4 text-center text-xs"
+                                ></i>
+                                <span>Homepage Data</span>
+                            </a>
+                            <a href="/docs#trending" class="dropdown-item">
+                                <i
+                                    class="fas fa-chart-line text-cyan-400 w-4 text-center text-xs"
+                                ></i>
+                                <span>Trending</span>
+                            </a>
+                            <a href="/docs#search" class="dropdown-item">
+                                <i
+                                    class="fas fa-search text-cyan-400 w-4 text-center text-xs"
+                                ></i>
+                                <span>Search</span>
+                            </a>
+                            <a href="/docs#filter" class="dropdown-item">
+                                <i
+                                    class="fas fa-filter text-cyan-400 w-4 text-center text-xs"
+                                ></i>
+                                <span>Filter</span>
+                            </a>
+                            <a href="/docs#anime" class="dropdown-item">
+                                <i class="fas fa-dragon text-cyan-400 w-4 text-center text-xs"></i>
+                                <span>Anime Catalog</span>
+                            </a>
+                            <a href="/docs#info" class="dropdown-item">
+                                <i
+                                    class="fas fa-info-circle text-cyan-400 w-4 text-center text-xs"
+                                ></i>
+                                <span>Metadata</span>
+                            </a>
+                            <a href="/docs#sources" class="dropdown-item">
+                                <i
+                                    class="fas fa-download text-cyan-400 w-4 text-center text-xs"
+                                ></i>
+                                <span>Sources</span>
+                            </a>
+                            <a href="/docs#captions" class="dropdown-item">
+                                <i
+                                    class="fas fa-closed-captioning text-cyan-400 w-4 text-center text-xs"
+                                ></i>
+                                <span>Captions</span>
+                            </a>
+                            <a href="/docs#audio-dubs" class="dropdown-item">
+                                <i
+                                    class="fas fa-language text-violet-400 w-4 text-center text-xs"
+                                ></i>
+                                <span>Audio Dubs</span>
+                            </a>
+                            <div class="h-px bg-edge my-1 mx-2"></div>
+                            <a href="/docs#examples" class="dropdown-item">
+                                <i
+                                    class="fas fa-code text-violet-400 w-4 text-center text-xs"
+                                ></i>
+                                <span>Code Examples</span>
+                            </a>
+                            <a href="/docs#support" class="dropdown-item">
+                                <i
+                                    class="fas fa-life-ring text-emerald-400 w-4 text-center text-xs"
+                                ></i>
+                                <span>Support</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="/changelog" class="nav-link">
+                        <span>Changelog</span>
+                    </a>
+                    <a href="/try" class="nav-link">
+                        <span>Try API</span>
+                        <span
+                            class="text-[9px] px-1.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 font-bold uppercase tracking-wider ml-0.5"
+                            >Free</span
+                        >
+                    </a>
+                    <a href="/request-key" class="nav-link">
+                        <span>Request Key</span>
+                    </a>
+                    <a
+                        href="https://api.runflix.name.ng"
+                        target="_blank"
+                        class="nav-link"
+                    >
+                        <span>More APIs</span>
+                        <i
+                            class="fas fa-external-link-alt text-[10px] opacity-60"
+                        ></i>
+                    </a>
+                </nav>
+
+                <div class="flex items-center gap-3">
+                    <a
+                        href="https://wa.me/+2348100785677"
+                        target="_blank"
+                        class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-edge hover:border-emerald-500/30 text-slate-400 hover:text-emerald-400 transition-all text-xs font-medium"
+                    >
+                        <i class="fab fa-whatsapp"></i>
+                        <span>Support</span>
+                    </a>
+                    <div
+                        class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-emerald-500/5 border border-emerald-500/10"
+                    >
+                        <div
+                            class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"
+                        ></div>
+                        <span
+                            class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider"
+                            >Live</span
+                        >
+                    </div>
+                    <button
+                        id="menuBtn"
+                        class="md:hidden text-slate-400 hover:text-white transition-colors p-1 ml-1"
+                    >
+                        <i class="fas fa-bars text-lg" id="menuIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile dropdown panel (NOT full screen) -->
+            <div id="mobilePanel" class="mobile-panel md:hidden">
+                <a href="/" class="mobile-link active text-cyan-400">
+                    <i class="fas fa-home w-5 text-center text-xs"></i>
+                    <span>Home</span>
+                </a>
+
+                <div
+                    class="mobile-dropdown-header"
+                    onclick="toggleMobileDropdown('docsDropdown')"
+                >
+                    <span class="flex items-center gap-2">
+                        <i
+                            class="fas fa-book w-5 text-center text-xs text-cyan-400"
+                        ></i>
+                        Documentation
+                    </span>
+                    <i
+                        class="fas fa-chevron-down text-xs text-slate-500 transition-transform"
+                        id="docsDropdownIcon"
+                    ></i>
+                </div>
+                <div class="mobile-dropdown-items" id="docsDropdown">
+                    <a href="/docs#overview" class="mobile-link">
+                        <i class="fas fa-list-alt w-5 text-center text-xs"></i>
+                        <span>API Overview</span>
+                    </a>
+                    <a href="/docs#homepage" class="mobile-link">
+                        <i class="fas fa-star w-5 text-center text-xs"></i>
+                        <span>Homepage Data</span>
+                    </a>
+                    <a href="/docs#trending" class="mobile-link">
+                        <i
+                            class="fas fa-chart-line w-5 text-center text-xs"
+                        ></i>
+                        <span>Trending</span>
+                    </a>
+                    <a href="/docs#search" class="mobile-link">
+                        <i class="fas fa-search w-5 text-center text-xs"></i>
+                        <span>Search</span>
+                    </a>
+                    <a href="/docs#filter" class="mobile-link">
+                        <i class="fas fa-filter w-5 text-center text-xs"></i>
+                        <span>Filter</span>
+                    </a>
+                    <a href="/docs#anime" class="mobile-link">
+                        <i class="fas fa-dragon w-5 text-center text-xs"></i>
+                        <span>Anime Catalog</span>
+                    </a>
+                    <a href="/docs#info" class="mobile-link">
+                        <i
+                            class="fas fa-info-circle w-5 text-center text-xs"
+                        ></i>
+                        <span>Metadata</span>
+                    </a>
+                    <a href="/docs#sources" class="mobile-link">
+                        <i class="fas fa-download w-5 text-center text-xs"></i>
+                        <span>Sources</span>
+                    </a>
+                    <a href="/docs#captions" class="mobile-link">
+                        <i class="fas fa-closed-captioning w-5 text-center text-xs"></i>
+                        <span>Captions</span>
+                    </a>
+                    <a href="/docs#audio-dubs" class="mobile-link">
+                        <i class="fas fa-language w-5 text-center text-xs"></i>
+                        <span>Audio Dubs</span>
+                    </a>
+                    <a href="/docs#examples" class="mobile-link">
+                        <i class="fas fa-code w-5 text-center text-xs"></i>
+                        <span>Code Examples</span>
+                    </a>
+                    <a href="/docs#support" class="mobile-link">
+                        <i class="fas fa-life-ring w-5 text-center text-xs"></i>
+                        <span>Support</span>
+                    </a>
+                </div>
+
+                <a href="/changelog" class="mobile-link">
+                    <i class="fas fa-scroll w-5 text-center text-xs text-violet-400"></i>
+                    <span>Changelog</span>
+                </a>
+
+                <a href="/try" class="mobile-link text-cyan-400">
+                    <i class="fas fa-flask w-5 text-center text-xs"></i>
+                    <span
+                        >Try API
+                        <span
+                            style="
+                                font-size: 9px;
+                                background: rgba(34, 211, 238, 0.1);
+                                border: 1px solid rgba(34, 211, 238, 0.2);
+                                color: #22d3ee;
+                                padding: 1px 5px;
+                                border-radius: 10px;
+                                font-weight: 700;
+                                letter-spacing: 0.05em;
+                                text-transform: uppercase;
+                                margin-left: 2px;
+                            "
+                            >Free</span
+                        ></span
+                    >
+                </a>
+                <a href="/request-key" class="mobile-link">
+                    <i class="fas fa-key w-5 text-center text-xs"></i>
+                    <span>Request API Key</span>
+                </a>
+                <a
+                    href="https://api.runflix.name.ng"
+                    target="_blank"
+                    class="mobile-link"
+                >
+                    <i
+                        class="fas fa-external-link-alt w-5 text-center text-xs"
+                    ></i>
+                    <span>More APIs</span>
+                </a>
+
+                <a
+                    href="https://wa.me/+2348100785677"
+                    target="_blank"
+                    class="mobile-link text-emerald-400"
+                >
+                    <i class="fab fa-whatsapp w-5 text-center text-xs"></i>
+                    <span>WhatsApp Support</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="pt-24 pb-16 px-4 sm:px-6 max-w-6xl mx-auto">
+            <!-- Hero -->
+            <section class="mb-20 relative">
+                <div class="diagonal-lines opacity-50"></div>
+                <div class="max-w-3xl">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span
+                            class="mono-label tag-cyan px-3 py-1.5 rounded-full"
+                            >v3.0.0</span
+                        >
+                        <span class="mono-label text-slate-500"
+                            >Latest Release</span
+                        >
+                    </div>
+                    <h1
+                        class="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-6 tracking-tight"
+                    >
+                        Media Data<br />
+                        <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400 glow-text"
+                            >Infrastructure</span
+                        >
+                    </h1>
+                    <p
+                        class="text-slate-400 text-lg sm:text-xl max-w-xl leading-relaxed mb-8"
+                    >
+                        High-throughput movie and series metadata API. Built for
+                        developers who need reliable, structured entertainment
+                        data at scale.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a
+                            href="/docs"
+                            class="btn-primary px-6 py-3 rounded-lg font-semibold text-sm text-white inline-flex items-center gap-2"
+                        >
+                            <span>Read Documentation</span>
+                            <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+                        <a
+                            href="/request-key"
+                            class="btn-whatsapp px-6 py-3 rounded-lg font-semibold text-sm text-white inline-flex items-center gap-2"
+                        >
+                            <i class="fas fa-key"></i>
+                            <span>Request API Key</span>
+                        </a>
+                        <a
+                            href="/try"
+                            class="btn-ghost px-5 py-3 rounded-lg font-semibold text-sm text-slate-300 hover:text-cyan-400 inline-flex items-center gap-2"
+                        >
+                            <i class="fas fa-flask text-cyan-400"></i>
+                            <span>Try Free</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Integration Workflow -->
+            <section class="mb-20">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="h-px flex-1 bg-gradient-to-r from-edge to-transparent"></div>
+                    <span class="mono-label text-slate-500">Quick Integration</span>
+                    <div class="h-px flex-1 bg-gradient-to-l from-edge to-transparent"></div>
+                </div>
+
+                <!-- Steps -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="panel rounded-xl p-5 border-t-2 border-cyan-500/40">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-7 h-7 rounded-full bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-black text-xs shrink-0">1</div>
+                            <span class="text-sm font-bold text-white">Get your API key</span>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">Fill in the request form — keys are issued within minutes. Or hit <a href="/try" class="text-cyan-400 hover:underline">/try</a> for 50 free searches per day with no key.</p>
+                        <a href="/request-key" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-colors">
+                            <i class="fas fa-key text-[10px]"></i> Request Key →
+                        </a>
+                    </div>
+                    <div class="panel rounded-xl p-5 border-t-2 border-violet-500/40">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-7 h-7 rounded-full bg-violet-500/15 border border-violet-500/30 flex items-center justify-center text-violet-400 font-black text-xs shrink-0">2</div>
+                            <span class="text-sm font-bold text-white">Set the auth header</span>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">Every request needs your key in the <code class="font-mono text-slate-300 text-[11px] bg-surface px-1 rounded">Authorization</code> header as a Bearer token.</p>
+                        <div class="mt-3 font-mono text-[11px] text-violet-300 bg-void/60 rounded px-2.5 py-1.5 border border-edge">Authorization: Bearer &lt;key&gt;</div>
+                    </div>
+                    <div class="panel rounded-xl p-5 border-t-2 border-emerald-500/40">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-7 h-7 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-black text-xs shrink-0">3</div>
+                            <span class="text-sm font-bold text-white">Call any endpoint</span>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">Every catalog endpoint — movies, series, anime, football, manga, captions and more. All return clean, consistent JSON.</p>
+                        <a href="/docs" class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors">
+                            <i class="fas fa-book-open text-[10px]"></i> View all endpoints →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Code window with tabs -->
+                <div class="panel rounded-xl overflow-hidden">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-edge">
+                        <div class="flex items-center gap-3">
+                            <div class="flex gap-1.5">
+                                <div class="dot dot-red"></div>
+                                <div class="dot dot-yellow"></div>
+                                <div class="dot dot-green"></div>
+                            </div>
+                            <div class="flex gap-1" id="qiTabs">
+                                <button onclick="switchQI('js')" id="qi-js" class="qi-tab active px-3 py-1 rounded text-xs font-semibold text-white bg-white/[0.06]">JavaScript</button>
+                                <button onclick="switchQI('curl')" id="qi-curl" class="qi-tab px-3 py-1 rounded text-xs font-semibold text-slate-400 hover:text-white transition-colors">cURL</button>
+                                <button onclick="switchQI('python')" id="qi-python" class="qi-tab px-3 py-1 rounded text-xs font-semibold text-slate-400 hover:text-white transition-colors">Python</button>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                            <span class="text-[10px] text-emerald-400 font-mono uppercase tracking-wider font-semibold">Operational</span>
+                        </div>
+                    </div>
+
+                    <div class="p-5 overflow-x-auto">
+                        <pre id="qi-code-js" class="qi-panel font-mono text-xs text-slate-300 leading-relaxed"><code><span class="text-slate-500">// Search for a movie</span>
+const res = await fetch(
+  "https://movieapi.runflix.name.ng/api/v3/search/avengers",
+  { headers: { Authorization: "Bearer YourApiKey" } }
+);
+const data = await res.json();
+<span class="text-slate-500">// data.results.items → array of matching titles</span>
+
+<span class="text-slate-500">// Get streaming sources for a title</span>
+const sources = await fetch(
+  `https://movieapi.runflix.name.ng/api/v3/sources/${data.results.items[0].subjectId}`,
+  { headers: { Authorization: "Bearer YourApiKey" } }
+);
+const { results } = await sources.json();
+<span class="text-slate-500">// results is a direct array of source objects
+// results[0].stream_url        → proxied HLS/MP4 stream URL
+// results[0].quality           → "1080p" | "720p" | "480p" | "360p"
+// results[0].browserCompatible → false (HEVC) / true (H.264)</span>
+</code></pre>
+
+                        <pre id="qi-code-curl" class="qi-panel hidden font-mono text-xs text-slate-300 leading-relaxed"><code><span class="text-slate-500"># Search for a movie</span>
+curl -X GET "https://movieapi.runflix.name.ng/api/v3/search/avengers" \
+     -H "Authorization: Bearer YourApiKey"
+
+<span class="text-slate-500"># Get streaming sources</span>
+curl -X GET "https://movieapi.runflix.name.ng/api/v3/sources/{id}" \
+     -H "Authorization: Bearer YourApiKey"
+
+<span class="text-slate-500"># Trending titles</span>
+curl -X GET "https://movieapi.runflix.name.ng/api/v3/trending" \
+     -H "Authorization: Bearer YourApiKey"</code></pre>
+
+                        <pre id="qi-code-python" class="qi-panel hidden font-mono text-xs text-slate-300 leading-relaxed"><code>import requests
+
+API_KEY = "YourApiKey"
+BASE    = "https://movieapi.runflix.name.ng/api/v3"
+HEADERS = {"Authorization": f"Bearer {API_KEY}"}
+
+<span class="text-slate-500"># Search for a movie</span>
+res  = requests.get(f"{BASE}/search/avengers", headers=HEADERS).json()
+item = res["results"]["items"][0]
+
+<span class="text-slate-500"># Get streaming sources</span>
+src  = requests.get(f"{BASE}/sources/{item['id']}", headers=HEADERS).json()
+url  = src["results"]["sources"][0]["url"]   <span class="text-slate-500"># stream URL</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="mt-4 flex items-center gap-6 px-1">
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-shield-alt text-cyan-500 mt-0.5 text-xs"></i>
+                        <p class="text-xs text-slate-500">All endpoints need <code class="font-mono text-slate-300 bg-surface px-1 py-0.5 rounded text-[11px]">Authorization: Bearer &lt;key&gt;</code></p>
+                    </div>
+                    <a href="/docs" class="text-xs text-slate-500 hover:text-cyan-400 transition-colors shrink-0 flex items-center gap-1.5">
+                        <i class="fas fa-book-open text-[10px]"></i> Full docs →
+                    </a>
+                </div>
+            </section>
+
+            <!-- Bento Features -->
+            <section class="mb-20">
+                <div class="flex items-center gap-3 mb-8">
+                    <div
+                        class="h-px flex-1 bg-gradient-to-r from-edge to-transparent"
+                    ></div>
+                    <span class="mono-label text-slate-500"
+                        >Core Capabilities</span
+                    >
+                    <div
+                        class="h-px flex-1 bg-gradient-to-l from-edge to-transparent"
+                    ></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bento-card rounded-xl p-6 md:col-span-2">
+                        <div class="flex items-start justify-between mb-4">
+                            <div
+                                class="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400"
+                            >
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <span class="mono-label tag-cyan px-2 py-1 rounded"
+                                >Edge Cached</span
+                            >
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">
+                            High Performance
+                        </h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Sub-100ms response times powered by Cloudflare's
+                            global edge network. Content is cached and served
+                            from 300+ locations worldwide for minimal latency.
+                        </p>
+                    </div>
+
+                    <div class="bento-card rounded-xl p-6">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 mb-4"
+                        >
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">
+                            Secure
+                        </h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Enterprise-grade bearer token authentication with
+                            automated threat detection and DDoS mitigation.
+                        </p>
+                    </div>
+
+                    <div class="bento-card rounded-xl p-6">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4"
+                        >
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">
+                            Comprehensive
+                        </h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Full metadata coverage including posters, trailers,
+                            ratings, cast, and multi-quality streaming sources.
+                        </p>
+                    </div>
+
+                    <div class="bento-card rounded-xl p-6 md:col-span-2">
+                        <div class="flex items-start justify-between mb-4">
+                            <div
+                                class="w-10 h-10 rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/20 flex items-center justify-center text-fuchsia-400"
+                            >
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <span
+                                class="mono-label tag-violet px-2 py-1 rounded"
+                                >REST + JSON</span
+                            >
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">
+                            Developer First
+                        </h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Clean REST architecture with predictable JSON
+                            schemas. Ready-to-use code examples in Node.js and
+                            Python. Standard HTTP response codes and intuitive
+                            endpoint naming.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats -->
+            <section class="mb-20">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="panel rounded-xl p-5 text-center">
+                        <div class="text-2xl font-black text-white mb-1">
+                            99.9%
+                        </div>
+                        <div class="mono-label text-slate-500">Uptime</div>
+                    </div>
+                    <div class="panel rounded-xl p-5 text-center">
+                        <div class="text-2xl font-black text-white mb-1">
+                            &lt;100ms
+                        </div>
+                        <div class="mono-label text-slate-500">Latency</div>
+                    </div>
+                    <div class="panel rounded-xl p-5 text-center">
+                        <div class="text-2xl font-black text-white mb-1">26</div>
+                        <div class="mono-label text-slate-500">Endpoints</div>
+                    </div>
+                    <div class="panel rounded-xl p-5 text-center">
+                        <div class="text-2xl font-black text-white mb-1">
+                            v3
+                        </div>
+                        <div class="mono-label text-slate-500">Version</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="mb-12">
+                <div
+                    class="panel rounded-2xl p-8 sm:p-12 relative overflow-hidden"
+                >
+                    <div
+                        class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-cyan-500/10 to-violet-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"
+                    ></div>
+                    <div
+                        class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+                    >
+                        <div>
+                            <h2
+                                class="text-2xl sm:text-3xl font-black text-white mb-2"
+                            >
+                                Ready to integrate?
+                            </h2>
+                            <p class="text-slate-400 text-sm max-w-md">
+                                Get your API credentials and start building in
+                                minutes. Our team is available for integration
+                                support.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <a
+                                href="/docs"
+                                class="btn-primary px-6 py-3 rounded-lg font-semibold text-sm text-white inline-flex items-center gap-2"
+                            >
+                                <span>View Docs</span>
+                                <i class="fas fa-arrow-right text-xs"></i>
+                            </a>
+                            <a
+                                href="/request-key"
+                                class="btn-ghost px-6 py-3 rounded-lg font-semibold text-sm text-slate-300 hover:text-white inline-flex items-center gap-2"
+                            >
+                                <i class="fas fa-key text-violet-400"></i>
+                                <span>Request Key</span>
+                            </a>
+                            <a
+                                href="/try"
+                                class="btn-ghost px-5 py-3 rounded-lg font-semibold text-sm text-slate-300 hover:text-cyan-400 inline-flex items-center gap-2"
+                            >
+                                <i class="fas fa-flask text-cyan-400"></i>
+                                <span>Try Free</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-edge bg-surface/50">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+                <div
+                    class="flex flex-col md:flex-row justify-between items-center gap-6"
+                >
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-7 h-7 rounded-md bg-gradient-to-br from-cyan-500 to-violet-500 flex items-center justify-center"
+                        >
+                            <i class="fas fa-play text-white text-[10px]"></i>
+                        </div>
+                        <span
+                            class="font-bold text-sm text-white tracking-tight"
+                            >RUNFLIX
+                            <span class="text-slate-500 font-normal"
+                                >Movies API</span
+                            ></span
+                        >
+                    </div>
+
+                    <div
+                        class="flex items-center gap-6 text-xs font-semibold text-slate-500 uppercase tracking-wider"
+                    >
+                        <a href="/" class="hover:text-white transition-colors"
+                            >Home</a
+                        >
+                        <a
+                            href="/docs"
+                            class="hover:text-white transition-colors"
+                            >Docs</a
+                        >
+                        <a
+                            href="https://api.runflix.name.ng"
+                            target="_blank"
+                            class="hover:text-white transition-colors"
+                            >More APIs</a
+                        >
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <a
+                            href="https://wa.me/+2348100785677"
+                            target="_blank"
+                            class="w-8 h-8 rounded-lg bg-panel border border-edge flex items-center justify-center text-slate-400 hover:text-emerald-400 hover:border-emerald-500/30 transition-all"
+                        >
+                            <i class="fab fa-whatsapp text-sm"></i>
+                        </a>
+                        <a
+                            href="https://api.runflix.name.ng"
+                            target="_blank"
+                            class="w-8 h-8 rounded-lg bg-panel border border-edge flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-500/30 transition-all"
+                        >
+                            <i class="fas fa-external-link-alt text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-8 pt-6 border-t border-edge text-center">
+                    <p class="text-[11px] text-slate-600 font-mono">
+                        Crafted by DaraTech
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            // Mobile panel toggle
+            const menuBtn = document.getElementById("menuBtn");
+            const mobilePanel = document.getElementById("mobilePanel");
+            const menuIcon = document.getElementById("menuIcon");
+            let panelOpen = false;
+
+            menuBtn.addEventListener("click", () => {
+                panelOpen = !panelOpen;
+                mobilePanel.classList.toggle("open", panelOpen);
+                menuIcon.className = panelOpen
+                    ? "fas fa-times text-lg"
+                    : "fas fa-bars text-lg";
+            });
+
+            // Mobile dropdown toggle
+            function toggleMobileDropdown(id) {
+                const el = document.getElementById(id);
+                const icon = document.getElementById(id + "Icon");
+                el.classList.toggle("open");
+                if (icon) {
+                    icon.style.transform = el.classList.contains("open")
+                        ? "rotate(180deg)"
+                        : "rotate(0deg)";
+                }
+            }
+
+            // Quick Integration tab switcher
+            function switchQI(lang) {
+                document.querySelectorAll('.qi-panel').forEach(p => p.classList.add('hidden'));
+                document.querySelectorAll('.qi-tab').forEach(t => {
+                    t.classList.remove('active', 'text-white', 'bg-white/[0.06]');
+                    t.classList.add('text-slate-400');
+                });
+                const panel = document.getElementById('qi-code-' + lang);
+                const tab   = document.getElementById('qi-' + lang);
+                if (panel) panel.classList.remove('hidden');
+                if (tab)   { tab.classList.add('text-white', 'bg-white/[0.06]'); tab.classList.remove('text-slate-400'); }
+            }
+        </script>
+    </body>
+</html>

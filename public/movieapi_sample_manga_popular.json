@@ -1,0 +1,16 @@
+{
+  "status": 200,
+  "success": true,
+  "creator": "DaraTech",
+  "results": {
+    "page": 1,
+    "hasNextPage": true,
+    "results": [
+      { "title": "Accidental Love",   "url": "https://rosyscans.id/manga/accidental-love/",   "image": "https://rosyscans.id/wp-content/uploads/2026/06/manga_cover_09047d16-da4d-4388-b2da-57fa99a29e8f-1-183x300.webp", "chapter": "Chapter 88",  "type": "manhua" },
+      { "title": "Daytime in the Bunker", "url": "https://rosyscans.id/manga/daytime-in-the-bunker/", "image": "https://rosyscans.id/wp-content/uploads/2026/06/aaa24b94-4d87-4961-ad13-9b862822ade1-3-1-207x300.webp", "chapter": "Chapter 30", "type": "manhwa" },
+      { "title": "Solo Leveling",         "url": "https://rosyscans.id/manga/solo-leveling/",           "image": "https://rosyscans.id/wp-content/uploads/2026/06/1757450384-1896-i474339-200x300.webp",                   "chapter": "Chapter 179.6", "type": "manhwa" },
+      { "title": "Death Is the Only Ending for the Villainess", "url": "https://rosyscans.id/manga/death-is-the-only-ending-for-the-villainess/", "image": "https://rosyscans.id/wp-content/uploads/2026/06/death-is-the-only-ending-for-the-villainess-210x300.webp", "chapter": "Chapter 214", "type": "manhwa" },
+      { "title": "Leveling Up with Skills", "url": "https://rosyscans.id/manga/leveling-up-with-skills/", "image": "https://rosyscans.id/wp-content/uploads/2026/06/leveling-up-with-skills-204x300.webp", "chapter": "Chapter 155", "type": "manhwa" }
+    ]
+  }
+}

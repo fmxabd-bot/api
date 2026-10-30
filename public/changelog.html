@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaraTech MovieAPI Changelog | Product Updates</title>
+    <meta name="description" content="Follow updates to DaraTech MovieAPI, including MovieBox endpoints, API authentication, stream links, and developer tools.">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#050508">
+    <link rel="canonical" href="https://movieapi.runflix.name.ng/changelog">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DaraTech MovieAPI">
+    <meta property="og:title" content="DaraTech MovieAPI Changelog">
+    <meta property="og:description" content="MovieAPI releases and product updates from DaraTech.">
+    <meta property="og:url" content="https://movieapi.runflix.name.ng/changelog">
+    <meta name="twitter:card" content="summary">
+    <link rel="icon" type="image/x-icon" href="https://runflix.name.ng/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --void: #050508; --panel: #0d0e14; --edge: rgba(255,255,255,0.07);
+            --text: #cbd5e1; --muted: #475569;
+        }
+        body { font-family: 'Inter','Segoe UI',system-ui,sans-serif; background: var(--void); color: var(--text); min-height: 100vh; }
+        a { text-decoration: none; color: inherit; }
+
+        header {
+            position: sticky; top: 0; z-index: 50;
+            background: rgba(5,5,8,0.92); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--edge); padding: 0 1.5rem;
+            height: 56px; display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo { display: flex; align-items: center; gap: 0.6rem; }
+        .logo-icon { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg,#8b5cf6,#6366f1); display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; }
+        .logo-text { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.04em; }
+        .logo-sub { font-size: 10px; color: var(--muted); font-family: monospace; margin-left: 4px; }
+        .nav-links { display: flex; align-items: center; gap: 1.25rem; }
+        .nav-link { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 0.4rem; transition: color 0.15s; }
+        .nav-link:hover { color: #fff; }
+        .nav-link.active { color: #a78bfa; }
+
+        main { max-width: 780px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+        .hero { margin-bottom: 3rem; }
+        .hero-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8b5cf6; font-family: monospace; margin-bottom: 0.6rem; }
+        .hero-title { font-size: 32px; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
+        .hero-desc { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 500px; }
+
+        .filter-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+        .filter-btn { font-size: 11px; font-weight: 600; padding: 0.35rem 0.8rem; border-radius: 6px; border: 1px solid var(--edge); background: rgba(255,255,255,0.03); color: var(--muted); cursor: pointer; transition: all 0.15s; }
+        .filter-btn:hover { color: #fff; border-color: rgba(255,255,255,0.15); }
+        .filter-btn.active { background: rgba(139,92,246,0.15); border-color: rgba(139,92,246,0.35); color: #a78bfa; }
+
+        .timeline { position: relative; }
+        .timeline::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, rgba(139,92,246,0.4), rgba(99,102,241,0.1) 80%, transparent); }
+
+        .entry { position: relative; padding-left: 3rem; margin-bottom: 2.5rem; }
+        .entry-dot {
+            position: absolute; left: 8px; top: 6px;
+            width: 16px; height: 16px; border-radius: 50%;
+            border: 2px solid var(--void);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .entry-dot.feature  { background: #6366f1; box-shadow: 0 0 10px rgba(99,102,241,0.5); }
+        .entry-dot.fix      { background: #10b981; box-shadow: 0 0 10px rgba(16,185,129,0.5); }
+        .entry-dot.breaking { background: #ef4444; box-shadow: 0 0 10px rgba(239,68,68,0.5); }
+        .entry-dot.improvement { background: #f59e0b; box-shadow: 0 0 10px rgba(245,158,11,0.5); }
+
+        .entry-card { background: var(--panel); border: 1px solid var(--edge); border-radius: 14px; padding: 1.25rem 1.5rem; transition: border-color 0.2s; }
+        .entry-card:hover { border-color: rgba(139,92,246,0.2); }
+
+        .entry-header { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+        .entry-version { font-size: 11px; font-family: monospace; font-weight: 700; color: #a78bfa; background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); padding: 2px 8px; border-radius: 5px; white-space: nowrap; }
+        .entry-type-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 5px; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+        .badge-feature     { background: rgba(99,102,241,0.12); color: #818cf8; border: 1px solid rgba(99,102,241,0.25); }
+        .badge-fix         { background: rgba(16,185,129,0.1); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
+        .badge-breaking    { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+        .badge-improvement { background: rgba(245,158,11,0.1); color: #fbbf24; border: 1px solid rgba(245,158,11,0.2); }
+
+        .entry-date { font-size: 11px; color: var(--muted); margin-left: auto; white-space: nowrap; display: flex; align-items: center; gap: 0.3rem; }
+        .entry-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+        .entry-desc { font-size: 13px; color: #64748b; line-height: 1.6; margin-bottom: 1rem; }
+        .entry-changes { list-style: none; display: flex; flex-direction: column; gap: 0.3rem; }
+        .entry-changes li { font-size: 12px; color: var(--text); display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .entry-changes li::before { content: '→'; color: #6366f1; font-size: 11px; margin-top: 1px; flex-shrink: 0; }
+
+        .empty-state { text-align: center; padding: 4rem 1rem; color: var(--muted); }
+        .empty-state i { font-size: 36px; margin-bottom: 1rem; display: block; opacity: 0.25; }
+        .empty-state p { font-size: 14px; }
+
+        #loadingState { text-align: center; padding: 3rem; color: var(--muted); }
+        .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(139,92,246,0.2); border-top-color: #8b5cf6; border-radius: 50%; animation: spin 0.7s linear infinite; margin-bottom: 0.75rem; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-film"></i></div>
+            <span class="logo-text">RUNFLIX</span>
+            <span class="logo-sub">MOVIE API</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/" class="nav-link"><i class="fas fa-home" style="font-size:10px;"></i> Home</a>
+            <a href="/docs" class="nav-link"><i class="fas fa-book-open" style="font-size:10px;"></i> Docs</a>
+            <a href="/changelog" class="nav-link active"><i class="fas fa-scroll" style="font-size:10px;"></i> Changelog</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero">
+            <div class="hero-eyebrow"><i class="fas fa-scroll" style="margin-right:6px;"></i>What's New</div>
+            <h1 class="hero-title">API Changelog</h1>
+            <p class="hero-desc">Every update, fix, and improvement to the RUNFLIX Movie API — newest first.</p>
+        </div>
+
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+            <button class="filter-btn" onclick="setFilter('feature', this)"><i class="fas fa-plus-circle" style="font-size:9px;margin-right:4px;"></i>Feature</button>
+            <button class="filter-btn" onclick="setFilter('fix', this)"><i class="fas fa-wrench" style="font-size:9px;margin-right:4px;"></i>Fix</button>
+            <button class="filter-btn" onclick="setFilter('improvement', this)"><i class="fas fa-arrow-up" style="font-size:9px;margin-right:4px;"></i>Improvement</button>
+            <button class="filter-btn" onclick="setFilter('breaking', this)"><i class="fas fa-bolt" style="font-size:9px;margin-right:4px;"></i>Breaking</button>
+        </div>
+
+        <div id="loadingState">
+            <div class="spinner"></div>
+            <p style="font-size:12px;">Loading changelog…</p>
+        </div>
+
+        <div class="timeline" id="timeline" style="display:none;"></div>
+    </main>
+
+    <script>
+        let allEntries = [];
+        let activeFilter = 'all';
+
+        const TYPE_ICONS = {
+            feature: 'fa-plus-circle',
+            fix: 'fa-wrench',
+            breaking: 'fa-bolt',
+            improvement: 'fa-arrow-up'
+        };
+
+        // Detect the base path so the fetch works both directly (localhost:3000)
+        // and through the Replit proxy (/runflix-api/changelog → base = /runflix-api)
+        const BASE = window.location.pathname.replace(/\/changelog.*$/, '');
+
+        async function tryFetch(url) {
+            const r = await fetch(url, { headers: { 'Cache-Control': 'no-cache' } });
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+        }
+
+        async function loadChangelog() {
+            const candidates = [];
+            if (BASE) candidates.push(BASE + '/api/changelog');
+            candidates.push('/api/changelog');
+            candidates.push(window.location.origin + '/api/changelog');
+
+            let lastErr;
+            for (const url of candidates) {
+                try {
+                    const data = await tryFetch(url);
+                    allEntries = (data.results || data || []).sort((a, b) => new Date(b.date) - new Date(a.date));
+                    document.getElementById('loadingState').style.display = 'none';
+                    document.getElementById('timeline').style.display = 'block';
+                    render();
+                    return;
+                } catch (e) { lastErr = e; }
+            }
+            document.getElementById('loadingState').innerHTML = '<i class="fas fa-exclamation-circle" style="font-size:28px;opacity:0.3;display:block;margin-bottom:0.5rem;"></i><p style="font-size:12px;">Failed to load changelog.</p>';
+        }
+
+        function setFilter(type, btn) {
+            activeFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            render();
+        }
+
+        function fmtDate(d) {
+            if (!d) return '—';
+            const dt = new Date(d + 'T00:00:00');
+            return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function render() {
+            const filtered = activeFilter === 'all' ? allEntries : allEntries.filter(e => e.type === activeFilter);
+            const tl = document.getElementById('timeline');
+            if (!filtered.length) {
+                tl.innerHTML = `<div class="empty-state"><i class="fas fa-scroll"></i><p>No ${activeFilter === 'all' ? '' : activeFilter + ' '}entries yet.</p></div>`;
+                return;
+            }
+            tl.innerHTML = filtered.map(entry => {
+                const changes = (entry.changes || []).map(c => `<li>${c}</li>`).join('');
+                const dotClass = entry.type || 'feature';
+                const badgeClass = `badge-${entry.type || 'feature'}`;
+                const typeLabel = (entry.type || 'feature').charAt(0).toUpperCase() + (entry.type || 'feature').slice(1);
+                return `<div class="entry" data-type="${entry.type}">
+                    <div class="entry-dot ${dotClass}"></div>
+                    <div class="entry-card">
+                        <div class="entry-header">
+                            <span class="entry-version">${entry.version || 'v?'}</span>
+                            <span class="entry-type-badge ${badgeClass}">
+                                <i class="fas ${TYPE_ICONS[entry.type] || 'fa-circle'}" style="margin-right:4px;font-size:8px;"></i>${typeLabel}
+                            </span>
+                            <span class="entry-date"><i class="far fa-calendar-alt" style="font-size:9px;"></i>${fmtDate(entry.date)}</span>
+                        </div>
+                        <div class="entry-title">${entry.title || ''}</div>
+                        ${entry.description ? `<div class="entry-desc">${entry.description}</div>` : ''}
+                        ${changes ? `<ul class="entry-changes">${changes}</ul>` : ''}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        loadChangelog();
+    </script>
+</body>
+</html>

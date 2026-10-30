@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Live Channel Tester — RUNFLIX</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:#07090f;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow:hidden}
+    ::-webkit-scrollbar{width:3px;height:3px}
+    ::-webkit-scrollbar-track{background:#0a0d14}
+    ::-webkit-scrollbar-thumb{background:#1e2738;border-radius:2px}
+
+    /* Layout */
+    #root{display:flex;flex-direction:column;height:100dvh;height:100vh}
+    #main{display:flex;flex:1;overflow:hidden;flex-direction:column}
+    @media(min-width:768px){#main{flex-direction:row}}
+
+    /* Player side */
+    #playerSide{display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;max-height:52vh}
+    @media(min-width:768px){#playerSide{flex:1;overflow-y:auto;max-height:none}}
+
+    /* Channel list side */
+    #listSide{display:flex;flex-direction:column;overflow:hidden;border-top:1px solid #1a2236;flex:1;min-height:0}
+    @media(min-width:768px){#listSide{flex:none;width:280px;border-top:none;border-left:1px solid #1a2236;order:-1}}
+
+    /* Video wrapper — 16:9 */
+    #videoWrap{position:relative;background:#000;width:100%;flex-shrink:0}
+    #videoWrap::before{content:'';display:block;padding-top:56.25%}
+    #videoWrap video,#videoWrap .overlay{position:absolute;inset:0;width:100%;height:100%}
+    #videoWrap video{object-fit:contain}
+
+    /* Overlay states */
+    .overlay{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+    #idleOv{background:#07090f;z-index:5}
+    #spinOv{background:rgba(0,0,0,.75);z-index:6;display:none}
+    #errOv {background:rgba(7,9,15,.95);z-index:7;display:none}
+
+    /* Channel items */
+    .ch-row{display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;border-left:2px solid transparent;transition:background .1s,border-color .1s;min-width:0}
+    .ch-row:hover{background:#0f1520}
+    .ch-row.active{background:#0f1520;border-left-color:#06b6d4}
+    .ch-logo{width:30px;height:30px;border-radius:6px;object-fit:contain;background:#0a0d14;border:1px solid #1a2236;flex-shrink:0;padding:2px}
+    .ch-icon{width:30px;height:30px;border-radius:6px;background:#1a2236;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+    /* Dot */
+    .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .dot-u{background:#2d3748}
+    .dot-t{background:#f59e0b;animation:blink 1s infinite}
+    .dot-w{background:#10b981}
+    .dot-f{background:#ef4444}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+    /* Stat pills */
+    .stat{display:flex;align-items:center;gap:5px;font-size:11px;padding:3px 8px;border-radius:6px;background:#0d1017;border:1px solid #1a2236}
+
+    /* Btn */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;border-radius:8px;font-size:11px;font-weight:600;padding:6px 12px;cursor:pointer;transition:background .15s,opacity .15s;border:1px solid transparent}
+    .btn:disabled{opacity:.4;cursor:not-allowed}
+    .btn-cyan{background:rgba(6,182,212,.1);border-color:rgba(6,182,212,.3);color:#06b6d4}
+    .btn-cyan:not(:disabled):hover{background:rgba(6,182,212,.2)}
+    .btn-green{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.25);color:#10b981}
+    .btn-green:not(:disabled):hover{background:rgba(16,185,129,.2)}
+    .btn-red{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.25);color:#ef4444}
+    .btn-red:hover{background:rgba(239,68,68,.2)}
+    .btn-ghost{background:#0d1017;border-color:#1a2236;color:#64748b}
+    .btn-ghost:hover{color:#e2e8f0}
+
+    /* Stream rows */
+    .srow{display:flex;align-items:center;gap:8px;background:#0d1017;border:1px solid #1a2236;border-radius:8px;padding:8px 12px;cursor:pointer;transition:border-color .12s}
+    .srow:hover{border-color:rgba(6,182,212,.3)}
+
+    /* Progress bar */
+    .pbar{height:2px;background:#1a2236;border-radius:1px;overflow:hidden}
+    .pfill{height:100%;background:linear-gradient(90deg,#06b6d4,#6366f1);border-radius:1px;transition:width .3s}
+
+    /* Inputs */
+    input,select{background:#0d1017;border:1px solid #1a2236;border-radius:8px;color:#cbd5e1;font-size:12px;padding:6px 10px;outline:none;width:100%;transition:border-color .15s}
+    input:focus,select:focus{border-color:rgba(6,182,212,.4)}
+    input::placeholder{color:#374151}
+    select option{background:#0d1017}
+
+    /* SF pill buttons */
+    .sfp{font-size:10px;padding:3px 8px;border-radius:5px;border:1px solid #1a2236;background:transparent;cursor:pointer;color:#4b5563;transition:color .15s,background .15s}
+    .sfp:hover{color:#cbd5e1}
+    .sfp.on{background:#1a2236;color:#e2e8f0}
+
+    /* Mobile only: collapsed list header toggle */
+    #listToggle{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#0a0d14;border-bottom:1px solid #1a2236;cursor:pointer;flex-shrink:0}
+    @media(min-width:768px){#listToggle{display:none}}
+    #listBody{display:none;flex-direction:column;flex:1;overflow:hidden}
+    #listBody.open{display:flex}
+    @media(min-width:768px){#listBody{display:flex!important}}
+
+    /* Setup screen */
+    #setup{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:16px;padding:24px}
+    #setup.hidden{display:none}
+  </style>
+</head>
+<body>
+<div id="root">
+
+  <!-- ═══ HEADER ═══════════════════════════════════════════════════════ -->
+  <header style="background:#0a0d14;border-bottom:1px solid #1a2236;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="color:#06b6d4;font-family:monospace;font-weight:700;font-size:14px;letter-spacing:.12em">RUNFLIX</span>
+      <span style="color:#374151">·</span>
+      <span style="color:#64748b;font-size:12px">Live Channel Tester</span>
+      <span style="padding:2px 6px;border-radius:4px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;font-size:9px;font-weight:700;letter-spacing:.1em">PRIVATE</span>
+    </div>
+
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-cyan" id="loadBtn" onclick="loadChannels()">
+        <i class="fas fa-satellite-dish" style="font-size:10px"></i>Load Channels
+      </button>
+      <button class="btn btn-ghost" id="warmBtn" onclick="warmCache()" title="Pre-fetch page 1 to prime the CF edge cache">
+        <i class="fas fa-fire" style="font-size:10px"></i><span id="warmTxt">Warm Cache</span>
+      </button>
+      <button class="btn btn-ghost" id="exportBtn" onclick="exportReport()" disabled title="Export test report as CSV">
+        <i class="fas fa-download" style="font-size:10px"></i>Export Report
+      </button>
+      <button class="btn btn-green" id="m3uBtn" onclick="exportM3U()" disabled title="Download working channels as M3U playlist (VLC, Tivimate, etc.)">
+        <i class="fas fa-file-video" style="font-size:10px"></i>Export M3U
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══ STATS BAR ════════════════════════════════════════════════════ -->
+  <div id="statsBar" style="background:#0a0d14;border-bottom:1px solid #1a2236;padding:7px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0">
+    <div class="stat"><span class="dot dot-u"></span><span style="color:#64748b">Total <strong id="sTotal" style="color:#e2e8f0;font-family:monospace">—</strong></span></div>
+    <div class="stat"><span class="dot" style="background:#3b82f6"></span><span style="color:#64748b">Tested <strong id="sLoaded" style="color:#e2e8f0;font-family:monospace">—</strong></span></div>
+    <div class="stat"><span class="dot dot-w"></span><span style="color:#64748b">Working <strong id="sWorking" style="color:#10b981;font-family:monospace">0</strong></span></div>
+    <div class="stat"><span class="dot dot-f"></span><span style="color:#64748b">Failed <strong id="sFailed" style="color:#ef4444;font-family:monospace">0</strong></span></div>
+    <div class="stat"><span class="dot dot-u"></span><span style="color:#64748b">Untested <strong id="sUntested" style="color:#94a3b8;font-family:monospace">—</strong></span></div>
+    <div id="loadingMsg" style="margin-left:auto;display:none;align-items:center;gap:6px;font-size:11px;color:#64748b">
+      <i class="fas fa-circle-notch fa-spin" style="color:#06b6d4"></i>
+      <span id="loadTxt">Loading…</span>
+    </div>
+    <div id="testMsg" style="margin-left:auto;display:none;align-items:center;gap:6px;font-size:11px;color:#64748b">
+      <i class="fas fa-circle-notch fa-spin" style="color:#f59e0b"></i>
+      <span id="testTxt">Testing…</span>
+      <span id="testCtr" style="color:#f59e0b;font-family:monospace"></span>
+    </div>
+  </div>
+
+  <!-- ═══ MAIN ══════════════════════════════════════════════════════════ -->
+  <div id="main">
+
+    <!-- ── LEFT / BOTTOM: channel list ──────────────────────────────── -->
+    <div id="listSide">
+
+      <!-- Mobile toggle -->
+      <div id="listToggle" onclick="toggleList()">
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#94a3b8">
+          <i class="fas fa-list-ul" style="color:#06b6d4;font-size:11px"></i>
+          Channels — <strong id="visCount" style="font-family:monospace">0</strong> shown
+        </div>
+        <i id="toggleIcon" class="fas fa-chevron-down" style="font-size:11px;color:#4b5563"></i>
+      </div>
+
+      <!-- List body (open by default) -->
+      <div id="listBody" class="open">
+
+        <!-- Filters -->
+        <div style="padding:10px;border-bottom:1px solid #1a2236;display:flex;flex-direction:column;gap:8px;flex-shrink:0">
+          <div style="position:relative">
+            <i class="fas fa-magnifying-glass" style="position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#374151;font-size:10px"></i>
+            <input id="searchIn" type="text" placeholder="Search…" style="padding-left:26px" oninput="applyFilters()" />
+          </div>
+          <div style="display:flex;gap:6px">
+            <select id="catFil" onchange="applyFilters()" style="flex:1"><option value="">All categories</option></select>
+            <select id="cntFil" onchange="applyFilters()" style="flex:1"><option value="">All countries</option></select>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-green" id="testVisBtn" onclick="startTestVisible()" disabled style="flex:1">
+              <i class="fas fa-vial" style="font-size:10px"></i>Test Visible
+            </button>
+            <button class="btn" id="batchAllBtn" onclick="startBatchAll()" disabled
+              style="flex:1;border-color:rgba(99,102,241,.4);color:#818cf8">
+              <i class="fas fa-bolt" style="font-size:10px"></i>Batch All
+            </button>
+            <button class="btn btn-red" id="stopBtn" onclick="stopTest()" style="display:none;padding:6px 10px">
+              <i class="fas fa-stop" style="font-size:10px"></i>
+            </button>
+          </div>
+          <!-- Resume banner — shown after cache restore if untested channels remain -->
+          <div id="resumeBanner" style="display:none;align-items:center;gap:6px;font-size:11px;padding:6px 8px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.25);border-radius:6px">
+            <i class="fas fa-rotate-right" style="color:#818cf8;flex-shrink:0"></i>
+            <span id="resumeTxt" style="flex:1;color:#94a3b8"></span>
+            <button onclick="resumeBatchAll()" style="background:rgba(99,102,241,.2);border:1px solid rgba(99,102,241,.4);color:#818cf8;border-radius:4px;padding:2px 8px;font-size:10px;cursor:pointer">
+              Resume
+            </button>
+            <button onclick="document.getElementById('resumeBanner').style.display='none'" style="background:none;border:none;color:#374151;cursor:pointer;padding:0 2px;font-size:11px">✕</button>
+          </div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
+            <button class="sfp on" id="sf-all"      onclick="setSF('')">All</button>
+            <button class="sfp"    id="sf-working"  onclick="setSF('working')">✓ Working</button>
+            <button class="sfp"    id="sf-failed"   onclick="setSF('failed')">✗ Failed</button>
+            <button class="sfp"    id="sf-untested" onclick="setSF('untested')">? Untested</button>
+          </div>
+          <!-- Concurrency + auto-test row -->
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+            <span style="font-size:10px;color:#374151;flex-shrink:0">Speed:</span>
+            <button class="sfp" id="cc-1" onclick="setConcurrency(1)">1×</button>
+            <button class="sfp" id="cc-2" onclick="setConcurrency(2)">2×</button>
+            <button class="sfp" id="cc-3" onclick="setConcurrency(3)">3×</button>
+            <button class="sfp" id="cc-5" onclick="setConcurrency(5)">5×</button>
+            <label style="margin-left:auto;display:flex;align-items:center;gap:4px;cursor:pointer;font-size:10px;color:#374151;white-space:nowrap" title="Auto-run Batch All when cached results are older than 2h">
+              <input type="checkbox" id="autoChk" onchange="saveAutoSetting()" style="accent-color:#818cf8;cursor:pointer">Auto-test
+            </label>
+          </div>
+          <button class="btn btn-red" id="copyFailedBtn" onclick="copyFailed()" disabled style="width:100%">
+            <i class="fas fa-copy" style="font-size:10px"></i><span id="copyFailedTxt">Copy Failed IDs</span>
+          </button>
+
+          <!-- Progress bar -->
+          <div id="progWrap" style="display:none">
+            <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <!-- Desktop channel count -->
+        <div style="padding:5px 12px;border-bottom:1px solid #1a2236;display:none" id="deskCount" class="md:flex">
+          <span style="font-size:10px;color:#374151;font-family:monospace"><span id="visCountD">0</span> channels shown</span>
+        </div>
+
+        <!-- Scrollable channel list -->
+        <div id="chList" style="flex:1;overflow-y:auto;min-height:0">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:#374151">
+            <i class="fas fa-satellite-dish" style="font-size:32px"></i>
+            <span style="font-size:12px;text-align:center;padding:0 16px">Load your channels to get started</span>
+          </div>
+        </div>
+
+      </div><!-- /listBody -->
+    </div><!-- /listSide -->
+
+    <!-- ── RIGHT / TOP: player ──────────────────────────────────────── -->
+    <div id="playerSide">
+
+      <!-- VIDEO BOX -->
+      <div id="videoWrap">
+        <video id="vid" autoplay muted playsinline controls></video>
+        <!-- Idle -->
+        <div class="overlay" id="idleOv">
+          <i class="fas fa-tv" style="font-size:40px;color:#1e2738"></i>
+          <span style="font-size:13px;color:#374151">Select a channel to watch live</span>
+        </div>
+        <!-- Spinner -->
+        <div class="overlay" id="spinOv">
+          <i class="fas fa-circle-notch fa-spin" style="font-size:28px;color:#06b6d4"></i>
+          <span style="font-size:12px;color:#64748b">Loading stream…</span>
+        </div>
+        <!-- Error -->
+        <div class="overlay" id="errOv">
+          <i class="fas fa-exclamation-triangle" style="font-size:28px;color:#ef4444"></i>
+          <span style="font-size:13px;color:#fca5a5;font-weight:600">Stream unavailable</span>
+          <span id="errTxt" style="font-size:11px;color:#64748b;text-align:center;padding:0 24px;line-height:1.5"></span>
+          <button class="btn btn-ghost" onclick="retryStream()" style="margin-top:4px">
+            <i class="fas fa-redo" style="font-size:10px"></i>Retry
+          </button>
+        </div>
+      </div>
+
+      <!-- Now playing bar -->
+      <div id="npBar" style="display:none;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #1a2236;background:#0a0d14">
+        <img id="npLogo" src="" alt="" class="ch-logo" onerror="this.style.display='none'" />
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span id="npName" style="font-size:13px;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></span>
+            <span style="width:7px;height:7px;border-radius:50%;background:#ef4444;animation:blink 1.2s infinite;flex-shrink:0"></span>
+            <span style="font-size:9px;color:#f87171;font-family:monospace;letter-spacing:.1em;flex-shrink:0">LIVE</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:2px">
+            <span id="npCountry" style="font-size:11px;color:#64748b"></span>
+            <span id="npCats"    style="font-size:11px;color:#374151;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></span>
+          </div>
+        </div>
+        <div id="npStreams" style="font-size:11px;color:#374151;flex-shrink:0"></div>
+      </div>
+
+      <!-- Scrollable info area -->
+      <div style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:14px">
+
+        <!-- Stream URL list -->
+        <div id="streamPanel" style="display:none">
+          <p style="font-size:10px;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Available Streams — tap to switch</p>
+          <div id="streamList" style="display:flex;flex-direction:column;gap:6px"></div>
+        </div>
+
+        <!-- Metadata grid -->
+        <div id="metaPanel" style="display:none">
+          <p style="font-size:10px;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Channel Info</p>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+            <div style="background:#0d1017;border:1px solid #1a2236;border-radius:8px;padding:10px">
+              <p style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#374151;margin-bottom:4px">Channel ID</p>
+              <p id="mId" style="font-size:11px;font-family:monospace;color:#94a3b8;word-break:break-all"></p>
+            </div>
+            <div style="background:#0d1017;border:1px solid #1a2236;border-radius:8px;padding:10px">
+              <p style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#374151;margin-bottom:4px">Country</p>
+              <p id="mCountry" style="font-size:12px;color:#cbd5e1"></p>
+            </div>
+            <div style="background:#0d1017;border:1px solid #1a2236;border-radius:8px;padding:10px">
+              <p style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#374151;margin-bottom:4px">Languages</p>
+              <p id="mLangs" style="font-size:12px;color:#cbd5e1"></p>
+            </div>
+            <div style="background:#0d1017;border:1px solid #1a2236;border-radius:8px;padding:10px">
+              <p style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#374151;margin-bottom:4px">Streams</p>
+              <p id="mStreams" style="font-size:14px;font-family:monospace;font-weight:700;color:#06b6d4"></p>
+            </div>
+            <div style="background:#0d1017;border:1px solid #1a2236;border-radius:8px;padding:10px;grid-column:span 2">
+              <p style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#374151;margin-bottom:4px">Categories</p>
+              <p id="mCats" style="font-size:12px;color:#cbd5e1"></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /playerSide -->
+  </div><!-- /main -->
+</div><!-- /root -->
+
+<!-- ══════════════ SCRIPT ══════════════ -->
+<script>
+/* ─── State ─────────────────────────────────────────── */
+let allCh      = [];          // all loaded channels
+let vis        = [];          // filtered view
+let st         = {};          // status per id: untested|testing|working|failed
+let curCh      = null;        // currently selected channel
+let curStreams  = [];          // streams for current channel
+let hlsInst    = null;
+let stopFlag     = false;
+let testing      = false;
+let testWorker   = null;
+let sfFilter     = '';          // status filter
+let listOpen     = true;        // mobile list toggle — starts open
+let concurrency  = parseInt(localStorage.getItem('runflix_cc') || '2', 10);
+const AUTO_STALE = 2 * 60 * 60 * 1000;  // auto-test if batch is older than this
+const LS_BATCH   = 'runflix_batch_at_v1';
+const LS_AUTO    = 'runflix_auto_v1';
+
+/* ─── localStorage persistence ──────────────────────── */
+const LS_CH = 'runflix_ch_v1';
+const LS_ST = 'runflix_st_v1';
+const LS_AT = 'runflix_at_v1';
+const CACHE_TTL = 2 * 60 * 60 * 1000; // 2 hours
+
+function persistChannels() {
+  try {
+    localStorage.setItem(LS_CH, JSON.stringify(allCh));
+    localStorage.setItem(LS_AT, String(Date.now()));
+  } catch {}
+}
+
+let _stTimer = null;
+function persistStatus() {
+  clearTimeout(_stTimer);
+  _stTimer = setTimeout(() => {
+    try { localStorage.setItem(LS_ST, JSON.stringify(st)); } catch {}
+  }, 400);
+}
+
+function restoreFromCache() {
+  try {
+    const at = parseInt(localStorage.getItem(LS_AT) || '0');
+    if (!at || Date.now() - at > CACHE_TTL) return false;
+    const saved = JSON.parse(localStorage.getItem(LS_CH) || 'null');
+    if (!Array.isArray(saved) || !saved.length) return false;
+    allCh = saved;
+    allCh.forEach(c => { st[c.id] = 'untested'; });
+    const savedSt = JSON.parse(localStorage.getItem(LS_ST) || 'null');
+    if (savedSt && typeof savedSt === 'object') Object.assign(st, savedSt);
+    return true;
+  } catch { return false; }
+}
+
+/* ─── Background tester (Web Worker source) ─────────── */
+/* Supports N concurrent slots — each slot grabs the next untested channel
+   from a shared index, so N streams are always being tested in parallel.
+   Plain fetch() (no HLS.js) keeps memory flat and works in background tabs. */
+const WORKER_SRC = `
+async function testUrl(url) {
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 11000);
+    const r = await fetch(url, { signal: ctrl.signal, redirect: 'follow' });
+    clearTimeout(t);
+    if (!r.ok) return false;
+    const txt = await r.text();
+    return txt.includes('#EXTM3U') || txt.includes('#EXT-X-') || txt.includes('#EXTINF');
+  } catch { return false; }
+}
+self.onmessage = async function({ data }) {
+  if (data.cmd === 'stop') { self.close(); return; }
+  const { channels, concurrency = 1 } = data;
+  const total = channels.length;
+  let nextIdx = 0;                    // shared cursor across all slots
+  async function slot() {
+    while (nextIdx < total) {
+      const i = nextIdx++;
+      const ch = channels[i];
+      let ok = false;
+      for (const s of (ch.streams || [])) {
+        ok = await testUrl(s.url);
+        if (ok) break;
+      }
+      self.postMessage({ type: 'result', id: ch.id, ok, name: ch.name });
+    }
+  }
+  /* Run N slots in parallel — Promise.all waits for all to finish */
+  await Promise.all(Array.from({ length: Math.max(1, concurrency) }, slot));
+  self.postMessage({ type: 'done' });
+};
+`;
+
+/* ─── Boot ──────────────────────────────────────────── */
+window.addEventListener('load', () => {
+  document.getElementById('chList').addEventListener('click', e => {
+    const row = e.target.closest('[data-chid]');
+    if (row) selectChannel(row.dataset.chid);
+  });
+
+  silentWarm();
+  try { _initUI(); } catch {}  // never let UI init block auto-load
+
+  if (restoreFromCache()) {
+    populateDDL();
+    applyFilters();
+    updateStats();
+    document.getElementById('loadBtn').disabled     = false;
+    document.getElementById('testVisBtn').disabled  = false;
+    document.getElementById('batchAllBtn').disabled = false;
+    document.getElementById('exportBtn').disabled   = false;
+    const mins = Math.round((Date.now() - parseInt(localStorage.getItem(LS_AT) || '0')) / 60000);
+    showLoading(true, `Restored ${allCh.length} channels from cache (${mins}m ago) — click Load to refresh`);
+    setTimeout(() => showLoading(false), 5000);
+
+    const untestedCount = Object.values(st).filter(s => s === 'untested').length;
+    const batchAt       = parseInt(localStorage.getItem(LS_BATCH) || '0');
+    const batchStale    = !batchAt || Date.now() - batchAt > AUTO_STALE;
+    const autoOn        = localStorage.getItem(LS_AUTO) === '1';
+
+    if (untestedCount > 0) {
+      /* Some channels still untested — show resume banner */
+      document.getElementById('resumeTxt').textContent =
+        `${untestedCount.toLocaleString()} channels untested from last session`;
+      document.getElementById('resumeBanner').style.display = 'flex';
+      /* If auto-test enabled, kick off automatically after a short delay */
+      if (autoOn) setTimeout(() => {
+        document.getElementById('resumeBanner').style.display = 'none';
+        startBatchAll();
+      }, 2000);
+    } else if (autoOn && batchStale) {
+      /* All previously tested, but results are stale — auto re-test */
+      const batchMins = batchAt ? Math.round((Date.now() - batchAt) / 60000) : null;
+      showLoading(true, `Auto-test: results ${batchMins ? batchMins + 'm old' : 'never run'} — re-testing all channels…`);
+      setTimeout(() => { showLoading(false); startBatchAll(); }, 1500);
+    }
+  } else {
+    loadChannels();
+  }
+});
+
+/* ─── Warm Cache ─────────────────────────────────────── */
+async function warmCache() {
+  const btn = document.getElementById('warmBtn');
+  const txt = document.getElementById('warmTxt');
+  btn.disabled = true;
+  txt.textContent = 'Warming…';
+  btn.querySelector('i').className = 'fas fa-circle-notch fa-spin';
+
+  const ok = await silentWarm();
+
+  if (ok) {
+    btn.querySelector('i').className = 'fas fa-check';
+    txt.textContent = 'Cache warm!';
+    btn.style.borderColor = 'rgba(16,185,129,.4)';
+    btn.style.color = '#10b981';
+    setTimeout(() => {
+      btn.querySelector('i').className = 'fas fa-fire';
+      txt.textContent = 'Warm Cache';
+      btn.style.borderColor = '';
+      btn.style.color = '';
+      btn.disabled = false;
+    }, 4000);
+  } else {
+    btn.querySelector('i').className = 'fas fa-fire';
+    txt.textContent = 'Warm Cache';
+    btn.disabled = false;
+  }
+}
+
+async function silentWarm() {
+  try {
+    const r = await fetch('/api/v3/live?limit=1&page=1');
+    return r.ok;
+  } catch { return false; }
+}
+
+/* ─── Toggle mobile channel list ────────────────────── */
+function toggleList() {
+  listOpen = !listOpen;
+  document.getElementById('listBody').classList.toggle('open', listOpen);
+  document.getElementById('toggleIcon').className = listOpen
+    ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+}
+
+/* ─── Load channels (all pages) ─────────────────────── */
+async function loadChannels() {
+  allCh = []; st = {};
+  updateStats();
+  showLoading(true, 'Fetching page 1…');
+  document.getElementById('loadBtn').disabled     = true;
+  document.getElementById('testVisBtn').disabled  = true;
+  document.getElementById('batchAllBtn').disabled = true;
+  document.getElementById('exportBtn').disabled   = true;
+  document.getElementById('resumeBanner').style.display = 'none';
+
+  let page = 1, totalPages = 1;
+  let lastRender = 0;          // throttle: redraw at most once per 1.5 s during fetch
+  const RENDER_MS = 1500;
+
+  while (page <= totalPages) {
+    let retries = 0, success = false;
+    while (retries < 3 && !success) {
+      try {
+        const r = await fetch(`/api/v3/live?limit=200&page=${page}`);
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const d = await r.json();
+
+        if (!d.success) {
+          showLoading(false);
+          document.getElementById('loadBtn').disabled    = false;
+          document.getElementById('testVisBtn').disabled = allCh.length === 0;
+          alert('API error: ' + (d.message || 'Unknown error'));
+          return;
+        }
+
+        const { total = 0, pages = 1, results = [] } = d.results || {};
+        totalPages = pages;
+
+        for (const ch of results) { allCh.push(ch); st[ch.id] = 'untested'; }
+        showLoading(true, `Loaded ${allCh.length} / ${total} — page ${page}/${totalPages}…`);
+        updateStats();
+
+        /* Only rebuild DOM when enough time has passed — avoids scroll-reset on every page */
+        if (Date.now() - lastRender > RENDER_MS) {
+          applyFilters();
+          lastRender = Date.now();
+        }
+
+        success = true;
+        page++;
+      } catch (e) {
+        retries++;
+        if (retries < 3) {
+          showLoading(true, `Page ${page} failed (${e.message}) — retry ${retries}/3…`);
+          await sleep(2000);
+        } else {
+          showLoading(true, `Stopped at page ${page}: ${e.message}. Loaded ${allCh.length} channels so far.`);
+          totalPages = 0;
+        }
+      }
+    }
+  }
+
+  populateDDL();
+  applyFilters();
+  updateStats();
+  showLoading(false);
+  document.getElementById('loadBtn').disabled     = false;
+  document.getElementById('testVisBtn').disabled  = false;
+  document.getElementById('batchAllBtn').disabled = false;
+  document.getElementById('exportBtn').disabled   = allCh.length === 0;
+
+  /* Cache channels in localStorage — next visit restores instantly */
+  persistChannels();
+}
+
+/* ─── Filter ────────────────────────────────────────── */
+function applyFilters() {
+  const q  = document.getElementById('searchIn').value.toLowerCase();
+  const c  = document.getElementById('catFil').value;
+  const cn = document.getElementById('cntFil').value;
+
+  vis = allCh.filter(ch => {
+    if (q  && !ch.name.toLowerCase().includes(q))         return false;
+    if (c  && !(ch.categories || []).includes(c))          return false;
+    if (cn && ch.country !== cn)                            return false;
+    if (sfFilter && st[ch.id] !== sfFilter)                return false;
+    return true;
+  });
+  renderList();
+}
+
+function setSF(s) {
+  sfFilter = s;
+  document.querySelectorAll('.sfp').forEach(b => b.classList.remove('on'));
+  document.getElementById('sf-' + (s || 'all')).classList.add('on');
+  applyFilters();
+}
+
+function populateDDL() {
+  const cats = new Set(), cnts = new Set();
+  allCh.forEach(ch => {
+    (ch.categories || []).forEach(c => cats.add(c));
+    if (ch.country) cnts.add(ch.country);
+  });
+  const cSel = document.getElementById('catFil');
+  cSel.innerHTML = '<option value="">All categories</option>' +
+    [...cats].sort().map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  const oSel = document.getElementById('cntFil');
+  oSel.innerHTML = '<option value="">All countries</option>' +
+    [...cnts].sort().map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+}
+
+/* ─── Render channel list ───────────────────────────── */
+function renderList() {
+  const el = document.getElementById('chList');
+  const n  = vis.length;
+  document.getElementById('visCount').textContent  = n;
+  document.getElementById('visCountD').textContent = n;
+
+  if (!allCh.length) {
+    el.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:#374151">
+      <i class="fas fa-satellite-dish" style="font-size:32px"></i>
+      <span style="font-size:12px;text-align:center;padding:0 16px">Load your channels to get started</span></div>`;
+    return;
+  }
+  if (!n) {
+    el.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:80px;gap:8px;color:#374151">
+      <i class="fas fa-magnifying-glass"></i><span style="font-size:11px">No channels match</span></div>`;
+    return;
+  }
+
+  el.innerHTML = vis.map(ch => {
+    const s    = st[ch.id] || 'untested';
+    const act  = curCh?.id === ch.id;
+    const logo = ch.logo
+      ? `<img src="${esc(ch.logo)}" alt="" class="ch-logo" onerror="this.style.display='none'" />`
+      : `<div class="ch-icon"><i class="fas fa-tv" style="font-size:10px;color:#374151"></i></div>`;
+    return `<div class="ch-row${act ? ' active' : ''}" data-chid="${esc(ch.id)}">
+      ${logo}
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:500;color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(ch.name)}</div>
+        <div style="font-size:10px;color:#374151;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(ch.country || '—')}</div>
+      </div>
+      <div class="dot dot-${s.charAt(0)}" title="${s}"></div>
+    </div>`;
+  }).join('');
+}
+
+/* ─── Select + play channel ─────────────────────────── */
+async function selectChannel(id) {
+  const ch = allCh.find(c => c.id === id);
+  if (!ch) return;
+
+  curCh = ch;
+
+  /* On mobile, keep the list open so user can click other channels freely.
+     Just scroll the player into view so they can see it start. */
+  if (window.innerWidth < 768) {
+    document.getElementById('playerSide').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  renderList();
+  showOverlay('spin');
+  setStatus(id, 'testing');
+  showNP(ch);
+
+  /* Use streams already embedded in the loaded channel data — no extra API call needed.
+     Fall back to a fresh API fetch only when the channel has no streams cached. */
+  curStreams = ch.streams || [];
+
+  if (!curStreams.length) {
+    try {
+      const r = await fetch(`/api/v3/live/stream/${encodeURIComponent(id)}`);
+      if (r.ok) {
+        const d = await r.json();
+        if (d.success && d.results) curStreams = d.results.streams || [];
+      }
+    } catch (_) {}
+  }
+
+  document.getElementById('npStreams').textContent =
+    `${curStreams.length} stream${curStreams.length !== 1 ? 's' : ''}`;
+  showMeta(ch, curStreams.length);
+
+  if (!curStreams.length) { return streamErr('No HLS URLs for this channel', id); }
+
+  renderStreams(curStreams);
+  await tryStreamsInOrder(curStreams, id);
+}
+
+function retryStream() {
+  if (curCh && curStreams.length) { showOverlay('spin'); tryStreamsInOrder(curStreams, curCh.id); }
+}
+
+/* ─── Build proxy URL ────────────────────────────────── */
+function proxyUrl(streamUrl) {
+  return `/api/v3/live/proxy?url=${encodeURIComponent(streamUrl)}`;
+}
+
+/* ─── Try streams in order until one works ──────────── */
+async function tryStreamsInOrder(streams, channelId) {
+  const spinLabel = document.getElementById('spinOv').querySelector('span');
+  const total = streams.length;
+
+  for (let i = 0; i < total; i++) {
+    const orig = streams[i].url;
+
+    // First try the stream directly
+    if (total > 1) spinLabel.textContent = `Trying stream ${i + 1} of ${total}…`;
+    highlightStream(i);
+    const direct = await loadHLS(orig, channelId, /* silent= */ true);
+    if (direct === 'ok') return;
+
+    // Direct failed — retry through HLS proxy (may bypass geo-block)
+    spinLabel.textContent = total > 1
+      ? `Stream ${i + 1}/${total} geo-blocked — retrying via proxy…`
+      : 'Stream geo-blocked — retrying via proxy…';
+    highlightStream(i, /* proxy= */ true);
+    const proxied = await loadHLS(proxyUrl(orig), channelId, /* silent= */ i < total - 1);
+    if (proxied === 'ok') {
+      showProxyBadge(true);
+      return;
+    }
+  }
+
+  /* All streams (direct + proxy) exhausted */
+  showProxyBadge(false);
+  showOverlay('err');
+  document.getElementById('errTxt').textContent =
+    `All ${total} stream${total !== 1 ? 's' : ''} failed (direct + proxy) — channel may be offline or removed`;
+  setStatus(channelId, 'failed');
+}
+
+/* Show/hide the "via proxy" badge in the now-playing bar */
+function showProxyBadge(show) {
+  let badge = document.getElementById('proxyBadge');
+  if (!badge) {
+    badge = document.createElement('span');
+    badge.id = 'proxyBadge';
+    badge.style.cssText = 'font-size:9px;padding:2px 6px;border-radius:4px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);color:#818cf8;font-family:monospace;letter-spacing:.08em;flex-shrink:0';
+    badge.textContent = 'VIA PROXY';
+    document.getElementById('npBar').appendChild(badge);
+  }
+  badge.style.display = show ? '' : 'none';
+}
+
+/* ─── Highlight active stream row ────────────────────── */
+function highlightStream(idx, viaProxy = false) {
+  document.querySelectorAll('#streamList .srow').forEach((el, i) => {
+    const active = i === idx;
+    el.style.borderColor = active ? (viaProxy ? 'rgba(99,102,241,.6)' : 'rgba(6,182,212,.6)') : '';
+    el.style.background  = active ? (viaProxy ? 'rgba(99,102,241,.07)' : 'rgba(6,182,212,.07)') : '';
+  });
+}
+
+/* ─── HLS loader ────────────────────────────────────── */
+function loadHLS(url, channelId, silent = false) {
+  return new Promise(resolve => {
+    const video = document.getElementById('vid');
+
+    if (hlsInst) { hlsInst.destroy(); hlsInst = null; }
+    video.pause(); video.removeAttribute('src'); video.load();
+
+    let settled = false;
+    const done = (result) => {
+      if (settled) return;
+      settled = true;
+      if (result === 'ok') {
+        showOverlay('none');
+        setStatus(channelId, 'working');
+        /* Reset spinner label for next use */
+        const sp = document.getElementById('spinOv').querySelector('span');
+        if (sp) sp.textContent = 'Loading stream…';
+      } else if (!silent) {
+        showOverlay('err');
+        const msg = result === 'timeout'
+          ? 'Stream timed out — channel may be offline or geo-blocked'
+          : 'Stream failed to load — channel may be offline or geo-blocked';
+        document.getElementById('errTxt').textContent = msg;
+        setStatus(channelId, 'failed');
+      }
+      resolve(result);
+    };
+
+    if (Hls.isSupported()) {
+      hlsInst = new Hls({ maxBufferLength: 30, manifestLoadingTimeOut: 10000, levelLoadingTimeOut: 10000 });
+      hlsInst.loadSource(url);
+      hlsInst.attachMedia(video);
+      hlsInst.on(Hls.Events.MANIFEST_PARSED, () => { video.play().catch(() => {}); done('ok'); });
+      hlsInst.on(Hls.Events.ERROR, (_, d) => { if (d.fatal) done('err'); });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = url;
+      video.onloadedmetadata = () => { video.play().catch(() => {}); done('ok'); };
+      video.onerror = () => done('err');
+    } else {
+      document.getElementById('errTxt').textContent = 'HLS is not supported in this browser.';
+      done('err'); return;
+    }
+    setTimeout(() => done('timeout'), 12000);
+  });
+}
+
+/* ─── Quick test (silent, no player) ───────────────── */
+function quickTest(url) {
+  return new Promise(resolve => {
+    if (!Hls.isSupported()) { resolve(false); return; }
+    const h = new Hls({ maxBufferLength: 0, manifestLoadingTimeOut: 10000 });
+    const v = document.createElement('video');
+    let done = false;
+    const fin = (r) => { if (!done) { done = true; h.destroy(); resolve(r); } };
+    h.loadSource(url); h.attachMedia(v);
+    h.on(Hls.Events.MANIFEST_PARSED, () => fin(true));
+    h.on(Hls.Events.ERROR, (_, d) => { if (d.fatal) fin(false); });
+    setTimeout(() => fin(false), 11000);
+  });
+}
+
+/* ─── Shared Web Worker test launcher ───────────────── */
+/* Both "Test Visible" and "Batch All" feed into this.
+   Channels are tested via plain fetch() in a background thread —
+   continues running even when the tab is hidden/backgrounded.      */
+function _startWorkerTest(toTest) {
+  if (testing || !toTest.length) return;
+  testing = true; stopFlag = false;
+
+  document.getElementById('testVisBtn').style.display  = 'none';
+  document.getElementById('batchAllBtn').style.display = 'none';
+  document.getElementById('resumeBanner').style.display = 'none';
+  document.getElementById('stopBtn').style.display     = 'inline-flex';
+  document.getElementById('progWrap').style.display    = 'block';
+  document.getElementById('testMsg').style.display     = 'flex';
+  document.getElementById('pfill').style.width         = '0%';
+
+  toTest.forEach(ch => { st[ch.id] = 'testing'; });
+  renderList(); updateStats();
+
+  const blob = new Blob([WORKER_SRC], { type: 'application/javascript' });
+  const blobUrl = URL.createObjectURL(blob);
+  testWorker = new Worker(blobUrl);
+  URL.revokeObjectURL(blobUrl);
+
+  const total = toTest.length;
+  let completedCount = 0;  // track by completion order, not channel index
+
+  testWorker.onmessage = ({ data }) => {
+    if (data.type === 'result') {
+      completedCount++;
+      setStatus(data.id, data.ok ? 'working' : 'failed');
+      document.getElementById('pfill').style.width =
+        Math.round((completedCount / total) * 100) + '%';
+      document.getElementById('testTxt').textContent = esc(data.name || '');
+      document.getElementById('testCtr').textContent = `${completedCount}/${total}`;
+    }
+    if (data.type === 'done') _finishTest(true);
+  };
+  testWorker.onerror = () => _finishTest(false);
+
+  testWorker.postMessage({
+    cmd: 'test',
+    concurrency,
+    channels: toTest.map(ch => ({ id: ch.id, name: ch.name, streams: ch.streams || [] }))
+  });
+}
+
+/* Test only what's currently visible/filtered */
+function startTestVisible() {
+  const toTest = vis.filter(ch => st[ch.id] === 'untested' || st[ch.id] === 'failed');
+  if (!toTest.length) { alert('All visible channels already tested.'); return; }
+  _startWorkerTest(toTest);
+}
+
+/* Test every loaded channel — regardless of current filter */
+function startBatchAll() {
+  const toTest = allCh.filter(ch => st[ch.id] === 'untested' || st[ch.id] === 'failed');
+  if (!toTest.length) { alert('All channels already tested.'); return; }
+  _startWorkerTest(toTest);
+}
+
+/* Resume from where we left off (called from the resume banner) */
+function resumeBatchAll() {
+  document.getElementById('resumeBanner').style.display = 'none';
+  startBatchAll();
+}
+
+function stopTest() {
+  stopFlag = true;
+  if (testWorker) {
+    try { testWorker.postMessage({ cmd: 'stop' }); testWorker.terminate(); } catch {}
+    testWorker = null;
+  }
+  Object.keys(st).forEach(id => { if (st[id] === 'testing') st[id] = 'untested'; });
+  _finishTest(false);
+}
+
+function _finishTest(completed = false) {
+  testing = false; testWorker = null;
+  document.getElementById('testVisBtn').style.display  = 'inline-flex';
+  document.getElementById('batchAllBtn').style.display = 'inline-flex';
+  document.getElementById('stopBtn').style.display     = 'none';
+  document.getElementById('testMsg').style.display     = 'none';
+  renderList(); updateStats();
+  /* Save timestamp only when batch ran to completion (not when stopped) */
+  if (completed) {
+    try { localStorage.setItem(LS_BATCH, String(Date.now())); } catch {}
+  }
+  setTimeout(() => {
+    document.getElementById('progWrap').style.display = 'none';
+    document.getElementById('pfill').style.width = '0%';
+  }, 2000);
+}
+
+/* ─── Concurrency + auto-test settings ──────────────── */
+function setConcurrency(n) {
+  concurrency = n;
+  try { localStorage.setItem('runflix_cc', String(n)); } catch {}
+  [1, 2, 3, 5].forEach(v => {
+    const el = document.getElementById('cc-' + v);
+    if (el) el.classList.toggle('on', v === n);
+  });
+}
+
+function saveAutoSetting() {
+  const el = document.getElementById('autoChk');
+  if (!el) return;
+  try { localStorage.setItem(LS_AUTO, el.checked ? '1' : '0'); } catch {}
+}
+
+function _initUI() {
+  setConcurrency(concurrency);
+  const autoEl = document.getElementById('autoChk');
+  if (autoEl) autoEl.checked = localStorage.getItem(LS_AUTO) === '1';
+}
+
+/* ─── Render helpers ────────────────────────────────── */
+function renderStreams(streams) {
+  document.getElementById('streamPanel').style.display = 'block';
+  document.getElementById('streamList').innerHTML = streams.map((s, i) =>
+    `<div class="srow" onclick="swapStream(${JSON.stringify(s.url)})">
+       <i class="fas fa-circle-play" style="color:rgba(6,182,212,.5);font-size:11px;flex-shrink:0"></i>
+       <span style="font-size:11px;font-family:monospace;color:#64748b;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(s.url)}</span>
+       <span style="font-size:10px;color:#374151;flex-shrink:0;font-family:monospace">S${i + 1}</span>
+     </div>`
+  ).join('');
+}
+
+async function swapStream(url) {
+  if (!curCh) return;
+  showOverlay('spin');
+  await loadHLS(url, curCh.id);
+}
+
+function showNP(ch) {
+  const bar = document.getElementById('npBar');
+  bar.style.display = 'flex';
+  const logo = document.getElementById('npLogo');
+  logo.src = ch.logo || '';
+  logo.style.display = ch.logo ? '' : 'none';
+  document.getElementById('npName').textContent    = ch.name;
+  document.getElementById('npCountry').textContent = ch.country || '';
+  document.getElementById('npCats').textContent    = (ch.categories || []).slice(0, 3).join(' · ');
+  document.getElementById('npStreams').textContent  = '';
+  showProxyBadge(false); // reset proxy badge for new channel
+}
+
+function showMeta(ch, streamCount) {
+  document.getElementById('metaPanel').style.display = 'block';
+  document.getElementById('mId').textContent       = ch.id;
+  document.getElementById('mCountry').textContent  = ch.country || '—';
+  document.getElementById('mLangs').textContent    = (ch.languages || []).join(', ') || '—';
+  document.getElementById('mCats').textContent     = (ch.categories || []).join(', ') || '—';
+  document.getElementById('mStreams').textContent  = streamCount;
+}
+
+function showOverlay(state) {
+  /* state: 'idle' | 'spin' | 'err' | 'none' */
+  document.getElementById('idleOv').style.display = state === 'idle' ? 'flex' : 'none';
+  document.getElementById('spinOv').style.display = state === 'spin' ? 'flex' : 'none';
+  document.getElementById('errOv').style.display  = state === 'err'  ? 'flex' : 'none';
+}
+
+function streamErr(msg, id) {
+  document.getElementById('errTxt').textContent = msg;
+  showOverlay('err');
+  setStatus(id, 'failed');
+}
+
+/* ─── Copy failed channel IDs to clipboard ──────────── */
+async function copyFailed() {
+  const failed = allCh.filter(ch => st[ch.id] === 'failed');
+  if (!failed.length) { alert('No failed channels yet — run a test first.'); return; }
+
+  const ids = failed.map(ch => ch.id).join('\n');
+  const btn = document.getElementById('copyFailedBtn');
+  const txt = document.getElementById('copyFailedTxt');
+
+  try {
+    await navigator.clipboard.writeText(ids);
+    btn.querySelector('i').className = 'fas fa-check';
+    txt.textContent = `Copied ${failed.length} failed IDs!`;
+    btn.style.background = 'rgba(16,185,129,.15)';
+    btn.style.borderColor = 'rgba(16,185,129,.4)';
+    btn.style.color = '#10b981';
+    setTimeout(() => {
+      btn.querySelector('i').className = 'fas fa-copy';
+      txt.textContent = `Copy Failed IDs (${failed.length})`;
+      btn.style.background = '';
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 3000);
+  } catch {
+    /* Clipboard API blocked — fall back to prompt */
+    prompt(`Copy these ${failed.length} failed channel IDs:`, ids);
+  }
+}
+
+/* ─── Export Working Channels as M3U ───────────────── */
+function exportM3U() {
+  const working = allCh.filter(ch => st[ch.id] === 'working');
+  if (!working.length) {
+    alert('No working channels yet — run "Test Visible" first to check which channels are live.');
+    return;
+  }
+
+  const lines = ['#EXTM3U'];
+
+  for (const ch of working) {
+    const streams = ch.streams || [];
+    if (!streams.length) continue;
+
+    const id     = ch.id     || '';
+    const name   = ch.name   || 'Unknown';
+    const logo   = ch.logo   || '';
+    const group  = (ch.categories || [])[0] || 'General';
+    const url    = streams[0].url;
+
+    lines.push(
+      `#EXTINF:-1 tvg-id="${id}" tvg-name="${name}" tvg-logo="${logo}" group-title="${group}",${name}`
+    );
+    lines.push(url);
+  }
+
+  if (lines.length <= 1) {
+    alert('Working channels found but none have stream URLs to export.');
+    return;
+  }
+
+  const content = lines.join('\n');
+  const blob    = new Blob([content], { type: 'application/x-mpegurl' });
+  const url     = URL.createObjectURL(blob);
+  const a       = document.createElement('a');
+  const ts      = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+  a.href        = url;
+  a.download    = `runflix-working-${ts}.m3u`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* ─── Export CSV report ─────────────────────────────── */
+function exportReport() {
+  if (!allCh.length) { alert('No channels loaded yet.'); return; }
+
+  const rows = [
+    ['Channel ID', 'Name', 'Country', 'Categories', 'Languages', 'Status', 'Stream Count', 'First Stream URL']
+  ];
+
+  for (const ch of allCh) {
+    const status    = st[ch.id] || 'untested';
+    const cats      = (ch.categories || []).join(' | ');
+    const langs     = (ch.languages  || []).join(' | ');
+    const streams   = ch.streams || [];
+    const firstUrl  = streams[0]?.url || '';
+    rows.push([ch.id, ch.name, ch.country || '', cats, langs, status, streams.length, firstUrl]);
+  }
+
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const ts   = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+  a.href     = url;
+  a.download = `runflix-channels-${ts}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* ─── Stats ─────────────────────────────────────────── */
+function setStatus(id, s) {
+  st[id] = s;
+  updateStats();
+  renderList();
+  persistStatus(); // debounced — saves to localStorage 400 ms after last call
+}
+
+function updateStats() {
+  const vals = Object.values(st);
+  const failedCount = vals.filter(s => s === 'failed').length;
+  const workingCount = vals.filter(s => s === 'working').length;
+  const testedCount  = workingCount + failedCount;
+  document.getElementById('sTotal').textContent  = allCh.length || '—';
+  document.getElementById('sLoaded').textContent = allCh.length ? testedCount : '—';
+  document.getElementById('sWorking').textContent  = workingCount;
+  document.getElementById('sFailed').textContent   = failedCount;
+  document.getElementById('sUntested').textContent = allCh.length ? vals.filter(s => s === 'untested').length : '—';
+
+  /* Keep Copy Failed button in sync */
+  const cfBtn = document.getElementById('copyFailedBtn');
+  const cfTxt = document.getElementById('copyFailedTxt');
+  if (cfBtn) {
+    cfBtn.disabled = failedCount === 0;
+    cfTxt.textContent = failedCount > 0 ? `Copy Failed IDs (${failedCount})` : 'Copy Failed IDs';
+  }
+
+  /* Keep Export M3U button in sync */
+  const workingCount = vals.filter(s => s === 'working').length;
+  const m3uBtn = document.getElementById('m3uBtn');
+  if (m3uBtn) {
+    m3uBtn.disabled = workingCount === 0;
+    m3uBtn.title = workingCount > 0
+      ? `Download ${workingCount} working channel${workingCount !== 1 ? 's' : ''} as M3U playlist`
+      : 'Download working channels as M3U playlist (VLC, Tivimate, etc.)';
+  }
+}
+
+/* ─── Utils ─────────────────────────────────────────── */
+function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+function esc(s)  { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function showLoading(show, msg) {
+  const el = document.getElementById('loadingMsg');
+  el.style.display = show ? 'flex' : 'none';
+  if (msg) document.getElementById('loadTxt').textContent = msg;
+}
+</script>
+</body>
+</html>

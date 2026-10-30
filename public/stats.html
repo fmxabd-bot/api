@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RUNFLIX — Stats & Requests</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --void: #050508; --panel: #0d0e14; --edge: rgba(255,255,255,0.07); --text: #cbd5e1; --muted: #475569; }
+        body { font-family: 'Inter','Segoe UI',system-ui,sans-serif; background: var(--void); color: var(--text); min-height: 100vh; }
+
+        header { position: sticky; top: 0; z-index: 50; background: rgba(5,5,8,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--edge); padding: 0 1.5rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { display: flex; align-items: center; gap: 0.6rem; }
+        .logo-icon { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg,#8b5cf6,#6366f1); display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; }
+        .logo-text { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.04em; }
+        .logo-sub { font-size: 10px; color: var(--muted); font-family: monospace; margin-left: 4px; }
+        .nav-links { display: flex; align-items: center; gap: 1rem; }
+        .nav-link { font-size: 12px; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 0.35rem; transition: color 0.15s; }
+        .nav-link:hover, .nav-link.active { color: #fff; }
+        .nav-link.active { color: #a78bfa; }
+
+        #loginGate { position: fixed; inset: 0; z-index: 100; background: var(--void); display: flex; align-items: center; justify-content: center; }
+        .login-box { background: var(--panel); border: 1px solid var(--edge); border-radius: 18px; padding: 2.5rem 2rem; width: 360px; max-width: 90vw; text-align: center; }
+        .login-icon { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg,#8b5cf6,#6366f1); display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; margin: 0 auto 1.25rem; }
+        .login-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 0.4rem; }
+        .login-desc { font-size: 12px; color: var(--muted); margin-bottom: 1.5rem; }
+        .login-error { font-size: 11px; color: #f87171; margin-top: 0.75rem; min-height: 16px; }
+
+        main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+        .page-title { font-size: 22px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.35rem; }
+        .page-desc { font-size: 13px; color: var(--muted); margin-bottom: 2rem; }
+
+        .stats-bar { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .stat-pill { background: var(--panel); border: 1px solid var(--edge); border-radius: 10px; padding: 0.75rem 1.1rem; display: flex; align-items: baseline; gap: 0.5rem; }
+        .stat-num { font-size: 22px; font-weight: 800; color: #fff; }
+        .stat-label { font-size: 11px; color: var(--muted); }
+
+        .tabs { display: flex; gap: 0.25rem; background: rgba(255,255,255,0.03); border: 1px solid var(--edge); border-radius: 10px; padding: 0.25rem; margin-bottom: 1.75rem; width: fit-content; }
+        .tab { padding: 0.45rem 1.1rem; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--muted); border: none; background: none; transition: all 0.15s; }
+        .tab.active { background: rgba(139,92,246,0.18); color: #a78bfa; }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .section-label { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+        .section-label span { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-family: monospace; background: rgba(255,255,255,0.04); border: 1px solid var(--edge); padding: 2px 8px; border-radius: 4px; }
+        .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right,var(--edge),transparent); }
+
+        .usage-table { width: 100%; border-collapse: collapse; }
+        .usage-table th { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 0.5rem 0.75rem; text-align: left; border-bottom: 1px solid var(--edge); }
+        .usage-table td { padding: 0.7rem 0.75rem; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: middle; }
+        .usage-table tr:last-child td { border-bottom: none; }
+        .usage-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .key-mono { font-family: monospace; color: #94a3b8; font-size: 11px; }
+        .owner-badge { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); color: #a78bfa; font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
+        .req-count { font-size: 18px; font-weight: 800; color: #fff; }
+        .last-seen { font-size: 10px; color: var(--muted); }
+
+        .table-wrap { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; overflow: hidden; }
+
+        .req-cards { display: flex; flex-direction: column; gap: 0.75rem; }
+        .req-card { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; padding: 1.1rem 1.25rem; }
+        .req-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.6rem; }
+        .req-name { font-size: 14px; font-weight: 700; color: #fff; }
+        .req-date { font-size: 10px; color: var(--muted); white-space: nowrap; margin-top: 3px; }
+        .req-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .req-meta-item { display: flex; align-items: center; gap: 0.3rem; font-size: 11px; color: var(--muted); }
+        .req-meta-item i { font-size: 10px; }
+        .req-usecase { font-size: 12px; color: var(--text); line-height: 1.6; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 7px; padding: 0.6rem 0.8rem; margin-bottom: 0.75rem; }
+        .req-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 7px; font-size: 11px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; }
+        .btn-violet { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.28); }
+        .btn-violet:hover { background: rgba(139,92,246,0.25); }
+        .btn-ghost { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--edge); }
+        .btn-ghost:hover { background: rgba(255,255,255,0.09); color: #fff; }
+        .btn-danger { background: rgba(239,68,68,0.08); color: #f87171; border: 1px solid rgba(239,68,68,0.18); }
+        .btn-danger:hover { background: rgba(239,68,68,0.16); }
+        .btn-green { background: rgba(34,197,94,0.1); color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
+        .btn-green:hover { background: rgba(34,197,94,0.2); }
+
+        input[type="text"] { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 7px; padding: 0.45rem 0.7rem; color: #fff; font-size: 11px; font-family: monospace; outline: none; transition: border-color 0.15s; width: 100%; }
+        input:focus { border-color: rgba(139,92,246,0.5); }
+
+        .issue-form { background: rgba(139,92,246,0.05); border: 1px solid rgba(139,92,246,0.18); border-radius: 8px; padding: 0.8rem; margin-top: 0.75rem; display: none; }
+        .issue-form.open { display: block; }
+        .issue-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 0.7rem; }
+        @media(max-width:500px) { .issue-form-grid { grid-template-columns: 1fr; } }
+        .field-label { font-size: 10px; font-weight: 700; color: var(--muted); margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.06em; }
+        .field-row { display: flex; gap: 0.4rem; }
+        .form-actions { display: flex; gap: 0.4rem; justify-content: flex-end; }
+
+        .empty-state { text-align: center; padding: 2.5rem 1rem; background: var(--panel); border: 1px dashed rgba(255,255,255,0.07); border-radius: 12px; color: var(--muted); }
+        .empty-state i { font-size: 28px; margin-bottom: 0.6rem; display: block; opacity: 0.25; }
+        .empty-state p { font-size: 13px; }
+
+        #toast { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: #34d399; padding: 0.6rem 1rem; border-radius: 8px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; opacity: 0; transform: translateY(8px); transition: all 0.2s; pointer-events: none; }
+        #toast.show { opacity: 1; transform: translateY(0); }
+        #toast.error { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.3); color: #fca5a5; }
+
+        .badge-pending { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); color: #fbbf24; padding: 2px 6px; border-radius: 4px; }
+
+        .refresh-btn { display: flex; align-items: center; gap: 0.4rem; font-size: 11px; color: var(--muted); background: none; border: none; cursor: pointer; padding: 0.3rem; transition: color 0.15s; }
+        .refresh-btn:hover { color: #fff; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
+            <span class="logo-text">RUNFLIX</span>
+            <span class="logo-sub">STATS</span>
+        </div>
+        <div class="nav-links">
+            <a href="/admin" class="nav-link"><i class="fas fa-key" style="font-size:10px;"></i> Key Manager</a>
+            <a href="/docs" class="nav-link"><i class="fas fa-book-open" style="font-size:10px;"></i> Docs</a>
+        </div>
+    </header>
+
+    <div id="loginGate">
+        <div class="login-box">
+            <div class="login-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="login-title">Admin Access</div>
+            <div class="login-desc">Enter your admin password to view stats.</div>
+            <div style="display:flex;gap:0.5rem;margin-bottom:0.5rem;">
+                <input type="password" id="pwdInput" placeholder="Admin password" autocomplete="current-password" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:0.55rem 0.8rem;color:#fff;font-size:12px;outline:none;">
+            </div>
+            <button onclick="login()" style="width:100%;padding:0.65rem;background:linear-gradient(135deg,#8b5cf6,#6366f1);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">Unlock</button>
+            <div class="login-error" id="loginError"></div>
+        </div>
+    </div>
+
+    <main id="mainContent" style="display:none;">
+        <div class="page-title"><i class="fas fa-chart-line" style="color:#a78bfa;font-size:18px;"></i> Stats &amp; Requests</div>
+        <p class="page-desc">Track API usage per key and review incoming access requests.</p>
+
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-pill"><span class="stat-num" id="sTotal">—</span><span class="stat-label">Total Requests</span></div>
+            <div class="stat-pill"><span class="stat-num" id="sKeys">—</span><span class="stat-label">Active Keys</span></div>
+            <div class="stat-pill"><span class="stat-num" id="sPending">—</span><span class="stat-label">Pending Requests</span></div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('usage')">Usage Stats</button>
+                <button class="tab" onclick="switchTab('requests')">Key Requests</button>
+            </div>
+            <button class="refresh-btn" onclick="loadAll()"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+
+        <!-- Usage Stats Tab -->
+        <div class="section active" id="tab-usage">
+            <div class="section-label"><span>Per-Key Usage</span></div>
+            <div id="usageContent"></div>
+        </div>
+
+        <!-- Key Requests Tab -->
+        <div class="section" id="tab-requests">
+            <div class="section-label"><span>Pending Requests</span></div>
+            <div class="req-cards" id="reqContent"></div>
+        </div>
+    </main>
+
+    <div id="toast"></div>
+
+    <script>
+        let adminPwd = '';
+        let statsData = {};
+        let requestsData = [];
+
+        function authHeaders() {
+            return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminPwd}` };
+        }
+
+        async function login() {
+            const pwd = document.getElementById('pwdInput').value.trim();
+            if (!pwd) return;
+            const errEl = document.getElementById('loginError');
+            errEl.textContent = '';
+            try {
+                const r = await fetch('/admin/api/stats', { headers: { 'Authorization': `Bearer ${pwd}` } });
+                if (r.status === 401) { errEl.textContent = 'Incorrect password.'; return; }
+                adminPwd = pwd;
+                sessionStorage.setItem('adminPwd', pwd);
+                document.getElementById('loginGate').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                statsData = await r.json();
+                await loadRequests();
+                renderAll();
+            } catch { errEl.textContent = 'Connection error.'; }
+        }
+
+        async function loadAll() {
+            try {
+                const [sr, rr] = await Promise.all([
+                    fetch('/admin/api/stats', { headers: authHeaders() }),
+                    fetch('/admin/api/requests', { headers: authHeaders() })
+                ]);
+                if (sr.status === 401 || rr.status === 401) { sessionStorage.removeItem('adminPwd'); location.reload(); return; }
+                statsData = await sr.json();
+                requestsData = await rr.json();
+                renderAll();
+                toast('Refreshed');
+            } catch { toast('Refresh failed', true); }
+        }
+
+        async function loadRequests() {
+            const r = await fetch('/admin/api/requests', { headers: authHeaders() });
+            requestsData = r.ok ? await r.json() : [];
+        }
+
+        function renderAll() {
+            renderStats();
+            renderRequests();
+            updateSummary();
+        }
+
+        function updateSummary() {
+            const entries = Object.entries(statsData);
+            const total = entries.reduce((n,[,v]) => n + (v.total || 0), 0);
+            document.getElementById('sTotal').textContent = total.toLocaleString();
+            document.getElementById('sKeys').textContent = entries.length;
+            document.getElementById('sPending').textContent = requestsData.length;
+        }
+
+        function renderStats() {
+            const entries = Object.entries(statsData).sort(([,a],[,b]) => (b.total||0) - (a.total||0));
+            const el = document.getElementById('usageContent');
+            if (!entries.length) {
+                el.innerHTML = `<div class="empty-state"><i class="fas fa-chart-bar"></i><p>No usage data yet. Stats appear after API calls are made.</p></div>`;
+                return;
+            }
+            el.innerHTML = `<div class="table-wrap"><table class="usage-table">
+                <thead><tr><th>API Key</th><th>Owner</th><th style="text-align:right;">Requests</th><th>Last Seen</th></tr></thead>
+                <tbody>
+                ${entries.map(([k, v]) => {
+                    const masked = k.length > 20 ? k.slice(0,10) + '…' + k.slice(-6) : k;
+                    const lastSeen = v.lastSeen ? new Date(v.lastSeen).toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+                    return `<tr>
+                        <td><span class="key-mono" title="${k}">${masked}</span></td>
+                        <td><span class="owner-badge">${v.owner || '—'}</span></td>
+                        <td style="text-align:right;"><span class="req-count">${(v.total||0).toLocaleString()}</span></td>
+                        <td><span class="last-seen">${lastSeen}</span></td>
+                    </tr>`;
+                }).join('')}
+                </tbody>
+            </table></div>`;
+        }
+
+        function renderRequests() {
+            const el = document.getElementById('reqContent');
+            if (!requestsData.length) {
+                el.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><p>No pending requests. Share <strong style="color:#e2e8f0;">/request-key</strong> with potential customers.</p></div>`;
+                return;
+            }
+            el.innerHTML = requestsData.map(req => {
+                const date = req.submittedAt ? new Date(req.submittedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+                return `<div class="req-card" id="req-${req.id}">
+                    <div class="req-header">
+                        <div>
+                            <div class="req-name">${req.name || '—'} <span class="badge-pending">Pending</span></div>
+                            <div class="req-date"><i class="far fa-calendar-alt" style="font-size:9px;margin-right:3px;"></i>${date}</div>
+                        </div>
+                    </div>
+                    <div class="req-meta">
+                        ${req.email ? `<span class="req-meta-item"><i class="fas fa-envelope"></i>${req.email}</span>` : ''}
+                        ${req.website ? `<span class="req-meta-item"><i class="fas fa-globe"></i><a href="${req.website}" target="_blank" style="color:inherit;">${req.website.replace(/^https?:\/\//,'')}</a></span>` : ''}
+                    </div>
+                    <div class="req-usecase">${req.useCase || '—'}</div>
+                    <div class="req-actions">
+                        <button class="btn btn-violet" onclick="openIssueForm('${req.id}')"><i class="fas fa-key"></i> Issue Key</button>
+                        <button class="btn btn-danger" onclick="dismissReq('${req.id}')"><i class="fas fa-times"></i> Dismiss</button>
+                    </div>
+                    <div class="issue-form" id="iform-${req.id}">
+                        <div class="issue-form-grid">
+                            <div>
+                                <div class="field-label">Key String</div>
+                                <div class="field-row">
+                                    <input type="text" id="ikey-${req.id}" placeholder="runflix_…">
+                                    <button class="btn btn-ghost" onclick="genKey('${req.id}')" style="flex-shrink:0;padding:0.45rem 0.6rem;"><i class="fas fa-dice"></i></button>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="field-label">Owner</div>
+                                <input type="text" id="iowner-${req.id}" value="${req.name || ''}">
+                            </div>
+                            <div style="grid-column:1/-1;">
+                                <div class="field-label">Domains (comma-separated)</div>
+                                <input type="text" id="idomains-${req.id}" value="${req.website ? req.website.replace(/^https?:\/\//,'').split('/')[0] : ''}">
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn btn-ghost" onclick="closeIssueForm('${req.id}')">Cancel</button>
+                            <button class="btn btn-green" onclick="issueKey('${req.id}')"><i class="fas fa-check"></i> Issue &amp; Approve</button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function switchTab(name) {
+            document.querySelectorAll('.tab').forEach((t,i) => { t.classList.toggle('active', ['usage','requests'][i] === name); });
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('tab-' + name).classList.add('active');
+        }
+
+        function openIssueForm(id) {
+            document.getElementById(`iform-${id}`).classList.add('open');
+            if (!document.getElementById(`ikey-${id}`).value) genKey(id);
+        }
+        function closeIssueForm(id) { document.getElementById(`iform-${id}`).classList.remove('open'); }
+
+        async function genKey(id) {
+            try {
+                const r = await fetch('/admin/api/generate', { method: 'POST', headers: authHeaders() });
+                const d = await r.json();
+                document.getElementById(`ikey-${id}`).value = d.key;
+            } catch {}
+        }
+
+        async function issueKey(reqId) {
+            const key = document.getElementById(`ikey-${reqId}`).value.trim();
+            const owner = document.getElementById(`iowner-${reqId}`).value.trim();
+            const domainsRaw = document.getElementById(`idomains-${reqId}`).value.trim();
+            const domains = domainsRaw ? domainsRaw.split(',').map(d => d.trim()).filter(Boolean) : [];
+            if (!key || !owner) return toast('Key and owner required', true);
+            try {
+                const r = await fetch('/admin/api/keys', { method: 'POST', headers: authHeaders(), body: JSON.stringify({ key, owner, domains }) });
+                const d = await r.json();
+                if (!r.ok) return toast(d.error || 'Error', true);
+                await dismissReq(reqId, true);
+                toast('Key issued — live in KV within 30s ✓');
+            } catch { toast('Network error', true); }
+        }
+
+        async function dismissReq(id, silent = false) {
+            try {
+                const r = await fetch(`/admin/api/requests?id=${encodeURIComponent(id)}`, { method: 'DELETE', headers: authHeaders() });
+                if (!r.ok) return silent ? null : toast('Error dismissing', true);
+                requestsData = requestsData.filter(rq => rq.id !== id);
+                renderRequests();
+                updateSummary();
+                if (!silent) toast('Request dismissed');
+            } catch { if (!silent) toast('Network error', true); }
+        }
+
+        let toastTimer;
+        function toast(msg, isError = false) {
+            const el = document.getElementById('toast');
+            el.innerHTML = `<i class="fas fa-${isError ? 'exclamation-circle' : 'check-circle'}"></i> ${msg}`;
+            el.className = 'show' + (isError ? ' error' : '');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => { el.className = ''; }, 3000);
+        }
+
+        document.getElementById('pwdInput').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+
+        const stored = sessionStorage.getItem('adminPwd');
+        if (stored) {
+            adminPwd = stored;
+            Promise.all([
+                fetch('/admin/api/stats', { headers: { 'Authorization': `Bearer ${stored}` } }),
+                fetch('/admin/api/requests', { headers: { 'Authorization': `Bearer ${stored}` } })
+            ]).then(async ([sr, rr]) => {
+                if (sr.ok) {
+                    document.getElementById('loginGate').style.display = 'none';
+                    document.getElementById('mainContent').style.display = 'block';
+                    statsData = await sr.json();
+                    requestsData = rr.ok ? await rr.json() : [];
+                    renderAll();
+                } else { sessionStorage.removeItem('adminPwd'); }
+            }).catch(() => {});
+        }
+    </script>
+</body>
+</html>

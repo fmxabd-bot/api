@@ -1,0 +1,19 @@
+{
+  "status": 200,
+  "success": true,
+  "creator": "DaraTech",
+  "results": {
+    "chapterUrl": "https://rosyscans.id/solo-leveling-chapter-0/",
+    "title": "Solo Leveling Chapter 0",
+    "images": [
+      "https://img.rosyscans.id/uploads/manga-images/118348/0/001.webp",
+      "https://img.rosyscans.id/uploads/manga-images/118348/0/002.webp",
+      "https://img.rosyscans.id/uploads/manga-images/118348/0/003.webp",
+      "https://img.rosyscans.id/uploads/manga-images/118348/0/004.webp",
+      "https://img.rosyscans.id/uploads/manga-images/118348/0/005.webp",
+      "https://img.rosyscans.id/uploads/manga-images/118348/0/006.webp",
+      "https://img.rosyscans.id/uploads/manga-images/118348/0/007.webp",
+      "https://img.rosyscans.id/uploads/manga-images/118348/0/008.webp"
+    ]
+  }
+}

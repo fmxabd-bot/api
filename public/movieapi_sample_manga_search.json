@@ -1,0 +1,28 @@
+{
+  "status": 200,
+  "success": true,
+  "creator": "DaraTech",
+  "results": [
+    {
+      "title": "Solo Leveling",
+      "url": "https://rosyscans.id/manga/solo-leveling/",
+      "image": "https://rosyscans.id/wp-content/uploads/2026/06/1757450384-1896-i474339-200x300.webp",
+      "chapter": "Chapter 179.6",
+      "type": "manhwa"
+    },
+    {
+      "title": "Solo Leveling: Ragnarok",
+      "url": "https://rosyscans.id/manga/solo-leveling-ragnarok/",
+      "image": "https://rosyscans.id/wp-content/uploads/2026/06/Solev-Ragnarok-210x300.webp",
+      "chapter": "Chapter 7",
+      "type": "manhwa"
+    },
+    {
+      "title": "Leveling Up with Skills",
+      "url": "https://rosyscans.id/manga/leveling-up-with-skills/",
+      "image": "https://rosyscans.id/wp-content/uploads/2026/06/leveling-up-with-skills-204x300.webp",
+      "chapter": "Chapter 155",
+      "type": "manhwa"
+    }
+  ]
+}

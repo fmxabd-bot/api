@@ -1,0 +1,1151 @@
+{
+  "status": 200,
+  "success": true,
+  "creator": "DaraTech",
+  "results": {
+    "subjectId": "5728465289486950408",
+    "subjectType": 2,
+    "title": "Naruto: Shippuden",
+    "description": "Naruto Uzumaki, is a loud, hyperactive, adolescent ninja who constantly searches for approval and recognition, as well as to become Hokage, who is acknowledged as the leader and strongest of all ninja in the village.",
+    "releaseDate": "2009-10-28",
+    "duration": "",
+    "genre": "Anime, Action, Adventure",
+    "cover": {
+      "url": "https://pbcdn.aoneroom.com/image/2026/01/27/56c166dc8ab736cf4a82d1ed6dc58c29.jpg",
+      "width": 1000,
+      "height": 1426,
+      "size": 219329,
+      "format": "jpg",
+      "thumbnail": "eLG[m4tjcE-BERcuMxS#ozS6Awtl$fM|WYNMbxn%rrb0rrTLWXX5WD",
+      "gif": null,
+      "averageHueLight": "#867e73",
+      "averageHueDark": "#66625c"
+    },
+    "preVideoCover": null,
+    "preVideoAddress": [],
+    "countryName": "Japan",
+    "language": "Japanese",
+    "imdbRatingValue": "8.7",
+    "staffList": [
+      {
+        "staffId": "1533967946702285224",
+        "staffType": 2,
+        "name": "Hayato Date",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "3839810955915979176",
+        "staffType": 2,
+        "name": "Masaaki Kumagai",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "8451496974343367080",
+        "staffType": 2,
+        "name": "Kiyomu Fukuda",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "8451496974343891368",
+        "staffType": 2,
+        "name": "Hiroshi Kimura",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "5569193212826249640",
+        "staffType": 2,
+        "name": "Atsushi Nigorikawa",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "5569193212826773928",
+        "staffType": 2,
+        "name": "Shigeharu Takahashi",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "3263350203612555688",
+        "staffType": 2,
+        "name": "Yûki Kinoshita",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "7875036222039943592",
+        "staffType": 2,
+        "name": "Masahiko Murata",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "2110428699005708712",
+        "staffType": 2,
+        "name": "Naoki Horiuchi",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "2110428699006233000",
+        "staffType": 2,
+        "name": "Toshiyuki Tsuru",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "6722114717433096616",
+        "staffType": 2,
+        "name": "Eitarô Ano",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "4416271708219402664",
+        "staffType": 2,
+        "name": "Shuu Watanabe",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "9027957726646790568",
+        "staffType": 2,
+        "name": "Kunitoshi Okajima",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "236931254019582376",
+        "staffType": 2,
+        "name": "Yūsuke Onoda",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "4848617272446970280",
+        "staffType": 2,
+        "name": "Hiroyoshi Kishikawa",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "2542774263233276328",
+        "staffType": 2,
+        "name": "Seiki Takuno",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "7154460281660664232",
+        "staffType": 2,
+        "name": "Yoshihiro Sugai",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "7154460281661188520",
+        "staffType": 2,
+        "name": "Kazunori Mizuno",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "1389852758626429352",
+        "staffType": 2,
+        "name": "Chiaki Kon",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "6001538777053817256",
+        "staffType": 2,
+        "name": "Toshinori Watanabe",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "3695695767840123304",
+        "staffType": 2,
+        "name": "Shinji Satô",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "3695695767840647592",
+        "staffType": 2,
+        "name": "Maki Odaira",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "8307381786267511208",
+        "staffType": 2,
+        "name": "Masaharu Watanabe",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "813392006323005864",
+        "staffType": 2,
+        "name": "Osamu Kobayashi",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "5425078024750393768",
+        "staffType": 2,
+        "name": "Mitsutaka Noshitani",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "3119235015536699816",
+        "staffType": 2,
+        "name": "Ken&apos;ichi Nishida",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "7730921033964087720",
+        "staffType": 2,
+        "name": "Hiroyuki Yamashita",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "1966313510929852840",
+        "staffType": 2,
+        "name": "Masayuki Matsumoto",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "6577999529357240744",
+        "staffType": 2,
+        "name": "Masato Kitagawa",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "6577999529357765032",
+        "staffType": 2,
+        "name": "Osamu Sekita",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "4272156520143546792",
+        "staffType": 2,
+        "name": "Hayato Gôda",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "8883842538570934696",
+        "staffType": 2,
+        "name": "Yuki Sugihara",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "525161630171294120",
+        "staffType": 2,
+        "name": "Takahiro Ono",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "5136847648598682024",
+        "staffType": 2,
+        "name": "Yūki Arie",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "5136847648599206312",
+        "staffType": 2,
+        "name": "Fujiaki Asari",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "2831004639384988072",
+        "staffType": 2,
+        "name": "Toshiaki Kanbara",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "7442690657812375976",
+        "staffType": 2,
+        "name": "Yasumi Mikamoto",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "1678083134778141096",
+        "staffType": 2,
+        "name": "Masahiro Takada",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "6289769153205529000",
+        "staffType": 2,
+        "name": "Minoru Yamaoka",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "7079060172274387768",
+        "staffType": 2,
+        "name": "Akitoshi Yokoyama",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "3983926143991835048",
+        "staffType": 2,
+        "name": "Yasuhiro Minami",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "7900404154316086856",
+        "staffType": 2,
+        "name": "Eiko Nishi",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "1101622382474717608",
+        "staffType": 2,
+        "name": "Takahiro Okao",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "1101622382475241896",
+        "staffType": 2,
+        "name": "Atsushi Wakabayashi",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "5713308400902105512",
+        "staffType": 2,
+        "name": "Hideyuki Yoshida",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "3842660890055265080",
+        "staffType": 2,
+        "name": "Mitsutoshi Satô",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "8019151410115799464",
+        "staffType": 2,
+        "name": "Chiyuki Tanaka",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "5594561145102392904",
+        "staffType": 2,
+        "name": "Hiroyuki Tsuchiya",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "3737389248765485792",
+        "staffType": 2,
+        "name": "Daisuke Tsukushi",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "2254543887081564584",
+        "staffType": 2,
+        "name": "Hideaki Uehara",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "6866229905508952488",
+        "staffType": 2,
+        "name": "Chikara Sakurai",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "9172072914722646440",
+        "staffType": 2,
+        "name": "Tomokazu Iwasaki",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "3266200137751841592",
+        "staffType": 2,
+        "name": "Yoshinori Odaka",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "56787268924762536",
+        "staffType": 2,
+        "name": "Akira Shimizu",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "4668473287352150440",
+        "staffType": 2,
+        "name": "Masayuki Yamada",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "2362630278138456488",
+        "staffType": 2,
+        "name": "Toshiro Fujii",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "6974316296565844392",
+        "staffType": 2,
+        "name": "Kazuya Iwata",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "1209708773531609512",
+        "staffType": 2,
+        "name": "Kiyoshi Murayama",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "5821394791958997416",
+        "staffType": 2,
+        "name": "Ayumu Ono",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "3515551782745303464",
+        "staffType": 2,
+        "name": "Mitsuto Yamaji",
+        "character": "Director",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "8327700110998130472",
+        "staffType": 1,
+        "name": "Alexandre Crepet",
+        "character": "Iruka, Shino, Madara, Obito",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/82f21e1c0c49fc064ee7c49823e0ca56.jpg"
+      },
+      {
+        "staffId": "5104913744803548976",
+        "staffType": 1,
+        "name": "Junko Takeuchi",
+        "character": "Naruto Uzumaki",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/2577ba2320ca1f743dc43c2704729d59.jpg"
+      },
+      {
+        "staffId": "5104913744803548976",
+        "staffType": 1,
+        "name": "Junko Takeuchi",
+        "character": "Uzumaki Naruto",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/2577ba2320ca1f743dc43c2704729d59.jpg"
+      },
+      {
+        "staffId": "5104913744803548976",
+        "staffType": 1,
+        "name": "Junko Takeuchi",
+        "character": "Akamaru",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/2577ba2320ca1f743dc43c2704729d59.jpg"
+      },
+      {
+        "staffId": "1219195671779102512",
+        "staffType": 1,
+        "name": "Maile Flanagan",
+        "character": "Naruto Uzumaki",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/77ccd3a1de44ac37d4a10b4707eda330.jpg"
+      },
+      {
+        "staffId": "1219195671779102512",
+        "staffType": 1,
+        "name": "Maile Flanagan",
+        "character": "Menma Namikaze",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/77ccd3a1de44ac37d4a10b4707eda330.jpg"
+      },
+      {
+        "staffId": "1219195671779102512",
+        "staffType": 1,
+        "name": "Maile Flanagan",
+        "character": "Momo",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/77ccd3a1de44ac37d4a10b4707eda330.jpg"
+      },
+      {
+        "staffId": "1812680300053286696",
+        "staffType": 1,
+        "name": "Chie Nakamura",
+        "character": "Sakura Haruno",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "1812680300053286696",
+        "staffType": 1,
+        "name": "Chie Nakamura",
+        "character": "Haruno Sakura",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "1812680300053286696",
+        "staffType": 1,
+        "name": "Chie Nakamura",
+        "character": "Suzume",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "2425310586864029488",
+        "staffType": 1,
+        "name": "Kate Higgins",
+        "character": "Sakura Haruno",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/2de57dc8a512f0bbb4d2d81707f5a731.jpg"
+      },
+      {
+        "staffId": "2425310586864029488",
+        "staffType": 1,
+        "name": "Kate Higgins",
+        "character": "Udon",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/2de57dc8a512f0bbb4d2d81707f5a731.jpg"
+      },
+      {
+        "staffId": "2425310586864029488",
+        "staffType": 1,
+        "name": "Kate Higgins",
+        "character": "Mebuki Haruno",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/2de57dc8a512f0bbb4d2d81707f5a731.jpg"
+      },
+      {
+        "staffId": "2135250623363698472",
+        "staffType": 1,
+        "name": "Dave Wittenberg",
+        "character": "Kakashi Hatake",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/bb0882782dc8bf395d21cf0eef66de49.jpg"
+      },
+      {
+        "staffId": "2135250623363698472",
+        "staffType": 1,
+        "name": "Dave Wittenberg",
+        "character": "Gamakichi",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/bb0882782dc8bf395d21cf0eef66de49.jpg"
+      },
+      {
+        "staffId": "2135250623363698472",
+        "staffType": 1,
+        "name": "Dave Wittenberg",
+        "character": "Young Kakashi Hatake",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/bb0882782dc8bf395d21cf0eef66de49.jpg"
+      },
+      {
+        "staffId": "9091769295398915888",
+        "staffType": 1,
+        "name": "Kazuhiko Inoue",
+        "character": "Kakashi Hatake",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/9e163719497819b681903107376dde19.jpg"
+      },
+      {
+        "staffId": "9091769295398915888",
+        "staffType": 1,
+        "name": "Kazuhiko Inoue",
+        "character": "Hatake Kakashi",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/9e163719497819b681903107376dde19.jpg"
+      },
+      {
+        "staffId": "9091769295398915888",
+        "staffType": 1,
+        "name": "Kazuhiko Inoue",
+        "character": "Denka",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/9e163719497819b681903107376dde19.jpg"
+      },
+      {
+        "staffId": "2465139296069635888",
+        "staffType": 1,
+        "name": "Kyle Hebert",
+        "character": "Kiba Inuzuka",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/ee0350f3b572fa0366e24c3095783e4e.jpg"
+      },
+      {
+        "staffId": "2465139296069635888",
+        "staffType": 1,
+        "name": "Kyle Hebert",
+        "character": "Inoichi Yamanaka",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/ee0350f3b572fa0366e24c3095783e4e.jpg"
+      },
+      {
+        "staffId": "2465139296069635888",
+        "staffType": 1,
+        "name": "Kyle Hebert",
+        "character": "Akatsuchi",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/ee0350f3b572fa0366e24c3095783e4e.jpg"
+      },
+      {
+        "staffId": "2226364169102705680",
+        "staffType": 1,
+        "name": "Noriaki Sugiyama",
+        "character": "Sasuke Uchiha",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2023/03/29/3f34e7cc0aa4cce7076ba52ed5d43a61.jpg"
+      },
+      {
+        "staffId": "2226364169102705680",
+        "staffType": 1,
+        "name": "Noriaki Sugiyama",
+        "character": "Uchiha Sasuke",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2023/03/29/3f34e7cc0aa4cce7076ba52ed5d43a61.jpg"
+      },
+      {
+        "staffId": "7433313372502118192",
+        "staffType": 1,
+        "name": "Yuri Lowenthal",
+        "character": "Sasuke Uchiha",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/2624321f1169f6501e875c57003aa805.jpg"
+      },
+      {
+        "staffId": "7433313372502118192",
+        "staffType": 1,
+        "name": "Yuri Lowenthal",
+        "character": "Additional Voices",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/2624321f1169f6501e875c57003aa805.jpg"
+      },
+      {
+        "staffId": "7433313372502118192",
+        "staffType": 1,
+        "name": "Yuri Lowenthal",
+        "character": "Hidden Sand Village Shinobi",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/2624321f1169f6501e875c57003aa805.jpg"
+      },
+      {
+        "staffId": "7944090262233304760",
+        "staffType": 1,
+        "name": "Masako Katsuki",
+        "character": "Tsunade, The Fifth Hokage",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/38eaa32382b96e6fda2b37b40d3af639.jpg"
+      },
+      {
+        "staffId": "7944090262233304760",
+        "staffType": 1,
+        "name": "Masako Katsuki",
+        "character": "Tsunade",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/38eaa32382b96e6fda2b37b40d3af639.jpg"
+      },
+      {
+        "staffId": "7944090262233304760",
+        "staffType": 1,
+        "name": "Masako Katsuki",
+        "character": "Godaime Hokage, Tsunade",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/38eaa32382b96e6fda2b37b40d3af639.jpg"
+      },
+      {
+        "staffId": "6838050187530093584",
+        "staffType": 1,
+        "name": "Debi Mae West",
+        "character": "Tsunade, The Fifth Hokage",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "6838050187530093584",
+        "staffType": 1,
+        "name": "Debi Mae West",
+        "character": "Tsunade",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "6838050187530093584",
+        "staffType": 1,
+        "name": "Debi Mae West",
+        "character": "Tsunade, the Fifth Hokage",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "3062569934136954672",
+        "staffType": 1,
+        "name": "Colleen O'Shaughnessey",
+        "character": "Ino Yamanaka",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/033d7e63a12283abea800dbaa3798ecf.jpg"
+      },
+      {
+        "staffId": "3062569934136954672",
+        "staffType": 1,
+        "name": "Colleen O'Shaughnessey",
+        "character": "Konohamaru",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/033d7e63a12283abea800dbaa3798ecf.jpg"
+      },
+      {
+        "staffId": "3062569934136954672",
+        "staffType": 1,
+        "name": "Colleen O'Shaughnessey",
+        "character": "Konohamaru Sarutobi",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/033d7e63a12283abea800dbaa3798ecf.jpg"
+      },
+      {
+        "staffId": "3367166403430207160",
+        "staffType": 1,
+        "name": "Stephanie Sheh",
+        "character": "Hinata Hyuga",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/f3378ce6522089616ad527514f3d4475.jpg"
+      },
+      {
+        "staffId": "3367166403430207160",
+        "staffType": 1,
+        "name": "Stephanie Sheh",
+        "character": "Rin",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/f3378ce6522089616ad527514f3d4475.jpg"
+      },
+      {
+        "staffId": "3367166403430207160",
+        "staffType": 1,
+        "name": "Stephanie Sheh",
+        "character": "Yukata",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/f3378ce6522089616ad527514f3d4475.jpg"
+      },
+      {
+        "staffId": "8915003010024099632",
+        "staffType": 1,
+        "name": "Steve Blum",
+        "character": "Orochimaru",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/033687a9f3c65456d3414e62f9c9eaae.jpg"
+      },
+      {
+        "staffId": "8915003010024099632",
+        "staffType": 1,
+        "name": "Steve Blum",
+        "character": "Ônoki, The Third Tsuchikage",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/033687a9f3c65456d3414e62f9c9eaae.jpg"
+      },
+      {
+        "staffId": "8915003010024099632",
+        "staffType": 1,
+        "name": "Steve Blum",
+        "character": "Ao",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/033687a9f3c65456d3414e62f9c9eaae.jpg"
+      },
+      {
+        "staffId": "7725074357797931496",
+        "staffType": 1,
+        "name": "Shôtarô Morikubo",
+        "character": "Shikamaru Nara",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/11/15/5d87e31e5c09c4aa65bf7a830164382a.jpg"
+      },
+      {
+        "staffId": "7725074357797931496",
+        "staffType": 1,
+        "name": "Shôtarô Morikubo",
+        "character": "Nara Shikamaru",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/11/15/5d87e31e5c09c4aa65bf7a830164382a.jpg"
+      },
+      {
+        "staffId": "1812680300053810984",
+        "staffType": 1,
+        "name": "Tom Gibis",
+        "character": "Shikamaru Nara",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/7c001b5535c4656ee47b64e2cc5a1489.jpg"
+      },
+      {
+        "staffId": "1812680300053810984",
+        "staffType": 1,
+        "name": "Tom Gibis",
+        "character": "Commentator",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/7c001b5535c4656ee47b64e2cc5a1489.jpg"
+      },
+      {
+        "staffId": "1812680300053810984",
+        "staffType": 1,
+        "name": "Tom Gibis",
+        "character": "Allied Shinobi",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/7c001b5535c4656ee47b64e2cc5a1489.jpg"
+      },
+      {
+        "staffId": "84570040660021040",
+        "staffType": 1,
+        "name": "Rikiya Koyama",
+        "character": "Yamato",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/2c00401a111f225c73e384ab7190f3b3.jpg"
+      },
+      {
+        "staffId": "84570040660021040",
+        "staffType": 1,
+        "name": "Rikiya Koyama",
+        "character": "Tenzô (Yamato)",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/2c00401a111f225c73e384ab7190f3b3.jpg"
+      },
+      {
+        "staffId": "84570040660021040",
+        "staffType": 1,
+        "name": "Rikiya Koyama",
+        "character": "Root's Anbu (Yamato)",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/02/2c00401a111f225c73e384ab7190f3b3.jpg"
+      },
+      {
+        "staffId": "8127237801172691368",
+        "staffType": 3,
+        "name": "Masashi Kishimoto",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "7607670178537005792",
+        "staffType": 3,
+        "name": "Junki Takegami",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "633248021228186024",
+        "staffType": 3,
+        "name": "Masahiro Hikokubo",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "5244934039655573928",
+        "staffType": 3,
+        "name": "Yasuyuki Suzuki",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "2939091030441879976",
+        "staffType": 3,
+        "name": "Shin Yoshida",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "2939091030442404264",
+        "staffType": 3,
+        "name": "Yuka Miyata",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "7550777048869267880",
+        "staffType": 3,
+        "name": "Satoru Nishizono",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "1786169525835033000",
+        "staffType": 3,
+        "name": "Katsuhiko Chiba",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "2801361155749465904",
+        "staffType": 3,
+        "name": "Liam O'Brien",
+        "character": "Writer",
+        "avatarUrl": "https://pbcdn.aoneroom.com/image/2022/09/07/0c534caee7524b08ee6ddd2e75be8110.jpg"
+      },
+      {
+        "staffId": "6397855544262420904",
+        "staffType": 3,
+        "name": "Kento Shimoyama",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "2110428699006233000",
+        "staffType": 3,
+        "name": "Toshiyuki Tsuru",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "4092012535048726952",
+        "staffType": 3,
+        "name": "Daisuke Watanabe",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "8703698553476114856",
+        "staffType": 3,
+        "name": "Masanao Akahoshi",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "345017645076474280",
+        "staffType": 3,
+        "name": "Masaya Honda",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "813392006323005864",
+        "staffType": 3,
+        "name": "Osamu Kobayashi",
+        "character": "Writer",
+        "avatarUrl": ""
+      },
+      {
+        "staffId": "4956703663503862184",
+        "staffType": 3,
+        "name": "Hideto Tanaka",
+        "character": "Writer",
+        "avatarUrl": ""
+      }
+    ],
+    "wantToSeeCount": 0,
+    "haveSeenCount": 0,
+    "seenStatus": 0,
+    "mySeeTime": "0",
+    "myScoreValue": 0,
+    "myScorePostId": "0",
+    "myScoreTime": "0",
+    "opt": "",
+    "hasResource": true,
+    "resourceDetectors": [
+      {
+        "type": 1,
+        "totalEpisode": 500,
+        "totalSize": "210859386080",
+        "uploadTime": "1676452570",
+        "uploadBy": "iam_ikeonyema etc.",
+        "resourceLink": "https://ailok.pe/info/Naruto: Shippuden-57284/S1E1-1080P",
+        "downloadUrl": "",
+        "source": "ailok.pe etc.",
+        "firstSize": "150497549",
+        "resourceId": "8324978002601934992",
+        "postId": "4866213488781395384",
+        "extCaptions": [],
+        "resolutionList": [],
+        "subjectId": "5728465289486950408",
+        "codecName": ""
+      }
+    ],
+    "ops": "",
+    "durationSeconds": 0,
+    "stills": {
+      "url": "https://pbcdn.aoneroom.com/image/2023/09/25/f5b703f899346a46e83de3631dadbeea.webp",
+      "width": 640,
+      "height": 480,
+      "size": 15484,
+      "format": "webp",
+      "thumbnail": "eTBr=SQRuPu4bvJX%LNdbvpInPWAr;VsaypwjrskkqX9NykCadX9X8",
+      "gif": null,
+      "averageHueLight": "#519299",
+      "averageHueDark": "#366166"
+    },
+    "trailer": {
+      "VideoAddress": {
+        "videoId": "8240898956163698128",
+        "definition": "sd",
+        "url": "https://macdn.aoneroom.com/media/vone/2023/09/25/b805e810a5dfc1a4508b8c45d3e2dcd1-sd.mp4",
+        "duration": 72,
+        "width": 848,
+        "height": 636,
+        "size": 4696596,
+        "fps": 25,
+        "bitrate": 519,
+        "type": 1
+      },
+      "cover": {
+        "url": "https://pbcdn.aoneroom.com/image/2023/09/25/f5b703f899346a46e83de3631dadbeea.webp",
+        "width": 640,
+        "height": 480,
+        "size": 15484,
+        "format": "webp",
+        "thumbnail": "eTBr=SQRuPu4bvJX%LNdbvpInPWAr;VsaypwjrskkqX9NykCadX9X8",
+        "gif": null,
+        "averageHueLight": "#519299",
+        "averageHueDark": "#366166"
+      }
+    },
+    "contentRating": "TV-PG",
+    "postTitle": "The Best Anime Show; Best Music; and Best characters",
+    "aka": "",
+    "explains": [],
+    "seNum": 2,
+    "viewers": 2128,
+    "category": "",
+    "subtitles": "English,Español,Filipino,Français,Indonesian,Malay,Português,tiếng Việt,Русский,اَلْعَرَبِيَّةُ,اُردُو,বাংলা,ਪੰਜਾਬੀ,ภาษาไทย,中文",
+    "dubs": [
+      {
+        "subjectId": "5728465289486950408",
+        "lanName": "Original Audio",
+        "lanCode": "ja",
+        "original": true,
+        "type": 0
+      },
+      {
+        "subjectId": "470178593793016408",
+        "lanName": "Bengali dub",
+        "lanCode": "bn",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "5934003849076921960",
+        "lanName": "English sub",
+        "lanCode": "en",
+        "original": false,
+        "type": 1
+      },
+      {
+        "subjectId": "6732266150736413040",
+        "lanName": "English dub",
+        "lanCode": "en",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "4681337201345660416",
+        "lanName": "Hindi dub",
+        "lanCode": "hi",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "2638954770333072624",
+        "lanName": "Malayalam dub",
+        "lanCode": "ml",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "7214611991741496512",
+        "lanName": "Tamil dub",
+        "lanCode": "ta",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "7784024388642786352",
+        "lanName": "Telugu dub",
+        "lanCode": "te",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "875117138481137944",
+        "lanName": "esla dub",
+        "lanCode": "esla",
+        "original": false,
+        "type": 0
+      }
+    ],
+    "relatedApp": null,
+    "restrictLevel": "",
+    "corner": "",
+    "likeStatus": 0,
+    "style": {
+      "colNum": 3,
+      "shape": "Vertical"
+    },
+    "detailUrl": "https://moviebox.ph/detail/naruto-shippuden-OrlV8QLqaP6",
+    "playUrl": {
+      "playUrl": "",
+      "urlType": "PLAY_URL_WEB"
+    },
+    "restrictKid": 0,
+    "season": 0,
+    "isCam": false,
+    "thumbnail": "https://pbcdn.aoneroom.com/image/2026/01/27/56c166dc8ab736cf4a82d1ed6dc58c29.jpg",
+    "rating": 8.7,
+    "year": 2009,
+    "type": "series",
+    "seasons": 2,
+    "country": "Japan",
+    "audioTracks": [
+      {
+        "subjectId": "5728465289486950408",
+        "lanName": "Original Audio",
+        "lanCode": "ja",
+        "original": true,
+        "type": 0
+      },
+      {
+        "subjectId": "470178593793016408",
+        "lanName": "Bengali dub",
+        "lanCode": "bn",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "5934003849076921960",
+        "lanName": "English sub",
+        "lanCode": "en",
+        "original": false,
+        "type": 1
+      },
+      {
+        "subjectId": "6732266150736413040",
+        "lanName": "English dub",
+        "lanCode": "en",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "4681337201345660416",
+        "lanName": "Hindi dub",
+        "lanCode": "hi",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "2638954770333072624",
+        "lanName": "Malayalam dub",
+        "lanCode": "ml",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "7214611991741496512",
+        "lanName": "Tamil dub",
+        "lanCode": "ta",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "7784024388642786352",
+        "lanName": "Telugu dub",
+        "lanCode": "te",
+        "original": false,
+        "type": 0
+      },
+      {
+        "subjectId": "875117138481137944",
+        "lanName": "esla dub",
+        "lanCode": "esla",
+        "original": false,
+        "type": 0
+      }
+    ],
+    "seasonDetails": [
+      {
+        "season": 1,
+        "totalEpisodes": 500
+      },
+      {
+        "season": 2,
+        "totalEpisodes": 400
+      }
+    ],
+    "totalEpisodes": 900
+  }
+}

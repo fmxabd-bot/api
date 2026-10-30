@@ -1,0 +1,17 @@
+{
+  "status": 200,
+  "success": true,
+  "creator": "DaraTech",
+  "results": [
+    { "name": "Action",   "slug": "action",   "url": "https://rosyscans.id/genres/action/"   },
+    { "name": "Comedy",   "slug": "comedy",   "url": "https://rosyscans.id/genres/comedy/"   },
+    { "name": "Drama",    "slug": "drama",    "url": "https://rosyscans.id/genres/drama/"    },
+    { "name": "Fantasy",  "slug": "fantasy",  "url": "https://rosyscans.id/genres/fantasy/"  },
+    { "name": "Kids",     "slug": "kids",     "url": "https://rosyscans.id/genres/kids/"     },
+    { "name": "Manhwa",   "slug": "manhwa",   "url": "https://rosyscans.id/genres/manhwa/"   },
+    { "name": "Romance",  "slug": "romance",  "url": "https://rosyscans.id/genres/romance/"  },
+    { "name": "Shoujo",   "slug": "shoujo",   "url": "https://rosyscans.id/genres/shoujo/"   },
+    { "name": "Shounen",  "slug": "shounen",  "url": "https://rosyscans.id/genres/shounen/"  },
+    { "name": "Thriller", "slug": "thriller", "url": "https://rosyscans.id/genres/thriller/" }
+  ]
+}

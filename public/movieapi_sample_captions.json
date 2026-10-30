@@ -1,0 +1,81 @@
+{
+  "status": 200,
+  "success": true,
+  "creator": "DaraTech",
+  "results": {
+    "captions": [
+      {
+        "language": "English",
+        "languageCode": "en",
+        "url": "https://cacdn.hakunaymatata.com/subtitle/ae3e6e90745145e0e0a6e641d2ca2df0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg0NTY0NjQwfX19XX0_&Signature=VxS-TCsqYjcRxLWcOTaa~0ZGDdu1Zqp0h78kfB5E3Cmu3c5AbiBiDGFwUFXpHs2jGVA9lGJmThPeW2JJ6p3GlN6uSf29hT0cpmcS7-i8cslTpy6J4-EXkoZDKKa1njSsfby9mRATDUUqpTjAwxqAeLmkmUgKUUid6x-AWQuAZ2Ungx1JlbQ-AA1hS9E6f~4SfRbzthEocc~GCxxAXKbA3ipPdOHAdSfKQWnd94rgOQfN25ggftRhsk27XvfFxNz-eJ~7VLjxvSnRpyy9-WOZRk9Xs86A9Uqf~eOlprTDz2KdE6VpjBTNq7l2hf40E-isRDeSRzChwnw7ekGQKfitzA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+        "size": "37756",
+        "delay": 0
+      },
+      {
+        "language": "বাংলা",
+        "languageCode": "bn",
+        "url": "https://cacdn.hakunaymatata.com/msubt/4551f8ff4c56331b4e3fd0736fd25e46.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9tc3VidC8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg0NTY0NjQwfX19XX0_&Signature=C5ELT52Yu--qKUbuxn-CBLhjua2hUMRTJvL1frgYOtEv3hGfSNB7RUUHnCNlm6bgIm2B6r9bRVo7-gCmvV9cP8bNAVvHfZ~LyPqHTVP00DWqoE9wyP7fbkUQtY9uwfuGijWCm162fk2S3VryjYOuCbj1mEZQFg7lZjoLt2cWO9ddBzbIe6ZkXcZRf06Ify3T~cDkxIqyyA5-CfMiolDiyTfZu0cxx~6nQB9PsTnq5QulQp7K3Skwgfe0leGLH~DWY7oe6WGrmUdZ6raLwp09zMmmE6QizqYVKl2YwuK8dQtjELoSw7mPqhvO3oZHe5FMPacbBaN-Q6QTvVWoheMntQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+        "size": "63832",
+        "delay": 0
+      },
+      {
+        "language": "اَلْعَرَبِيَّةُ",
+        "languageCode": "ar",
+        "url": "https://cacdn.hakunaymatata.com/subtitle/6cccdf15e1347bf2142ae2ce7ff5726c.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg0NTY0NjQwfX19XX0_&Signature=VxS-TCsqYjcRxLWcOTaa~0ZGDdu1Zqp0h78kfB5E3Cmu3c5AbiBiDGFwUFXpHs2jGVA9lGJmThPeW2JJ6p3GlN6uSf29hT0cpmcS7-i8cslTpy6J4-EXkoZDKKa1njSsfby9mRATDUUqpTjAwxqAeLmkmUgKUUid6x-AWQuAZ2Ungx1JlbQ-AA1hS9E6f~4SfRbzthEocc~GCxxAXKbA3ipPdOHAdSfKQWnd94rgOQfN25ggftRhsk27XvfFxNz-eJ~7VLjxvSnRpyy9-WOZRk9Xs86A9Uqf~eOlprTDz2KdE6VpjBTNq7l2hf40E-isRDeSRzChwnw7ekGQKfitzA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+        "size": "44880",
+        "delay": 0
+      },
+      {
+        "language": "Filipino",
+        "languageCode": "fil",
+        "url": "https://cacdn.hakunaymatata.com/msubt/b3e1dee0974f731d70115317e6706d19.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9tc3VidC8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg0NTY0NjQwfX19XX0_&Signature=C5ELT52Yu--qKUbuxn-CBLhjua2hUMRTJvL1frgYOtEv3hGfSNB7RUUHnCNlm6bgIm2B6r9bRVo7-gCmvV9cP8bNAVvHfZ~LyPqHTVP00DWqoE9wyP7fbkUQtY9uwfuGijWCm162fk2S3VryjYOuCbj1mEZQFg7lZjoLt2cWO9ddBzbIe6ZkXcZRf06Ify3T~cDkxIqyyA5-CfMiolDiyTfZu0cxx~6nQB9PsTnq5QulQp7K3Skwgfe0leGLH~DWY7oe6WGrmUdZ6raLwp09zMmmE6QizqYVKl2YwuK8dQtjELoSw7mPqhvO3oZHe5FMPacbBaN-Q6QTvVWoheMntQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+        "size": "39052",
+        "delay": 0
+      },
+      {
+        "language": "Français",
+        "languageCode": "fr",
+        "url": "https://cacdn.hakunaymatata.com/subtitle/1b1b07b38da7278b901210fd0374dd2e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg0NTY0NjQwfX19XX0_&Signature=VxS-TCsqYjcRxLWcOTaa~0ZGDdu1Zqp0h78kfB5E3Cmu3c5AbiBiDGFwUFXpHs2jGVA9lGJmThPeW2JJ6p3GlN6uSf29hT0cpmcS7-i8cslTpy6J4-EXkoZDKKa1njSsfby9mRATDUUqpTjAwxqAeLmkmUgKUUid6x-AWQuAZ2Ungx1JlbQ-AA1hS9E6f~4SfRbzthEocc~GCxxAXKbA3ipPdOHAdSfKQWnd94rgOQfN25ggftRhsk27XvfFxNz-eJ~7VLjxvSnRpyy9-WOZRk9Xs86A9Uqf~eOlprTDz2KdE6VpjBTNq7l2hf40E-isRDeSRzChwnw7ekGQKfitzA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+        "size": "35120",
+        "delay": 0
+      },
+      {
+        "language": "Indonesian",
+        "languageCode": "in_id",
+        "url": "https://cacdn.hakunaymatata.com/subtitle/127cba047ee65e38ca597fde1dc0dd6b.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg0NTY0NjQwfX19XX0_&Signature=VxS-TCsqYjcRxLWcOTaa~0ZGDdu1Zqp0h78kfB5E3Cmu3c5AbiBiDGFwUFXpHs2jGVA9lGJmThPeW2JJ6p3GlN6uSf29hT0cpmcS7-i8cslTpy6J4-EXkoZDKKa1njSsfby9mRATDUUqpTjAwxqAeLmkmUgKUUid6x-AWQuAZ2Ungx1JlbQ-AA1hS9E6f~4SfRbzthEocc~GCxxAXKbA3ipPdOHAdSfKQWnd94rgOQfN25ggftRhsk27XvfFxNz-eJ~7VLjxvSnRpyy9-WOZRk9Xs86A9Uqf~eOlprTDz2KdE6VpjBTNq7l2hf40E-isRDeSRzChwnw7ekGQKfitzA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+        "size": "43128",
+        "delay": 0
+      },
+      {
+        "language": "Português",
+        "languageCode": "pt",
+        "url": "https://cacdn.hakunaymatata.com/subtitle/640ba97b6930abe112cc72fea41a72cc.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg0NTY0NjQwfX19XX0_&Signature=VxS-TCsqYjcRxLWcOTaa~0ZGDdu1Zqp0h78kfB5E3Cmu3c5AbiBiDGFwUFXpHs2jGVA9lGJmThPeW2JJ6p3GlN6uSf29hT0cpmcS7-i8cslTpy6J4-EXkoZDKKa1njSsfby9mRATDUUqpTjAwxqAeLmkmUgKUUid6x-AWQuAZ2Ungx1JlbQ-AA1hS9E6f~4SfRbzthEocc~GCxxAXKbA3ipPdOHAdSfKQWnd94rgOQfN25ggftRhsk27XvfFxNz-eJ~7VLjxvSnRpyy9-WOZRk9Xs86A9Uqf~eOlprTDz2KdE6VpjBTNq7l2hf40E-isRDeSRzChwnw7ekGQKfitzA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+        "size": "36509",
+        "delay": 0
+      },
+      {
+        "language": "Русский",
+        "languageCode": "ru",
+        "url": "https://cacdn.hakunaymatata.com/msubt/52d72716962d7b90ff9bbc370962e11f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9tc3VidC8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg0NTY0NjQwfX19XX0_&Signature=C5ELT52Yu--qKUbuxn-CBLhjua2hUMRTJvL1frgYOtEv3hGfSNB7RUUHnCNlm6bgIm2B6r9bRVo7-gCmvV9cP8bNAVvHfZ~LyPqHTVP00DWqoE9wyP7fbkUQtY9uwfuGijWCm162fk2S3VryjYOuCbj1mEZQFg7lZjoLt2cWO9ddBzbIe6ZkXcZRf06Ify3T~cDkxIqyyA5-CfMiolDiyTfZu0cxx~6nQB9PsTnq5QulQp7K3Skwgfe0leGLH~DWY7oe6WGrmUdZ6raLwp09zMmmE6QizqYVKl2YwuK8dQtjELoSw7mPqhvO3oZHe5FMPacbBaN-Q6QTvVWoheMntQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+        "size": "51068",
+        "delay": 0
+      },
+      {
+        "language": "اُردُو",
+        "languageCode": "ur",
+        "url": "https://cacdn.hakunaymatata.com/msubt/f42c0342b7a72e705afc54a15d99a497.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9tc3VidC8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg0NTY0NjQwfX19XX0_&Signature=C5ELT52Yu--qKUbuxn-CBLhjua2hUMRTJvL1frgYOtEv3hGfSNB7RUUHnCNlm6bgIm2B6r9bRVo7-gCmvV9cP8bNAVvHfZ~LyPqHTVP00DWqoE9wyP7fbkUQtY9uwfuGijWCm162fk2S3VryjYOuCbj1mEZQFg7lZjoLt2cWO9ddBzbIe6ZkXcZRf06Ify3T~cDkxIqyyA5-CfMiolDiyTfZu0cxx~6nQB9PsTnq5QulQp7K3Skwgfe0leGLH~DWY7oe6WGrmUdZ6raLwp09zMmmE6QizqYVKl2YwuK8dQtjELoSw7mPqhvO3oZHe5FMPacbBaN-Q6QTvVWoheMntQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+        "size": "50924",
+        "delay": 0
+      },
+      {
+        "language": "中文",
+        "languageCode": "zh",
+        "url": "https://cacdn.hakunaymatata.com/subtitle/bc6863fecc8ce951f1101cfa822d2ae0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzg0NTY0NjQwfX19XX0_&Signature=VxS-TCsqYjcRxLWcOTaa~0ZGDdu1Zqp0h78kfB5E3Cmu3c5AbiBiDGFwUFXpHs2jGVA9lGJmThPeW2JJ6p3GlN6uSf29hT0cpmcS7-i8cslTpy6J4-EXkoZDKKa1njSsfby9mRATDUUqpTjAwxqAeLmkmUgKUUid6x-AWQuAZ2Ungx1JlbQ-AA1hS9E6f~4SfRbzthEocc~GCxxAXKbA3ipPdOHAdSfKQWnd94rgOQfN25ggftRhsk27XvfFxNz-eJ~7VLjxvSnRpyy9-WOZRk9Xs86A9Uqf~eOlprTDz2KdE6VpjBTNq7l2hf40E-isRDeSRzChwnw7ekGQKfitzA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+        "size": "35757",
+        "delay": 0
+      }
+    ],
+    "streamId": "2259789194811820392",
+    "subjectId": "1076625875212323512"
+  }
+}

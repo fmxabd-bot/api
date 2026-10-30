@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaraTech MovieAPI Docs | Authentication, Endpoints &amp; Examples</title>
+    <meta name="description" content="Official DaraTech MovieAPI documentation: MovieBox search, title details, episodes, anime, football, captions, stream links, API-key authentication, and runnable examples.">
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta name="theme-color" content="#02040a">
+    <link rel="canonical" href="https://movieapi.runflix.name.ng/docs">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="DaraTech MovieAPI">
+    <meta property="og:title" content="DaraTech MovieAPI Docs | API Authentication &amp; Endpoints">
+    <meta property="og:description" content="Explore MovieAPI endpoints, accepted key formats, request examples and live API tests.">
+    <meta property="og:url" content="https://movieapi.runflix.name.ng/docs">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="DaraTech MovieAPI Docs">
+    <meta name="twitter:description" content="API authentication, endpoint reference and live MovieAPI examples.">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DaraTech MovieAPI Documentation","description":"Documentation for MovieAPI authentication, endpoints, request parameters and runnable examples.","url":"https://movieapi.runflix.name.ng/docs","author":{"@type":"Organization","name":"DaraTech"},"publisher":{"@type":"Organization","name":"DaraTech"},"about":{"@type":"SoftwareApplication","name":"DaraTech MovieAPI","applicationCategory":"DeveloperApplication"}}</script>
+    <link rel="icon" type="image/x-icon" href="https://runflix.name.ng/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#02040a',
+                        surface: '#0a0f1e',
+                        panel: '#111827',
+                        edge: '#1a2035',
+                        'edge-light': '#25304a',
+                        cyan: { 400: '#22d3ee', 500: '#06b6d4', glow: 'rgba(34,211,238,0.15)' },
+                        violet: { 400: '#a78bfa', 500: '#8b5cf6', glow: 'rgba(139,92,246,0.15)' },
+                        slate: { 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #02040a;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: 
+                radial-gradient(ellipse 60% 50% at 10% 20%, rgba(34,211,238,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 60% at 90% 70%, rgba(139,92,246,0.05) 0%, transparent 50%);
+        }
+
+        .dot-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+
+        .mono-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .endpoint-card {
+            background: #111827;
+            border: 1px solid #1a2035;
+            border-top: 2px solid #1a2035;
+            transition: all 0.25s ease;
+        }
+        .endpoint-card:hover {
+            border-top-color: #22d3ee;
+            box-shadow: 0 4px 24px rgba(34,211,238,0.04);
+        }
+
+        .method-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid;
+        }
+        .method-get {
+            background: rgba(34,211,238,0.08);
+            color: #22d3ee;
+            border-color: rgba(34,211,238,0.2);
+        }
+
+        .code-window {
+            background: #0d1117;
+            border: 1px solid #1a2035;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .code-tab-bar {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .code-tab-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.8rem;
+            border-radius: 9999px;
+            border: 1px solid #1a2035;
+            background: #0a0f1e;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .code-tab-btn:hover {
+            color: #cbd5e1;
+            border-color: #25304a;
+        }
+        .code-tab-btn.active {
+            background: rgba(34,211,238,0.1);
+            border-color: rgba(34,211,238,0.3);
+            color: #22d3ee;
+        }
+        .code-tab-panel.hidden { display: none; }
+
+        .code-window { position: relative; }
+        .copy-btn {
+            position: absolute;
+            top: 9px;
+            right: 10px;
+            background: #0a0f1e;
+            border: 1px solid #1a2035;
+            border-radius: 6px;
+            color: #64748b;
+            padding: 3px 9px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 1;
+        }
+        .copy-btn:hover { color: #cbd5e1; border-color: #25304a; }
+        .copy-btn.copied { color: #34d399; border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.06); }
+
+        .code-window-header {
+            background: #111827;
+            border-bottom: 1px solid #1a2035;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot-red { background: #f87171; }
+        .dot-yellow { background: #fbbf24; }
+        .dot-green { background: #34d399; }
+
+        .param-table {
+            width: 100%;
+            font-size: 0.8125rem;
+            border-collapse: collapse;
+        }
+        .param-table th {
+            text-align: left;
+            padding: 0.625rem 1rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid #1a2035;
+        }
+        .param-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #1a2035;
+            color: #94a3b8;
+        }
+        .auth-method-table { font-size: 0.72rem; }
+        .auth-method-table td { overflow-wrap: anywhere; }
+        .auth-method-table td:nth-child(2) { font-family: "JetBrains Mono", monospace; font-size: 0.68rem; color: #cbd5e1; }
+        @media (max-width: 560px) {
+            .auth-method-table, .auth-method-table tbody { display: block; width: 100%; }
+            .auth-method-table thead { display: none; }
+            .auth-method-table tr {
+                display: grid;
+                grid-template-columns: 3.5rem minmax(0, 1fr);
+                column-gap: 0.55rem;
+                padding: 0.6rem 0.65rem;
+                border-bottom: 1px solid #1a2035;
+            }
+            .auth-method-table td { padding: 0.12rem 0 !important; border: 0 !important; min-width: 0; line-height: 1.4; font-size: 0.68rem; }
+            .auth-method-table td:first-child { grid-row: 1 / span 2; font-size: 0.62rem; color: #64748b; }
+            .auth-method-table td:nth-child(2) { grid-column: 2; font-size: 0.68rem; }
+            .auth-method-table td:nth-child(3) { grid-column: 2; font-size: 0.63rem; color: #64748b; }
+            .auth-method-table tr:last-child { border-bottom: 0; }
+        }
+        .param-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #22d3ee, #a78bfa);
+            z-index: 100;
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        .tag-required {
+            background: rgba(244,63,94,0.08);
+            border: 1px solid rgba(244,63,94,0.2);
+            color: #f43f5e;
+        }
+        .tag-optional {
+            background: rgba(148,163,184,0.08);
+            border: 1px solid rgba(148,163,184,0.15);
+            color: #64748b;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .glow-text {
+            text-shadow: 0 0 40px rgba(34,211,238,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            box-shadow: 0 0 20px rgba(6,182,212,0.25);
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 30px rgba(6,182,212,0.4);
+        }
+
+        .btn-ghost {
+            border: 1px solid #1a2035;
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+        .btn-ghost:hover {
+            border-color: #22d3ee;
+            color: #22d3ee;
+        }
+
+        /* Header dropdown nav */
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: #64748b;
+            border-radius: 0.5rem;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+        .nav-link:hover {
+            color: #e2e8f0;
+            background: rgba(255,255,255,0.03);
+        }
+        .nav-link.active {
+            color: #e2e8f0;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            left: 0;
+            min-width: 220px;
+            background: #111827;
+            border: 1px solid #1a2035;
+            border-radius: 0.75rem;
+            padding: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all 0.2s ease;
+            z-index: 50;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .nav-item:hover .dropdown-menu,
+        .dropdown-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.625rem 0.875rem;
+            border-radius: 0.5rem;
+            font-size: 0.8125rem;
+            color: #94a3b8;
+            transition: all 0.15s ease;
+        }
+        .dropdown-item:hover {
+            background: rgba(34,211,238,0.04);
+            color: #e2e8f0;
+        }
+
+        /* Mobile dropdown panel */
+        .mobile-panel {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #0a0f1e;
+            border-bottom: 1px solid #1a2035;
+            padding: 1rem 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all 0.25s ease;
+            z-index: 40;
+            max-height: 0;
+            overflow: hidden;
+        }
+        .mobile-panel.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            max-height: 500px;
+            overflow: visible;
+        }
+
+        .mobile-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #94a3b8;
+            border-bottom: 1px solid #1a2035;
+            transition: color 0.15s;
+        }
+        .mobile-link:last-child {
+            border-bottom: none;
+        }
+        .mobile-link:hover, .mobile-link.active {
+            color: #22d3ee;
+        }
+
+        .mobile-dropdown-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            border-bottom: 1px solid #1a2035;
+            cursor: pointer;
+        }
+
+        .mobile-dropdown-items {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding-left: 1.5rem;
+        }
+        .mobile-dropdown-items.open {
+            max-height: 300px;
+        }
+
+        .mobile-dropdown-items .mobile-link {
+            font-size: 0.8125rem;
+            padding: 0.625rem 0;
+            border-bottom: none;
+        }
+
+        /* Floating quick-nav for desktop */
+        .quick-nav {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 40;
+            background: #111827;
+            border: 1px solid #1a2035;
+            border-radius: 1rem;
+            padding: 0.75rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            display: none;
+        }
+        @media (min-width: 1280px) {
+            .quick-nav { display: block; }
+        }
+
+        .quick-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            color: #64748b;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .quick-nav-link:hover, .quick-nav-link.active {
+            color: #22d3ee;
+            background: rgba(34,211,238,0.04);
+        }
+        /* Live runner additions (original palette) */
+        html { scroll-padding-top: 84px; }
+        body { overflow-wrap: anywhere; }
+        .quick-nav { max-height: calc(100vh - 8rem); overflow-y: auto; }
+        .field { width: 100%; min-width: 0; height: 42px; padding: 0 0.85rem; border-radius: 0.5rem; background: #0a0f1e; border: 1px solid #1a2035; color: #e2e8f0; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; outline: none; transition: border-color .15s, box-shadow .15s; }
+        .field::placeholder { color: #475569; }
+        .field:focus { border-color: rgba(34,211,238,0.45); box-shadow: 0 0 0 3px rgba(34,211,238,0.08); }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; height: 42px; padding: 0 1rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; white-space: nowrap; border: 1px solid #1a2035; background: #0a0f1e; color: #cbd5e1; transition: all .15s ease; }
+        .btn:hover { border-color: #22d3ee; color: #22d3ee; }
+        .btn[disabled] { opacity: .5; cursor: not-allowed; }
+        .btn.sm { height: 32px; padding: 0 0.7rem; font-size: 0.75rem; }
+        .btn.run { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); border-color: transparent; color: #fff; box-shadow: 0 0 20px rgba(6,182,212,0.25); }
+        .btn.run:hover { color: #fff; box-shadow: 0 0 30px rgba(6,182,212,0.4); }
+        .btn.vi { background: rgba(139,92,246,0.12); border-color: rgba(139,92,246,0.3); color: #a78bfa; }
+        .btn.vi:hover { background: rgba(139,92,246,0.2); color: #c4b5fd; }
+        .ep-sum { list-style: none; cursor: pointer; }
+        .ep-sum::-webkit-details-marker { display: none; }
+        details[open] > .ep-sum .ep-chev { transform: rotate(180deg); }
+        details[open].endpoint-card { border-top-color: #22d3ee; }
+        .ep-chev { transition: transform .2s; }
+        .pv { color: #a78bfa; }
+        .cell { background: #0a0f1e; border: 1px solid #1a2035; border-radius: 0.5rem; padding: 0.6rem 0.75rem; min-width: 0; }
+        .cell .v { font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; font-weight: 600; margin-top: 0.2rem; color: #e2e8f0; word-break: break-word; }
+        .ubar { height: 3px; background: #1a2035; border-radius: 3px; margin-top: 6px; overflow: hidden; }
+        .ubar i { display: block; height: 100%; background: linear-gradient(90deg,#22d3ee,#a78bfa); transform-origin: left; }
+        .sk { background: linear-gradient(90deg,#111827 0,#1a2035 50%,#111827 100%); background-size: 200% 100%; animation: skl 1.3s infinite linear; border-radius: 0.5rem; }
+        @keyframes skl { to { background-position: -200% 0; } }
+        pre.out { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; line-height: 1.6; padding: 1rem; max-height: 420px; overflow: auto; white-space: pre; color: #cbd5e1; }
+        .status-code { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 0.375rem; border: 1px solid; }
+        .sc-ok { color: #34d399; background: rgba(52,211,153,0.08); border-color: rgba(52,211,153,0.25); }
+        .sc-err { color: #f43f5e; background: rgba(244,63,94,0.08); border-color: rgba(244,63,94,0.25); }
+        .sc-wait { color: #64748b; background: #0a0f1e; border-color: #1a2035; }
+        #toast { position: fixed; left: 50%; bottom: 1.25rem; transform: translate(-50%, 16px); opacity: 0; z-index: 90; background: #111827; border: 1px solid #25304a; color: #e2e8f0; padding: 0.6rem 1rem; border-radius: 0.5rem; font-size: 0.8125rem; transition: all .2s; pointer-events: none; max-width: 90vw; }
+        #toast.show { opacity: 1; transform: translate(-50%, 0); }
+        .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+        @media (max-width: 400px) { .run-acts { grid-template-columns: 1fr 1fr !important; } .run-acts .run { grid-column: 1 / -1; } }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="mesh-bg"></div>
+    <div class="dot-grid"></div>
+    <div class="scroll-indicator" id="scrollBar"></div>
+
+    <!-- Header with dropdown nav -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-void/90 backdrop-blur-xl border-b border-edge">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3 group shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-violet-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition-shadow">
+                    <i class="fas fa-play text-white text-xs"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-sm tracking-tight text-white">RUNFLIX</span>
+                    <span class="text-slate-500 text-xs ml-1 font-mono">API</span>
+                </div>
+            </a>
+
+            <!-- Desktop dropdown nav -->
+            <nav class="hidden md:flex items-center gap-1">
+                <a href="/" class="nav-link">
+                    <span>Home</span>
+                </a>
+
+                <div class="nav-item">
+                    <a href="/docs" class="nav-link active text-white bg-white/[0.03]">
+                        <span>Documentation</span>
+                        <i class="fas fa-chevron-down text-[10px] opacity-60"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="#overview" class="dropdown-item"><i class="fas fa-list-alt text-cyan-400 w-4 text-center text-xs"></i><span>API Overview</span></a>
+                        <a href="#auth" class="dropdown-item"><i class="fas fa-key text-cyan-400 w-4 text-center text-xs"></i><span>Your API Key</span></a>
+                        <a href="#status" class="dropdown-item"><i class="fas fa-heartbeat text-cyan-400 w-4 text-center text-xs"></i><span>Status &amp; Key Checker</span></a>
+                        <a href="#endpoints" class="dropdown-item"><i class="fas fa-plug text-cyan-400 w-4 text-center text-xs"></i><span>Endpoints</span></a>
+                        <div class="h-px bg-edge my-1 mx-2"></div>
+                        <a href="#support" class="dropdown-item"><i class="fas fa-life-ring text-emerald-400 w-4 text-center text-xs"></i><span>Support</span></a>
+                    </div>
+                </div>
+
+                <a href="/changelog" class="nav-link">
+                    <span>Changelog</span>
+                </a>
+                <a href="/try" class="nav-link">
+                    <span>Try API</span>
+                    <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 font-bold uppercase tracking-wider ml-0.5">Live</span>
+                </a>
+                <a href="/request-key" class="nav-link">
+                    <span>Request Key</span>
+                </a>
+                <a href="https://api.runflix.name.ng" target="_blank" class="nav-link">
+                    <span>More APIs</span>
+                    <i class="fas fa-external-link-alt text-[10px] opacity-60"></i>
+                </a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <a href="https://wa.me/+2348100785677" target="_blank" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-edge hover:border-emerald-500/30 text-slate-400 hover:text-emerald-400 transition-all text-xs font-medium">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Support</span>
+                </a>
+                <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Live</span>
+                </div>
+                <button id="menuBtn" class="md:hidden text-slate-400 hover:text-white transition-colors p-1 ml-1">
+                    <i class="fas fa-bars text-lg" id="menuIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile dropdown panel (NOT full screen) -->
+        <div id="mobilePanel" class="mobile-panel md:hidden">
+            <a href="/" class="mobile-link">
+                <i class="fas fa-home w-5 text-center text-xs"></i>
+                <span>Home</span>
+            </a>
+
+            <div class="mobile-dropdown-header" onclick="toggleMobileDropdown('docsDropdown')">
+                <span class="flex items-center gap-2">
+                    <i class="fas fa-book w-5 text-center text-xs text-cyan-400"></i>
+                    Documentation
+                </span>
+                <i class="fas fa-chevron-down text-xs text-slate-500 transition-transform" id="docsDropdownIcon"></i>
+            </div>
+            <div class="mobile-dropdown-items open" id="docsDropdown">
+                <a href="#overview" class="mobile-link"><i class="fas fa-list-alt w-5 text-center text-xs"></i><span>API Overview</span></a>
+                <a href="#auth" class="mobile-link"><i class="fas fa-key w-5 text-center text-xs"></i><span>Your API Key</span></a>
+                <a href="#status" class="mobile-link"><i class="fas fa-heartbeat w-5 text-center text-xs"></i><span>Status &amp; Key Checker</span></a>
+                <a href="#endpoints" class="mobile-link"><i class="fas fa-plug w-5 text-center text-xs"></i><span>Endpoints</span></a>
+                <a href="#support" class="mobile-link"><i class="fas fa-life-ring w-5 text-center text-xs"></i><span>Support</span></a>
+            </div>
+
+            <a href="/changelog" class="mobile-link">
+                <i class="fas fa-scroll w-5 text-center text-xs text-violet-400"></i>
+                <span>Changelog</span>
+            </a>
+
+            <a href="/try" class="mobile-link text-cyan-400">
+                <i class="fas fa-flask w-5 text-center text-xs"></i>
+                <span>Try API <span style="font-size:9px;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.2);color:#22d3ee;padding:1px 5px;border-radius:10px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-left:2px;">Live</span></span>
+            </a>
+            <a href="/request-key" class="mobile-link">
+                <i class="fas fa-key w-5 text-center text-xs"></i>
+                <span>Request API Key</span>
+            </a>
+            <a href="https://api.runflix.name.ng" target="_blank" class="mobile-link">
+                <i class="fas fa-external-link-alt w-5 text-center text-xs"></i>
+                <span>More APIs</span>
+            </a>
+
+            <a href="https://wa.me/+2348100785677" target="_blank" class="mobile-link text-emerald-400">
+                <i class="fab fa-whatsapp w-5 text-center text-xs"></i>
+                <span>WhatsApp Support</span>
+            </a>
+        </div>
+    </header>
+
+
+    <!-- Floating quick nav (xl screens only) -->
+    <nav class="quick-nav" id="quickNav" aria-label="On this page">
+        <a href="#overview" class="quick-nav-link active"><i class="fas fa-list-alt text-cyan-400 text-[10px]"></i><span>Overview</span></a>
+        <a href="#auth" class="quick-nav-link"><i class="fas fa-key text-cyan-400 text-[10px]"></i><span>API Key</span></a>
+        <a href="#status" class="quick-nav-link"><i class="fas fa-heartbeat text-cyan-400 text-[10px]"></i><span>Status</span></a>
+        <a href="#endpoints" class="quick-nav-link"><i class="fas fa-plug text-cyan-400 text-[10px]"></i><span>Endpoints</span></a>
+        <div id="quickGroups"></div>
+        <a href="#support" class="quick-nav-link"><i class="fas fa-life-ring text-emerald-400 text-[10px]"></i><span>Support</span></a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24">
+        <div class="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-16">
+
+            <!-- Overview -->
+            <section id="overview" class="mb-20">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="mono-label text-cyan-400">Getting Started</span>
+                    <div class="h-px flex-1 bg-gradient-to-r from-edge to-transparent"></div>
+                </div>
+
+                <h1 class="text-3xl sm:text-4xl font-black text-white mb-4 tracking-tight">
+                    API <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400 glow-text">Documentation</span>
+                </h1>
+                <p class="text-slate-400 leading-relaxed mb-8 max-w-2xl">
+                    Movies, series, anime, football and manga through one clean REST interface. Every endpoint below can be run live from this page: you see the real status, latency and JSON the server returns.
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+                    <div class="endpoint-card rounded-lg p-4 border-t-2 border-cyan-500/30">
+                        <div class="mono-label text-slate-500 mb-1">Method</div>
+                        <div class="text-white font-mono text-sm font-semibold">GET</div>
+                    </div>
+                    <div class="endpoint-card rounded-lg p-4 border-t-2 border-violet-500/30">
+                        <div class="mono-label text-slate-500 mb-1">Format</div>
+                        <div class="text-white font-mono text-sm font-semibold">JSON</div>
+                    </div>
+                    <div class="endpoint-card rounded-lg p-4 border-t-2 border-emerald-500/30">
+                        <div class="mono-label text-slate-500 mb-1">Endpoints</div>
+                        <div class="text-white font-mono text-sm font-semibold" id="epCount">Loading</div>
+                    </div>
+                    <div class="endpoint-card rounded-lg p-4 border-t-2 border-amber-500/30">
+                        <div class="mono-label text-slate-500 mb-1">Auth</div>
+                        <div class="text-white font-mono text-sm font-semibold">Bearer</div>
+                    </div>
+                </div>
+
+                <div class="code-window">
+                    <div class="code-window-header">
+                        <div class="dot dot-red"></div>
+                        <div class="dot dot-yellow"></div>
+                        <div class="dot dot-green"></div>
+                        <span class="ml-2 text-xs text-slate-500 font-mono">Base URL</span>
+                    </div>
+                    <div class="p-4 flex items-center justify-between gap-4">
+                        <code class="font-mono text-sm text-slate-300 break-all" id="baseUrl">/api/v3/</code>
+                        <button type="button" id="copyBaseBtn" class="text-slate-500 hover:text-cyan-400 transition-colors shrink-0" aria-label="Copy base URL">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Auth -->
+            <section id="auth" class="mb-20">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="mono-label text-violet-400">Security</span>
+                    <div class="h-px flex-1 bg-gradient-to-r from-edge to-transparent"></div>
+                </div>
+
+                <div class="endpoint-card rounded-xl p-5 sm:p-8">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 shrink-0">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h2 class="text-lg font-bold text-white mb-1">Bearer Token Authentication</h2>
+                            <p class="text-sm text-slate-400">Choose Bearer, ApiKey, another supported header, or a query parameter for each copied example.</p>
+                        </div>
+                    </div>
+
+                    <div class="code-window mt-4">
+                        <div class="p-4">
+                            <pre class="font-mono text-xs text-slate-300 overflow-x-auto"><code>Authorization: Bearer YOUR_KEY
+Authorization: ApiKey YOUR_KEY
+X-API-Key: YOUR_KEY
+apikey: YOUR_KEY
+api-key: YOUR_KEY
+?apikey=YOUR_KEY
+?api_key=YOUR_KEY
+?key=YOUR_KEY</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="rounded-lg border border-edge overflow-hidden mt-4">
+                        <div class="px-4 py-2 bg-white/[0.02] border-b border-edge mono-label text-slate-500">Every accepted authentication format</div>
+                        <div class="overflow-x-auto">
+                        <table class="param-table auth-method-table">
+                            <thead><tr><th>Where</th><th>Form</th><th>Notes</th></tr></thead>
+                            <tbody>
+                                <tr><td>Header</td><td>Authorization: Bearer YOUR_KEY</td><td>Recommended.</td></tr>
+                                <tr><td>Header</td><td>Authorization: ApiKey YOUR_KEY</td><td>ApiKey authorization scheme.</td></tr>
+                                <tr><td>Header</td><td>X-API-Key: YOUR_KEY</td><td>API-key header.</td></tr>
+                                <tr><td>Header</td><td>apikey: YOUR_KEY</td><td>API-key header alias.</td></tr>
+                                <tr><td>Header</td><td>api-key: YOUR_KEY</td><td>API-key header alias.</td></tr>
+                                <tr><td>Query</td><td>?apikey=YOUR_KEY</td><td>Use only when a header cannot be sent.</td></tr>
+                                <tr><td>Query</td><td>?api_key=YOUR_KEY</td><td>Use only when a header cannot be sent.</td></tr>
+                                <tr><td>Query</td><td>?key=YOUR_KEY</td><td>Use only when a header cannot be sent.</td></tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <label for="keyInput" class="mono-label text-cyan-400">Your API key <span class="text-slate-500">(optional)</span></label>
+                        <p class="text-xs text-slate-500 mt-2"><a id="keyContactLink" href="/request-key" class="text-emerald-400">Request your own key</a>.</p>
+                        <div class="flex flex-col sm:flex-row gap-2 mt-2">
+                            <input id="keyInput" class="field" type="text" autocomplete="off" spellcheck="false" placeholder="Paste your own key">
+                            <div class="grid grid-cols-2 gap-2 sm:flex">
+                                <button type="button" id="saveKey" class="btn run"><i class="fas fa-save text-xs"></i>Save</button>
+                                <button type="button" id="resetKey" class="btn"><i class="fas fa-undo text-xs"></i>Reset</button>
+                            </div>
+                        </div>
+                        <div id="activeKey" class="mt-3 inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-surface border border-edge text-[11px] font-mono text-slate-400" aria-live="polite"></div>
+                        <p class="mt-3 text-xs text-slate-500 leading-relaxed">
+                            Run buttons work out of the box with the shared public key <span class="font-mono text-cyan-400">daratechapi</span>; its current limits are shown live in the key checker below. A saved key is stored in <span class="text-slate-300">this browser only</span> (localStorage) and is never added to copied URLs. No key yet? <a href="/request-key" class="text-cyan-400 hover:underline">Request one</a>.
+                        </p>
+                    </div>
+
+                    <p class="mt-4 text-xs text-slate-500 flex items-start gap-2">
+                        <i class="fas fa-exclamation-circle text-rose-400 mt-0.5"></i>
+                        <span>Missing, invalid, disabled or expired keys return <span class="font-mono text-rose-400 bg-rose-500/5 px-1.5 py-0.5 rounded text-[11px]">401</span> / <span class="font-mono text-rose-400 bg-rose-500/5 px-1.5 py-0.5 rounded text-[11px]">403</span>; exhausted limits return <span class="font-mono text-rose-400 bg-rose-500/5 px-1.5 py-0.5 rounded text-[11px]">429</span>.</span>
+                    </p>
+
+                    <div class="code-window mt-4">
+                        <div class="code-window-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="ml-2 text-xs text-slate-500 font-mono">Error shape</span></div>
+                        <pre class="out text-[11px] sm:text-xs leading-relaxed">{
+  "status": 429,
+  "success": false,
+  "creator": "DaraTech",
+  "error": "daily request limit reached",
+  "message": "daily request limit reached",
+  "code": "API_KEY_DAILY_LIMIT_EXCEEDED",
+  "hint": "Wait for the daily reset or request a personal key.",
+  "contact": "/request-key",
+  "contactAction": "request_key",
+  "contactLabel": "Request your own key",
+  "period": "daily",
+  "retryAfter": 3600
+}</pre>
+                    </div>
+                    <p class="mt-3 text-[11px] text-slate-500 leading-snug">Read <span class="font-mono text-slate-300">code</span> to handle an error. Optional fields appear only when needed.</p>
+                    <div class="mt-3 text-[11px] sm:text-xs text-slate-400 leading-snug space-y-1.5">
+                        <p><span class="font-mono text-slate-200">401</span> Missing, invalid or expired API key.</p>
+                        <p><span class="font-mono text-slate-200">403</span> Disabled key or blocked origin.</p>
+                        <p><span class="font-mono text-slate-200">429</span> Daily, monthly or all-time quota reached; repeated key requests are rate-limited. Reset errors include <span class="font-mono">retryAfter</span>.</p>
+                        <p><span class="font-mono text-slate-200">503</span> Key storage unavailable; this does not mean the key is invalid.</p>
+                        <p><span class="font-mono text-slate-200">400 / 404 / 405 / 409 / 502</span> Invalid request / not found / unsupported method / duplicate or reviewed request / upstream failure.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Status & key checker -->
+            <section id="status" class="mb-20">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="mono-label text-emerald-400">Status</span>
+                    <div class="h-px flex-1 bg-gradient-to-r from-edge to-transparent"></div>
+                </div>
+
+                <div id="healthChips" class="flex flex-wrap gap-2 mb-4" aria-live="polite">
+                    <span class="sk h-8 w-28"></span><span class="sk h-8 w-20"></span><span class="sk h-8 w-24"></span>
+                </div>
+
+                <div class="endpoint-card rounded-xl p-5 sm:p-8">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h2 class="text-lg font-bold text-white mb-1">Key Checker</h2>
+                            <p class="text-sm text-slate-400">Verify a key and view its limits and usage. Checking does not use quota, and exhausted keys still show their usage. Server side, <span class="font-mono text-slate-300">GET /key/info</span> returns the same data using any header or query form above.</p>
+                        </div>
+                    </div>
+                    <form id="checkForm" class="flex flex-col sm:flex-row gap-2">
+                        <label for="checkInput" class="sr-only">Key to check</label>
+                        <input id="checkInput" class="field" autocomplete="off" spellcheck="false" placeholder="daratechapi">
+                        <button id="checkBtn" type="submit" class="btn vi"><i class="fas fa-search text-xs"></i>Check Key</button>
+                    </form>
+                    <div id="checkOut" class="mt-4" aria-live="polite"></div>
+                </div>
+            </section>
+
+            <!-- Endpoints -->
+            <section id="endpoints" class="mb-20">
+                <div class="flex items-center gap-3 mb-8">
+                    <span class="mono-label text-cyan-400">Endpoints</span>
+                    <div class="h-px flex-1 bg-gradient-to-r from-edge to-transparent"></div>
+                </div>
+                <div class="bg-surface border border-edge rounded-xl p-5 mb-8">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fas fa-route text-cyan-400 text-xs"></i>
+                        <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Endpoint Groups</p>
+                    </div>
+                    <div id="groupChips" class="flex flex-wrap gap-2"><span class="sk h-6 w-20"></span><span class="sk h-6 w-16"></span><span class="sk h-6 w-24"></span></div>
+                    <p class="text-xs text-slate-500 mt-4 leading-relaxed">Sources provide short playback URLs and descriptive filenames without exposing your API key. Links expire after six hours. Streaming, seeking and downloading do not consume extra quota; deleted, disabled or expired keys stop working immediately. Use Authorization headers for API requests, never keys in URLs.</p>
+                </div>
+                <div id="groups" aria-live="polite"></div>
+            </section>
+
+            <!-- Support -->
+            <section id="support" class="mb-20">
+                <div class="flex items-center gap-3 mb-8">
+                    <span class="mono-label text-emerald-400">Support</span>
+                    <div class="h-px flex-1 bg-gradient-to-r from-edge to-transparent"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                    <div class="endpoint-card rounded-xl p-5 sm:p-8">
+                        <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                            <i class="fas fa-headset text-cyan-400"></i>
+                            Developer Support
+                        </h3>
+                        <p class="text-sm text-slate-400 mb-6">Have integration challenges or wish to request key updates? Contact our lead engineers.</p>
+                        <div class="space-y-4">
+                            <a href="https://whatsapp.com/channel/0029Vb8esUv3GJP6ymXaNF3g" target="_blank" rel="noopener" class="flex items-center gap-3 p-3 rounded-lg border border-edge hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all group">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0"><i class="fab fa-whatsapp text-sm"></i></div>
+                                <div class="min-w-0"><div class="text-sm font-semibold text-white">WhatsApp Channel</div><div class="text-xs text-slate-500">Release bulletins and system notices.</div></div>
+                                <i class="fas fa-arrow-right text-xs text-slate-600 group-hover:text-emerald-400 ml-auto"></i>
+                            </a>
+                            <a href="https://wa.me/+2348100785677" target="_blank" rel="noopener" class="flex items-center gap-3 p-3 rounded-lg border border-edge hover:border-cyan-500/30 hover:bg-cyan-500/5 transition-all group">
+                                <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0"><i class="fas fa-comments text-sm"></i></div>
+                                <div class="min-w-0"><div class="text-sm font-semibold text-white">Direct Support</div><div class="text-xs text-slate-500">Keys, limits and integration help.</div></div>
+                                <i class="fas fa-arrow-right text-xs text-slate-600 group-hover:text-cyan-400 ml-auto"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="endpoint-card rounded-xl p-5 sm:p-8">
+                        <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                            <i class="fas fa-route text-violet-400"></i>
+                            Quick Integration Workflow
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3"><div class="step-number">1</div><div class="min-w-0"><div class="text-sm font-semibold text-white">Get a key</div><div class="text-xs text-slate-500">Use <code class="font-mono text-cyan-400 text-[11px]">daratechapi</code> to explore, then request your own at <code class="font-mono text-cyan-400 text-[11px]">/request-key</code>.</div></div></div>
+                            <div class="flex items-start gap-3"><div class="step-number">2</div><div class="min-w-0"><div class="text-sm font-semibold text-white">Discover titles</div><div class="text-xs text-slate-500">Homepage, trending, search or filter to find an ID.</div></div></div>
+                            <div class="flex items-start gap-3"><div class="step-number">3</div><div class="min-w-0"><div class="text-sm font-semibold text-white">Fetch details</div><div class="text-xs text-slate-500">Info, seasons and episodes for the selected title.</div></div></div>
+                            <div class="flex items-start gap-3"><div class="step-number">4</div><div class="min-w-0"><div class="text-sm font-semibold text-white">Resolve sources</div><div class="text-xs text-slate-500">Read streamUrl or downloadUrl directly, or choose from the results quality list.</div></div></div>
+                            <div class="flex items-start gap-3"><div class="step-number">5</div><div class="min-w-0"><div class="text-sm font-semibold text-white">Play or download</div><div class="text-xs text-slate-500">Open the short URL in your player or browser. Downloads use a descriptive title and episode filename.</div></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="border-t border-edge pt-10 pb-6">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-7 h-7 rounded-md bg-gradient-to-br from-cyan-500 to-violet-500 flex items-center justify-center">
+                            <i class="fas fa-play text-white text-[8px]"></i>
+                        </div>
+                        <span class="font-bold text-sm text-white">RUNFLIX <span class="text-slate-500 font-normal">Movies API</span></span>
+                    </div>
+                    <div class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                        <a href="/" class="hover:text-white transition-colors">Home</a>
+                        <a href="/docs" class="hover:text-white transition-colors">Documentation</a>
+                        <a href="https://api.runflix.name.ng" target="_blank" rel="noopener" class="hover:text-white transition-colors">More APIs</a>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <a href="https://wa.me/+2348100785677" target="_blank" rel="noopener" aria-label="WhatsApp" class="w-8 h-8 rounded-lg bg-panel border border-edge flex items-center justify-center text-slate-400 hover:text-emerald-400 hover:border-emerald-500/30 transition-all"><i class="fab fa-whatsapp text-sm"></i></a>
+                        <a href="https://api.runflix.name.ng" target="_blank" rel="noopener" aria-label="More APIs" class="w-8 h-8 rounded-lg bg-panel border border-edge flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-500/30 transition-all"><i class="fas fa-external-link-alt text-sm"></i></a>
+                    </div>
+                </div>
+                <div class="mt-6 text-center"><p class="text-[11px] text-slate-600 font-mono">Crafted by DaraTech</p></div>
+            </footer>
+        </div>
+    </main>
+    <div id="toast" role="status"></div>
+
+    <script>
+        // Mobile panel toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const mobilePanel = document.getElementById('mobilePanel');
+        const menuIcon = document.getElementById('menuIcon');
+        let panelOpen = false;
+        menuBtn.setAttribute('aria-label', 'Open menu');
+        menuBtn.addEventListener('click', () => {
+            panelOpen = !panelOpen;
+            mobilePanel.classList.toggle('open', panelOpen);
+            menuBtn.setAttribute('aria-expanded', String(panelOpen));
+            menuIcon.className = panelOpen ? 'fas fa-times text-lg' : 'fas fa-bars text-lg';
+        });
+        mobilePanel.addEventListener('click', e => {
+            if (e.target.closest('a[href^="#"]')) { panelOpen = false; mobilePanel.classList.remove('open'); menuIcon.className = 'fas fa-bars text-lg'; }
+        });
+        function toggleMobileDropdown(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById(id + 'Icon');
+            el.classList.toggle('open');
+            if (icon) icon.style.transform = el.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        // Scroll progress + active link
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById('scrollBar').style.width = (height > 0 ? (winScroll / height) * 100 : 0) + '%';
+            let current = '';
+            document.querySelectorAll('section[id], div.ep-group[id]').forEach(s => { if (scrollY >= s.offsetTop - 200) current = s.id; });
+            document.querySelectorAll('.quick-nav-link').forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current));
+        }, { passive: true });
+
+        (function () {
+            'use strict';
+            const PUBLIC_KEY = 'daratechapi', LS = 'runflix_movieapi_key', API = '/api/v3', ORIGIN = location.origin;
+            const $ = s => document.querySelector(s);
+
+            function el(tag, attrs, ...kids) {
+                const n = document.createElement(tag);
+                if (attrs) for (const k in attrs) {
+                    const v = attrs[k]; if (v == null || v === false) continue;
+                    if (k === 'class') n.className = v; else if (k === 'text') n.textContent = v;
+                    else if (k.startsWith('on')) n.addEventListener(k.slice(2), v);
+                    else n.setAttribute(k, v === true ? '' : v);
+                }
+                kids.flat().forEach(c => { if (c != null) n.append(c instanceof Node ? c : document.createTextNode(String(c))); });
+                return n;
+            }
+            const fa = c => el('i', { class: c, 'aria-hidden': 'true' });
+            let tt; function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 1900); }
+            async function copy(text, msg) { try { await navigator.clipboard.writeText(text); toast(msg || 'Copied'); } catch { toast('Copy failed: select and copy manually'); } }
+
+            /* Key handling */
+            const userKey = () => { try { return localStorage.getItem(LS) || ''; } catch { return ''; } };
+            const activeKey = () => userKey() || PUBLIC_KEY;
+            function paintKey() {
+                const k = activeKey()===PUBLIC_KEY?'':userKey(), a = $('#activeKey'); a.textContent = '';
+                const personal=activeKey()!==PUBLIC_KEY,contact=$('#keyContactLink');
+                contact.href=personal?'https://wa.me/2348100785677?text=Please%20help%20me%20upgrade%20my%20RUNFLIX%20MovieAPI%20key.':'/request-key';
+                contact.textContent=personal?'Upgrade or increase limits on WhatsApp':'Request your own key';
+                contact.target=personal?'_blank':'_self';contact.rel='noopener';
+                a.append(el('span', { class: 'w-1.5 h-1.5 rounded-full ' + (k ? 'bg-emerald-500' : 'bg-amber-400') }),
+                    k ? ('Using saved key ' + k.slice(0, 4) + '...' + k.slice(-3)) : ('Using public key ' + PUBLIC_KEY));
+                $('#keyInput').value = k; $('#checkInput').value = activeKey();
+            }
+            $('#saveKey').onclick = () => {
+                const v = $('#keyInput').value.trim();
+                if (!v) { toast('Paste a key first, or use Reset'); return; }
+                if (/\s/.test(v) || v.length > 200) { toast('That does not look like a valid key'); return; }
+                try { localStorage.setItem(LS, v); } catch { toast('Browser storage unavailable'); return; }
+                paintKey(); toast('Key saved in this browser'); runCheck(v);
+            };
+            $('#resetKey').onclick = () => { try { localStorage.removeItem(LS); } catch {} paintKey(); toast('Using public key again'); runCheck(PUBLIC_KEY); };
+            $('#baseUrl').textContent = ORIGIN + API + '/';
+            $('#copyBaseBtn').onclick = () => copy(ORIGIN + API + '/', 'Base URL copied');
+
+            /* Health */
+            const chip = (cls, ...kids) => el('span', { class: 'inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-[11px] font-mono ' + cls }, ...kids);
+            async function loadHealth() {
+                const box = $('#healthChips');
+                try {
+                    const t0 = performance.now();
+                    const r = await fetch(API + '/health', { headers: { Accept: 'application/json' } });
+                    const ms = Math.round(performance.now() - t0);
+                    const d = await r.json().catch(() => ({}));
+                    const ok = r.ok && d.success !== false;
+                    box.textContent = '';
+                    box.append(chip(ok ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/5 border-rose-500/20 text-rose-400',
+                        el('span', { class: 'w-1.5 h-1.5 rounded-full ' + (ok ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500') }), ok ? 'Operational' : 'Degraded (' + r.status + ')'));
+                    if (d.version) box.append(chip('bg-panel border-edge text-slate-400', fa('fas fa-tag text-[9px]'), 'v' + d.version));
+                    if (d.storage) box.append(chip('bg-panel border-edge text-slate-400', fa('fas fa-database text-[9px]'), d.storage));
+                    box.append(chip('bg-panel border-edge text-slate-400', fa('fas fa-bolt text-[9px]'), ms + ' ms'));
+                    box.append(chip('bg-panel border-edge text-slate-400', fa('far fa-clock text-[9px]'), new Date().toLocaleTimeString()));
+                } catch {
+                    box.textContent = '';
+                    box.append(chip('bg-rose-500/5 border-rose-500/20 text-rose-400', 'Unreachable'), el('button', { class: 'btn sm', type: 'button', onclick: loadHealth, text: 'Retry' }));
+                }
+            }
+
+            /* Key checker */
+            const fmtN = n => n == null ? 'Unlimited' : Number(n).toLocaleString();
+            const fmtD = d => { if (!d) return null; const x = new Date(d); return isNaN(x) ? String(d) : x.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }); };
+            const cell = (label, value, color) => el('div', { class: 'cell' }, el('div', { class: 'mono-label text-slate-500', text: label }), el('div', { class: 'v ' + (color || ''), text: value }));
+            function usage(label, used, limit, rem) {
+                const v = limit === 0 ? 'Blocked' : fmtN(used || 0) + ' / ' + fmtN(limit);
+                const c = cell(label, v, limit === 0 || rem === 0 ? 'text-rose-400' : 'text-cyan-400');
+                if (limit) { const i = el('i'); i.style.transform = 'scaleX(' + Math.min(1, (used || 0) / limit) + ')'; c.append(el('div', { class: 'ubar' }, i)); }
+                if (limit && rem != null) c.append(el('div', { class: 'text-[10px] text-slate-500 font-mono mt-1', text: fmtN(rem) + ' left' }));
+                return c;
+            }
+            async function runCheck(key) {
+                const out = $('#checkOut'), btn = $('#checkBtn');
+                key = (key || '').trim(); out.textContent = '';
+                if (!key) { out.append(el('p', { class: 'text-xs text-rose-400', text: 'Enter a key to check.' })); return; }
+                btn.disabled = true;
+                const g = el('div', { class: 'grid grid-cols-2 gap-2' }); for (let i = 0; i < 4; i++) g.append(el('div', { class: 'sk h-14' })); out.append(g);
+                try {
+                    const r = await fetch('/api/key/check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key }) });
+                    const d = await r.json().catch(() => ({}));
+                    out.textContent = '';
+                    if (!d.key) { out.append(el('p', { class: 'flex items-center gap-2 text-sm font-semibold text-rose-400' }, fa('fas fa-times-circle'), (d.message || 'Key is not valid') + ' (' + r.status + (d.code ? ' ' + d.code : '') + ')'),
+                        d.hint ? el('p', { class: 'text-xs text-slate-500 mt-1', text: d.hint }) : null,
+                        d.contact ? el('a', { href:d.contact,target:d.contactAction==='request_key'?'_self':'_blank',rel:'noopener',class:'text-xs text-emerald-400 underline mt-2 inline-block',text:d.contactLabel||'Contact support' }) : null); return; }
+                    const k = d.key, L = k.limits || {}, U = k.usage || {}, R = k.remaining || {};
+                    const expired = k.expiresAt && new Date(k.expiresAt) < new Date();
+                    const exhausted = d.code === 'QUOTA_EXHAUSTED' || /exhaust/i.test(d.keyStatus || '') || d.quotaExhausted === true;
+                    const okState = d.valid && !exhausted;
+                    out.append(el('p', { class: 'flex flex-wrap items-center gap-2 text-sm font-semibold mb-3 ' + (okState ? 'text-emerald-400' : 'text-amber-400') }, fa(okState ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'),
+                        okState ? 'Valid key' : (d.message || (exhausted ? 'Quota exhausted' : 'Key not usable')),
+                        d.keyStatus ? el('span', { class: 'text-[10px] px-2 py-0.5 rounded bg-panel border border-edge text-slate-400 font-mono', text: d.keyStatus }) : null,
+                        d.code && !okState ? el('span', { class: 'text-[10px] px-2 py-0.5 rounded bg-rose-500/10 border border-rose-500/20 text-rose-400 font-mono', text: d.code }) : null,
+                        key === PUBLIC_KEY ? el('span', { class: 'text-[10px] px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 font-mono', text: 'public' }) : null,
+                        k.enabled === false ? el('span', { class: 'text-[10px] px-2 py-0.5 rounded bg-rose-500/10 border border-rose-500/20 text-rose-400 font-mono', text: 'disabled' }) : null));
+                    if(d.contact)out.append(el('a',{href:d.contact,target:d.contactAction==='request_key'?'_self':'_blank',rel:'noopener',class:'text-xs text-emerald-400 underline mb-3 inline-block',text:d.contactLabel||'Contact support'}));
+                    out.append(el('div', { class: 'grid grid-cols-2 gap-2' },
+                        cell('Owner', k.owner || 'Unnamed', 'text-emerald-400'),
+                        cell('Domains', (k.domains && k.domains.length) ? k.domains.join(', ') : 'All origins'),
+                        usage('Today', U.daily, L.daily, R.daily),
+                        usage('This month', U.monthly, L.monthly, R.monthly),
+                        usage('All time', U.allTime, L.allTime, R.allTime),
+                        cell('Expiry', fmtD(k.expiresAt) || 'Never', expired ? 'text-rose-400' : 'text-emerald-400'),
+                        cell('Created', fmtD(k.createdAt) || 'Unknown'),
+                        cell('Last used', fmtD(U.lastUsed) || 'Not yet')));
+                } catch {
+                    out.textContent = '';
+                    out.append(el('p', { class: 'text-xs text-rose-400 mb-2', text: 'Could not reach the key checker.' }), el('button', { class: 'btn sm', type: 'button', text: 'Retry', onclick: () => runCheck(key) }));
+                } finally { btn.disabled = false; }
+            }
+            $('#checkForm').onsubmit = e => { e.preventDefault(); runCheck($('#checkInput').value); };
+
+            /* Catalog-driven endpoint cards */
+            const isBinary = p => /\/(stream|download)(\/|\?|$)/.test(p);
+            const slug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'misc';
+            function buildUrl(ep, vals) {
+                let path = ep.path; const missing = [], q = new URLSearchParams();
+                (ep.params || []).forEach(p => {
+                    const v = (vals[p.name] || '').trim();
+                    if (p.in === 'path') { if (!v) missing.push(p.name); path = path.replace(':' + p.name, v ? encodeURIComponent(v) : ':' + p.name); }
+                    else { if (v) q.set(p.name, v); else if (p.required) missing.push(p.name); }
+                });
+                const qs = q.toString();
+                return { path: path + (qs ? '?' + qs : ''), missing };
+            }
+            function pathNode(path) {
+                const c = el('code', { class: 'font-mono text-xs text-slate-300 break-all' });
+                path.split(/(:[A-Za-z_]+)/).forEach(part => c.append(part.startsWith(':') ? el('span', { class: 'pv', text: part }) : part));
+                return c;
+            }
+            function card(ep, idx) {
+                const bin = isBinary(ep.path), method = (ep.method || 'GET').toUpperCase();
+                const d = el('details', { class: 'endpoint-card rounded-xl mb-4 overflow-hidden', id: 'ep-' + slug(ep.path) + '-' + idx });
+                d.append(el('summary', { class: 'ep-sum p-4 sm:p-6 flex items-start gap-3' },
+                    el('div', { class: 'min-w-0 flex-1' },
+                        el('div', { class: 'flex flex-wrap items-center gap-2 mb-1.5' }, el('span', { class: 'method-badge method-get', text: method }), pathNode(ep.path),
+                            bin ? el('span', { class: 'text-[9px] px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400 font-bold uppercase tracking-wider', text: 'Binary' }) : null),
+                        el('p', { class: 'text-sm text-slate-400', text: ep.description || '' })),
+                    fa('fas fa-chevron-down ep-chev text-xs text-slate-500 mt-1.5')));
+                const body = el('div', { class: 'border-t border-edge p-4 sm:p-6' }); d.append(body);
+                let built = false;
+                d.addEventListener('toggle', () => { if (d.open && !built) { built = true; buildBody(ep, body, bin, method); } });
+                return d;
+            }
+            function buildBody(ep, body, bin, method) {
+                const vals = {}, fid = n => 'p-' + slug(ep.path) + '-' + n;
+                const prev = el('div', { class: 'mt-3 font-mono text-[11px] text-slate-500 break-all' });
+                const upd = () => { prev.textContent = method + ' ' + ORIGIN + buildUrl(ep, vals).path; };
+                const params = ep.params || [];
+                if (bin) body.append(el('div', { class: 'mb-4 p-3 rounded-lg bg-amber-500/5 border border-amber-500/20 text-xs text-slate-400 leading-relaxed' },
+                    el('span', { class: 'font-semibold text-amber-400', text: 'Binary media route. ' }),
+                    'This returns video bytes, not JSON. Run a sources request, then open streamUrl or downloadUrl, or paste the short playback token below. No API key is added to the link. This page never downloads whole files in the background.'));
+                if (params.length) {
+                    const wrap = el('div', { class: 'rounded-lg border border-edge overflow-hidden mb-4' },
+                        el('div', { class: 'px-4 py-2 bg-white/[0.02] border-b border-edge mono-label text-slate-500', text: 'Parameters' }));
+                    const grid = el('div', { class: 'grid grid-cols-1 sm:grid-cols-2 gap-3 p-4' });
+                    params.forEach(p => {
+                        vals[p.name] = p.default != null ? String(p.default) : '';
+                        const req = p.required || p.in === 'path';
+                        const inp = el('input', { class: 'field', id: fid(p.name), value: vals[p.name], placeholder: p.default != null ? String(p.default) : (req ? 'required' : 'optional'), autocomplete: 'off', spellcheck: 'false' });
+                        inp.addEventListener('input', () => { vals[p.name] = inp.value; upd(); });
+                        grid.append(el('div', { class: 'min-w-0' },
+                            el('label', { for: fid(p.name), class: 'flex flex-wrap items-center gap-1.5 mb-1.5 font-mono text-[11px] text-slate-300' }, p.name,
+                                el('span', { class: 'text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ' + (req ? 'tag-required' : 'tag-optional'), text: req ? 'required' : 'optional' }),
+                                el('span', { class: 'text-[9px] text-slate-500 uppercase', text: p.in })), inp));
+                    });
+                    wrap.append(grid); body.append(wrap);
+                }
+                const res = el('div', { class: 'code-window mt-4', hidden: true });
+                const runBtn = el('button', { class: 'btn run', type: 'button' }, fa(bin ? 'fas fa-external-link-alt text-xs' : 'fas fa-play text-xs'), bin ? 'Open in new tab' : 'Run');
+                const curlType=el('select',{class:'field min-w-0 py-2 text-[10px]',id:'auth-style-'+slug(ep.path),
+                    'aria-label':'Authentication method for copied example'});
+                const choices=[
+                    ['bearer','Authorization: Bearer'],['apikey-auth','Authorization: ApiKey'],
+                    ['x-api-key','X-API-Key header'],['apikey-header','apikey header'],
+                    ['api-key-header','api-key header'],['apikey-param','?apikey='],
+                    ['api_key-param','?api_key='],['key-param','?key=']
+                ];
+                choices.forEach(([value,label])=>curlType.append(el('option',{value,text:label})));
+                const curl=()=>{
+                    const dest=new URL(ORIGIN+buildUrl(ep,vals).path,location.origin),headers=[];
+                    const type=curlType.value;
+                    if(type==='bearer')headers.push('-H "Authorization: Bearer YOUR_KEY"');
+                    else if(type==='apikey-auth')headers.push('-H "Authorization: ApiKey YOUR_KEY"');
+                    else if(type==='x-api-key')headers.push('-H "X-API-Key: YOUR_KEY"');
+                    else if(type==='apikey-header')headers.push('-H "apikey: YOUR_KEY"');
+                    else if(type==='api-key-header')headers.push('-H "api-key: YOUR_KEY"');
+                    else dest.searchParams.set(type.replace('-param',''),'YOUR_KEY');
+                    return 'curl'+(method!=='GET'?' -X '+method:'')+
+                        (headers.length?' '+headers.join(' '):'')+' "'+dest.href+'"';
+                };
+                const acts=el('div',{class:'run-acts grid grid-cols-2 sm:grid-cols-4 gap-2'},
+                    runBtn,
+                    el('button',{class:'btn min-w-0',type:'button',onclick:()=>copy(ORIGIN+buildUrl(ep,vals).path,'URL copied (no API key included)')},fa('fas fa-link text-xs'),'Copy URL'));
+                if(!bin)acts.append(
+                    el('label',{for:'auth-style-'+slug(ep.path),class:'sr-only',text:'Authentication format'}),
+                    curlType,
+                    el('button',{class:'btn min-w-0',type:'button',onclick:()=>copy(curl(),'Example copied using YOUR_KEY placeholder')},fa('fas fa-copy text-xs'),'Copy example'));
+                else acts.append(el('span',{class:'col-span-2 text-[10px] text-slate-500 self-center',text:'Playback links use short session tokens; API keys are not needed.'}));
+                body.append(acts,prev,res);
+                upd();
+                runBtn.addEventListener('click', () => {
+                    const b = buildUrl(ep, vals);
+                    if (b.missing.length) { toast('Fill in: ' + b.missing.join(', ')); const f = document.getElementById(fid(b.missing[0])); if (f) f.focus(); return; }
+                    if (bin) { window.open(new URL(b.path, ORIGIN).href, '_blank', 'noopener,noreferrer'); return; }
+                    run(b.path, method, res, runBtn);
+                });
+            }
+            async function run(path, method, res, btn) {
+                res.hidden = false; res.textContent = '';
+                const code = el('span', { class: 'status-code sc-wait', text: '...' }), ms = el('span', { class: 'text-[11px] text-slate-500 font-mono', text: 'requesting' });
+                const cp = el('button', { class: 'btn sm ml-auto', type: 'button', disabled: true }, fa('fas fa-copy text-[10px]'), 'Copy');
+                const pre = el('pre', { class: 'out' });
+                const sk = el('div', { class: 'p-4 space-y-2' }); [70, 45, 85, 55, 65].forEach(w => { const s = el('div', { class: 'sk h-3' }); s.style.width = w + '%'; sk.append(s); });
+                res.append(el('div', { class: 'code-window-header' }, el('div', { class: 'dot dot-red' }), el('div', { class: 'dot dot-yellow' }), el('div', { class: 'dot dot-green' }), el('span', { class: 'ml-2 flex items-center gap-2' }, code, ms), cp), sk);
+                btn.disabled = true;
+                const t0 = performance.now();
+                try {
+                    const r = await fetch(path, { method, headers: { Authorization: 'Bearer ' + activeKey(), Accept: 'application/json' } });
+                    const ct = r.headers.get('content-type') || '';
+                    let text;
+                    if (!ct || /json|text/.test(ct)) { text = await r.text(); try { text = JSON.stringify(JSON.parse(text), null, 2); } catch {} }
+                    else text = 'Non-JSON response (' + ct + '). Body not displayed.';
+                    code.textContent = r.status; code.className = 'status-code ' + (r.ok ? 'sc-ok' : 'sc-err');
+                    ms.textContent = Math.round(performance.now() - t0) + ' ms';
+                    const LIM = 150000;
+                    pre.textContent = (text.length > LIM ? text.slice(0, LIM) + '\n\n... truncated (' + (text.length - LIM).toLocaleString() + ' more characters). Use Copy for the full body.' : text) || '(empty body)';
+                    cp.disabled = false; cp.onclick = () => copy(text, 'Response copied');
+                    if (!r.ok) { try { const j = JSON.parse(text); if (j && (j.code || j.message)) {
+                        const box = el('div', { class: 'px-4 py-3 border-b border-edge bg-rose-500/5 text-xs text-slate-300 leading-relaxed' },
+                            el('span', { class: 'font-mono text-rose-400 font-semibold', text: (j.code || 'ERROR') + ' ' }), j.message || j.error || '',
+                            j.hint ? el('div', { class: 'text-slate-500 mt-1', text: j.hint }) : null,
+                            j.retryAfter ? el('div', { class: 'text-slate-500 mt-1 font-mono', text: 'retryAfter ' + j.retryAfter + 's' }) : null);
+                        sk.before(box);
+                        if (r.status === 429 || r.status === 401 || r.status === 403) runCheck(activeKey());
+                    } } catch {} }
+                } catch {
+                    code.textContent = 'ERR'; code.className = 'status-code sc-err'; ms.textContent = Math.round(performance.now() - t0) + ' ms';
+                    pre.textContent = 'Network error: the request did not complete. Check your connection and try again.';
+                } finally { sk.replaceWith(pre); btn.disabled = false; }
+            }
+            async function loadCatalog() {
+                const g = $('#groups'), chips = $('#groupChips'), qn = $('#quickGroups');
+                g.textContent = ''; for (let i = 0; i < 3; i++) g.append(el('div', { class: 'sk h-20 mb-4' }));
+                try {
+                    const r = await fetch(API + '/catalog', { headers: { Accept: 'application/json' } });
+                    const d = await r.json();
+                    if (!r.ok || !d.success || !Array.isArray(d.endpoints)) throw 0;
+                    g.textContent = ''; chips.textContent = ''; qn.textContent = '';
+                    $('#epCount').textContent = d.endpoints.length + ' Endpoints';
+                    if (!d.endpoints.length) { g.append(el('div', { class: 'endpoint-card rounded-xl p-8 text-center text-sm text-slate-400', text: 'No endpoints are published right now.' })); return; }
+                    const groups = new Map();
+                    d.endpoints.forEach(e => { const k = e.group || 'Other'; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(e); });
+                    let idx = 0;
+                    groups.forEach((eps, name) => {
+                        const id = 'g-' + slug(name);
+                        chips.append(el('a', { href: '#' + id, class: 'px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 hover:bg-cyan-500/20 transition-colors font-mono text-[11px]' }, name + ' ', el('span', { class: 'text-slate-500', text: String(eps.length) })));
+                        qn.append(el('a', { href: '#' + id, class: 'quick-nav-link pl-6' }, el('span', { text: name })));
+                        const sec = el('div', { class: 'ep-group mb-10', id },
+                            el('div', { class: 'flex items-center gap-3 mb-4' }, el('h2', { class: 'text-lg font-bold text-white', text: name }),
+                                el('span', { class: 'text-[10px] font-mono text-slate-500 border border-edge rounded-full px-2 py-0.5', text: eps.length + (eps.length === 1 ? ' endpoint' : ' endpoints') }),
+                                el('div', { class: 'h-px flex-1 bg-gradient-to-r from-edge to-transparent' })));
+                        eps.forEach(e => sec.append(card(e, idx++)));
+                        g.append(sec);
+                    });
+                    if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
+                } catch {
+                    g.textContent = ''; $('#epCount').textContent = 'Unavailable';
+                    chips.textContent = '';
+                    g.append(el('div', { class: 'endpoint-card rounded-xl p-8 text-center' },
+                        el('p', { class: 'text-sm font-semibold text-white mb-1', text: 'Endpoint catalog unavailable' }),
+                        el('p', { class: 'text-xs text-slate-500 mb-4', text: 'The live endpoint list could not be loaded.' }),
+                        el('button', { class: 'btn vi', type: 'button', onclick: loadCatalog, text: 'Retry' })));
+                }
+            }
+
+            paintKey(); loadHealth(); runCheck(activeKey()); loadCatalog();
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "status": 200,
+  "success": true,
+  "creator": "DaraTech",
+  "results": {
+    "title": "Solo Leveling",
+    "url": "https://rosyscans.id/manga/solo-leveling/",
+    "image": "https://rosyscans.id/wp-content/uploads/2026/06/1757450384-1896-i474339.webp",
+    "synopsis": "From Yen Press: Known as the Weakest Hunter of All Mankind, E-rank hunter Jinwoo Sung's contribution to raids amounts to trying not to get killed. Unfortunately, between his mother's hospital bills, his sister's tuition, and his own lack of job prospects, he has no choice but to continue to put his life on the line. So when an opportunity arises for a bigger payout, he takes it. Only to come face-to-face with a being whose power outranks anything he's ever seen!",
+    "status": "Ongoing",
+    "author": "Chugong, H-goon, KI Soryeong",
+    "artist": "DISCIPLES (Redice Studio), DUBU (Redice Studio)",
+    "type": "manhwa",
+    "genres": ["Action", "Adventure", "Drama", "Fantasy", "Shounen"],
+    "rating": null,
+    "chapters": [
+      { "chapter": "Chapter 179.6", "url": "https://rosyscans.id/solo-leveling-chapter-179-6/", "releaseDate": "May 7, 2026" },
+      { "chapter": "Chapter 179",   "url": "https://rosyscans.id/solo-leveling-chapter-179/",   "releaseDate": "May 7, 2026" },
+      { "chapter": "Chapter 178",   "url": "https://rosyscans.id/solo-leveling-chapter-178/",   "releaseDate": "May 7, 2026" },
+      { "chapter": "Chapter 2",     "url": "https://rosyscans.id/solo-leveling-chapter-2/",     "releaseDate": "Jan 1, 2018" },
+      { "chapter": "Chapter 1",     "url": "https://rosyscans.id/solo-leveling-chapter-1/",     "releaseDate": "Jan 1, 2018" },
+      { "chapter": "Chapter 0",     "url": "https://rosyscans.id/solo-leveling-chapter-0/",     "releaseDate": "Jan 1, 2018" }
+    ],
+    "related": [
+      { "title": "Solo Leveling: Ragnarok", "url": "https://rosyscans.id/manga/solo-leveling-ragnarok/", "image": "https://rosyscans.id/wp-content/uploads/2026/06/Solev-Ragnarok-210x300.webp", "chapter": "Chapter 7", "type": "manhwa" }
+    ]
+  }
+}

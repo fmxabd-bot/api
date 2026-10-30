@@ -1,0 +1,222 @@
+[
+  {
+    "id": "cl_017",
+    "version": "v1.6.1",
+    "date": "2026-07-23",
+    "type": "improvement",
+    "title": "Manga chain map, endpoint badge, and integration steps updated",
+    "description": "Documentation completeness pass after manga launch: overview stats badge corrected, integration chain map updated with a Manga row, and quick integration steps expanded.",
+    "changes": [
+      "Overview stats badge updated from 15 → 26 Endpoints",
+      "Integration chain map: Manga row added (Home → Search / Browse → Details → Chapter → Download, fuchsia theme)",
+      "Quick integration steps header updated from 15 → 20 steps",
+      "All nav dropdowns and mobile nav include Manga link"
+    ]
+  },
+  {
+    "id": "cl_016",
+    "version": "v1.6.0",
+    "date": "2026-07-23",
+    "type": "feature",
+    "title": "Manga API — RosyScans scraper with ZIP download support",
+    "description": "11 new manga endpoints backed by the RosyScans source. Supports browsing, searching by genre, reading chapter image URLs, and downloading chapters or chapter ranges as ZIP archives — no external dependencies, pure-JS ZIP builder.",
+    "changes": [
+      "GET /api/v3/manga/home — homepage listings",
+      "GET /api/v3/manga/search?q= — keyword search",
+      "GET /api/v3/manga/genres — available genre list",
+      "GET /api/v3/manga/popular?page= — popular manga paginated",
+      "GET /api/v3/manga/latest?page= — latest updates paginated",
+      "GET /api/v3/manga/genre/:slug?page= — browse by genre",
+      "GET /api/v3/manga/browse — filtered browse (type, status, genre, order, page)",
+      "GET /api/v3/manga/details/:slug — title metadata + chapter list",
+      "GET /api/v3/manga/chapter/:slug — chapter page image URLs",
+      "GET /api/v3/manga/chapter/:slug/download — single chapter as ZIP (max 30 pages CF / 50 local)",
+      "GET /api/v3/manga/download/:slug?from=&to= — chapter-range ZIP with subfolders (max 3 chapters CF / 5 local)",
+      "Pure-JS ZIP builder (CRC-32 + STORE mode) — no external dependency",
+      "6 sample JSON files added: /sample-manga-home-data, /sample-manga-search-data, /sample-manga-genres-data, /sample-manga-popular-data, /sample-manga-details-data, /sample-manga-chapter-data",
+      "Full manga section added to /docs (parameter table, cURL + JS examples, sample responses, ZIP notes)",
+      "Endpoint count updated 15 → 26; index.html subtitle updated to include manga"
+    ]
+  },
+  {
+    "id": "cl_014",
+    "version": "v1.5.3",
+    "date": "2026-06-20",
+    "type": "fix",
+    "title": "Live TV — full 9000+ channel load, instant stream playback, export report",
+    "description": "Three fixes for the Live Channel Tester: rate limit raised so all channels load, channel clicks now play instantly using already-loaded stream data, and a CSV export button lets you download the full test report.",
+    "changes": [
+      "Rate limit raised from 60 to 300 req/min so all 9000+ channels load without being blocked",
+      "Channel clicks now use streams embedded in the loaded list — no extra API call, no rate-limit impact",
+      "Export Report button downloads a CSV with ID, name, country, categories, languages, status, stream count, and first stream URL",
+      "Page fetch limit raised from 50 to 200 channels per request — only ~47 pages needed for the full list"
+    ]
+  },
+  {
+    "id": "cl_013",
+    "version": "v1.5.2",
+    "date": "2026-06-19",
+    "type": "feature",
+    "title": "Live TV stream by ID — single-channel lookup endpoint",
+    "description": "New endpoint to fetch a single live TV channel and its stream URLs by channel ID. Ideal for just-in-time player integrations that load only the selected channel.",
+    "changes": [
+      "GET /api/v3/live/stream/:id — returns one channel with its HLS streams by exact channel ID",
+      "Sample data available at /sample-live-stream-data",
+      "Endpoint count updated to 15",
+      "Docs updated with new sub-route, cURL / JS examples, and Quick Integration step 12"
+    ]
+  },
+  {
+    "id": "cl_012",
+    "version": "v1.5.1",
+    "date": "2026-06-19",
+    "type": "improvement",
+    "title": "Documentation overhaul — Live TV section and endpoint count",
+    "description": "Full documentation pass: Live TV channels documented with parameter table, cURL/JS examples, and inline sample response. Endpoint count updated.",
+    "changes": [
+      "Live TV endpoint section added to /docs with sub-routes, parameter table, and code tabs",
+      "Live TV added to docs sidebar and navigation",
+      "Node.js and Python quick integration examples updated with Live TV functions",
+      "Endpoint count updated across index and docs"
+    ]
+  },
+  {
+    "id": "cl_011",
+    "version": "v1.5.0",
+    "date": "2026-06-19",
+    "type": "feature",
+    "title": "Live TV channels API — 8,000+ global channels with HLS streams",
+    "description": "Three new live TV endpoints added. Returns channels with active HLS streams, filtered to exclude NSFW and closed entries. Channels include Nickelodeon, Disney Junior, Al Jazeera, BBC World News, Yoruba TV, and thousands more across 200+ countries.",
+    "changes": [
+      "GET /api/v3/live — paginated channel list; filters: ?category, ?country, ?lang, ?q, ?page, ?limit",
+      "GET /api/v3/live/categories — category slugs with channel counts (general, news, kids, sports…)",
+      "GET /api/v3/live/search/:query — search channels by name, up to 100 results",
+      "Each channel includes id, name, logo, country, languages, categories, and HLS stream URLs"
+    ]
+  },
+  {
+    "id": "cl_010",
+    "version": "v1.4.0",
+    "date": "2026-06-18",
+    "type": "feature",
+    "title": "Public changelog page",
+    "description": "A public changelog is now live, showing all API updates in a filterable timeline.",
+    "changes": [
+      "New public page at /changelog — dark timeline UI with type filter buttons",
+      "GET /api/changelog — public feed (no API key required)",
+      "Changelog link added to main navigation"
+    ]
+  },
+  {
+    "id": "cl_008",
+    "version": "v1.3.0",
+    "date": "2026-06-18",
+    "type": "fix",
+    "title": "Episode count now uses real per-season data",
+    "description": "Series info responses now return accurate total episode counts derived from per-season data.",
+    "changes": [
+      "totalEpisodes now sums actual per-season episode counts",
+      "seasonDetails array added to series info responses",
+      "Fix applied to /api/v3/info/:id and /api/v3/anime/info/:id"
+    ]
+  },
+  {
+    "id": "cl_007",
+    "version": "v1.3.0",
+    "date": "2026-06-18",
+    "type": "fix",
+    "title": "Video blank / audio-only bug — HEVC sources now flagged",
+    "description": "Sources now expose a browserCompatible field so consumers can detect HEVC/H.265 encoded files that Chrome and Firefox cannot play.",
+    "changes": [
+      "All source objects now include browserCompatible: false for HEVC/H.265 codecs",
+      "Affected codec identifiers: hevc, h265, hvc1, hev1",
+      "Use an HLS proxy or transcoder for browser-compatible playback"
+    ]
+  },
+  {
+    "id": "cl_006",
+    "version": "v1.2.1",
+    "date": "2026-06-12",
+    "type": "improvement",
+    "title": "Captions endpoint — multi-format filtering",
+    "description": "The /api/v3/captions endpoint now supports a format query parameter so consumers can request only SRT, VTT, ASS, or other specific subtitle formats.",
+    "changes": [
+      "Added ?format=srt / ?format=vtt / ?format=ass query parameter support",
+      "Supported formats: srt, vtt, ass, ssa, sup, sub",
+      "Unrecognised format values return all tracks (safe fallback)"
+    ]
+  },
+  {
+    "id": "cl_005",
+    "version": "v1.2.0",
+    "date": "2026-06-10",
+    "type": "feature",
+    "title": "Anime-specific endpoints with genre validation",
+    "description": "Dedicated anime routes added across search, info, and sources. Each endpoint validates that the returned title is actually an anime genre before responding.",
+    "changes": [
+      "GET /api/v3/anime — paginated anime catalog (series + movies)",
+      "GET /api/v3/anime/search/:query — keyword search filtered to anime genre",
+      "GET /api/v3/anime/info/:id — full info with anime genre validation",
+      "GET /api/v3/anime/sources/:id — episode sources with genre validation",
+      "GET /api/v3/seasons/upcoming — upcoming anime season lineup from AniList/MAL"
+    ]
+  },
+  {
+    "id": "cl_004",
+    "version": "v1.2.0",
+    "date": "2026-06-10",
+    "type": "feature",
+    "title": "Anime schedule endpoints (Jikan / MAL)",
+    "description": "Anime airing schedule routes added using the Jikan API. Returns currently airing anime with episode air dates, sorted by MAL score.",
+    "changes": [
+      "GET /api/v3/schedule — weekly airing schedule grouped by day",
+      "GET /api/v3/schedule/popular — top airing anime ranked by MAL score",
+      "Responses include MAL score, episode count, genres, and thumbnail"
+    ]
+  },
+  {
+    "id": "cl_003",
+    "version": "v1.1.1",
+    "date": "2026-06-01",
+    "type": "improvement",
+    "title": "Source normalisation — quality labels + audio tracks",
+    "description": "Source responses now include consistent quality labels, language tags, and audio track information across all endpoints.",
+    "changes": [
+      "quality field normalised to 1080p / 720p / 480p / 360p labels",
+      "audioTracks array exposed from upstream dub data",
+      "runtimeMinutes derived from durationSeconds when not already present"
+    ]
+  },
+  {
+    "id": "cl_002",
+    "version": "v1.1.0",
+    "date": "2026-05-20",
+    "type": "feature",
+    "title": "Cloudflare Worker relay + v3 signed requests",
+    "description": "Added a Cloudflare Worker relay layer to bypass upstream geo-blocking.",
+    "changes": [
+      "CF Worker relay deployed — routes geo-blocked requests through Cloudflare edge",
+      "V3 request signing implemented for relay authentication",
+      "Improved resilience via mirror host rotation"
+    ]
+  },
+  {
+    "id": "cl_001",
+    "version": "v1.0.0",
+    "date": "2026-05-01",
+    "type": "feature",
+    "title": "Initial API release",
+    "description": "RUNFLIX Movie API launched with core endpoints for homepage, trending, search, filter, info, sources, and captions.",
+    "changes": [
+      "GET /api/v3/homepage — homepage sections by tab",
+      "GET /api/v3/trending — trending movies and series",
+      "GET /api/v3/search/:query — keyword search",
+      "GET /api/v3/filter — filter by platform, genre, region",
+      "GET /api/v3/info/:id — full title metadata",
+      "GET /api/v3/sources/:id — stream and download links with quality labels",
+      "GET /api/v3/captions/:sid/:streamId — subtitle tracks",
+      "API key authentication — Bearer token required on all endpoints",
+      "Documentation at /docs, interactive try at /try"
+    ]
+  }
+]

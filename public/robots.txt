@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /debug-logs
+Disallow: /stats
+Disallow: /api/
+
+Sitemap: https://movieapi.runflix.name.ng/sitemap.xml

@@ -1,0 +1,25 @@
+{
+  "status": 200,
+  "success": true,
+  "creator": "DaraTech",
+  "results": {
+    "id": "00sReplay.us",
+    "name": "00s Replay",
+    "altNames": [],
+    "logo": null,
+    "country": "US",
+    "languages": [],
+    "categories": [
+      "movies"
+    ],
+    "website": "https://pluto.tv/live-tv/00s-replay/details",
+    "broadcastArea": [],
+    "streams": [
+      {
+        "url": "https://jmp2.uk/plu-62ba60f059624e000781c436.m3u8",
+        "httpReferrer": null,
+        "userAgent": null
+      }
+    ]
+  }
+}
